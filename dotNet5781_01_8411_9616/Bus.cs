@@ -8,6 +8,9 @@ namespace dotNet5781_01_8411_9616
 {
     class Bus
     {
-        
+        LicenseNum licenseNum;
+        DateTime startDate;
+        DateTime serviceDate;
+
     }
 }

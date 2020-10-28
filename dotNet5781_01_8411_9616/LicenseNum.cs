@@ -14,9 +14,32 @@ namespace dotNet5781_01_8411_9616
 
         public LicenseNum(int _number = 0, int _digits = 8)
         {
-            number = _number;
-            digits = _digits;
-            strNum = NumToStr(number, digits);
+            Restart(_number, _digits);
+        }
+
+        public LicenseNum(int _number = 0, DateTime startDate)
+        {
+            if (startDate.Year < 2018)
+            {
+                Restart(_number, 7);
+            }
+            else
+                Restart(_number, 8);
+        }
+
+        public int GetNumber()
+        {
+            return number;
+        }
+
+        public int GetNumOfDigits()
+        {
+            return digits;
+        }
+
+        public string GetStringNumber()
+        {
+            return strNum;
         }
 
         public static string NumToStr(int num, int dig = 8)
@@ -42,6 +65,13 @@ namespace dotNet5781_01_8411_9616
             }
 
             return null;
+        }
+
+        public void Restart(int _number = 0, int _digits = 8)
+        {
+            number = _number;
+            digits = _digits;
+            strNum = NumToStr(number, digits);
         }
     }
 }
