@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_01_8411_9616
 {
-    class Program
+    class Bus
     {
-        static void Main(string[] args)
-        {
-            
-        }
+        
     }
 }
