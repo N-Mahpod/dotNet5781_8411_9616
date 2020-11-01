@@ -9,9 +9,11 @@ namespace dotNet5781_01_8411_9616
     class Program
     {
         static Random r;
+        
         enum CHOICE //The purpose of this enum is to limit the values for a users 
                     // choice, and, to give the choices an expressive name.
             { ADD = 1, DRIVE = 2, FIX = 3, DISPLAY = 4, EXIT = 5, INVALID = -1 }
+        
         static CHOICE inputChoice()
             //This method encapsulates the process of reading input from the console 
             //and converting it into the 'CHOICE' enum type for convinience.
@@ -24,22 +26,22 @@ namespace dotNet5781_01_8411_9616
                 {
                     case (int)CHOICE.ADD:
                         return CHOICE.ADD;
-                        break;
+
                     case (int)CHOICE.DRIVE:
                         return CHOICE.DRIVE;
-                        break;
+
                     case (int)CHOICE.FIX:
                         return CHOICE.FIX;
-                        break;
+
                     case (int)CHOICE.DISPLAY:
                         return CHOICE.DISPLAY;
-                        break;
+
                     case (int)CHOICE.EXIT:
                         return CHOICE.EXIT;
-                        break;
+
                     default:
                         return CHOICE.INVALID;
-                       break;
+
                 }
             }
             else
@@ -51,47 +53,71 @@ namespace dotNet5781_01_8411_9616
         //Some take in the list of buses as reference in order to update it.
         private static void AddBus(ref List<Bus> buses)
         {
-            bool success = false;
-            int license = 0, numDigits = 0;
-            while(!success)
-            {
-                Console.WriteLine("Enter license plate number:\n");
-                success = Int32.TryParse(Console.ReadLine(), out license);
-                if (!success)
-                    Console.WriteLine("Invalide input, try again:\n");
-                else
-                    foreach (Bus b in buses)
-                        if (b.GetLicenseNum().GetNumber() == license)
-                        {
-                            Console.WriteLine("Bus with this license already exists!, try again:\n");
-                            success = false;
-                        }
-            }
-
             DateTime startDate = new DateTime();
 
-            success = false;
+            bool success = false;
             while(!success)
             {
-                Console.WriteLine("Enter the date of the start of operation of this bus (dd/mm/yyyy):\n");
+                Console.WriteLine("Enter the date of the start of operation of this bus (dd/mm/yyyy):");
                 success = DateTime.TryParse(Console.ReadLine(), out startDate);
                 if (!success)
-                    Console.WriteLine("Invalid input, try again:\n");
+                    Console.WriteLine("Invalid input, try again:");
             }
+
+
+            success = false;
+            string license = "0";// = 0, numDigits = 0;
+            
+            while(!success)
+            {
+                Console.WriteLine("\nEnter license plate number:");
+                //success = Int32.TryParse(Console.ReadLine(), out license);
+                license = Console.ReadLine();
+                success = true;
+                foreach (char ch in license)
+                {
+                    if (ch < '0' || ch > '9')
+                        success = false;
+                }
+
+                if (!success)
+                    Console.WriteLine("Invalide input, try again:");
+                else
+                {
+                    string nLicense = Bus.MakeLicenseNum(license, startDate);
+                    foreach (Bus b in buses)
+                        if (b.GetLicenseNum() == nLicense)
+                        {
+                            Console.WriteLine("Bus with this license already exists!, try again:");
+                            success = false;
+                        }
+                }
+            }
+
 
             Bus bus = new Bus(license, startDate);
             buses.Add(bus);
         }
+        
         private static void DriveBus(ref List<Bus> buses)
         {
             bool success = false;
-            int license = 0;
+            string license = "0";
             while (!success)
             {
-                Console.WriteLine("Enter license plate number:\n");
-                success = Int32.TryParse(Console.ReadLine(), out license);
+                Console.WriteLine("Enter license plate number:");
+                success = true;
+
+                license = Console.ReadLine();
+                foreach (char ch in license)
+                {
+                    if (ch < '0' || ch > '9')
+                        success = false;
+                }
+                // success = Int32.TryParse(Console.ReadLine(), out license);
+                
                 if (!success)
-                    Console.WriteLine("Invalide input, try again:\n");
+                    Console.WriteLine("Invalide input, try again:");
             }
 
             //Now check it exists:
@@ -101,14 +127,14 @@ namespace dotNet5781_01_8411_9616
 
             while (busIdx < buses.Count() && !success)
             {
-                if (buses[busIdx].GetLicenseNum().GetNumber() == license)
+                if (buses[busIdx].GetLicenseNum() == Bus.MakeLicenseNum(license))
                     success = true;
                 else
                     busIdx++;
             }
             if (!success)
             {
-                Console.WriteLine("License plate doesnt exist in database, try again:\n");
+                Console.WriteLine("License plate doesnt exist in database, try again:");
                 return;
             }
 
@@ -116,18 +142,28 @@ namespace dotNet5781_01_8411_9616
             if (buses[busIdx].CanDrive(distance))
                 buses[busIdx].Drive(distance);
             else
-                Console.WriteLine("This bus is unable to drive requested distance.\n");
+                Console.WriteLine("This bus is unable to drive requested distance.");
         }
+        
         private static void FixBus(ref List<Bus> buses)
         {
             bool success = false;
-            int license = 0;
+            string license = "0";
             while (!success)
             {
-                Console.WriteLine("Enter license plate number:\n");
-                success = Int32.TryParse(Console.ReadLine(), out license);
+                Console.WriteLine("Enter license plate number:");
+                success = true;
+
+                license = Console.ReadLine();
+                foreach (char ch in license)
+                {
+                    if (ch < '0' || ch > '9')
+                        success = false;
+                }
+                // success = Int32.TryParse(Console.ReadLine(), out license);
+
                 if (!success)
-                    Console.WriteLine("Invalide input, try again:\n");
+                    Console.WriteLine("Invalide input, try again:");
             }
 
             //Now check it exists:
@@ -137,14 +173,14 @@ namespace dotNet5781_01_8411_9616
 
             while (busIdx < buses.Count() && !success)
             {
-                if (buses[busIdx].GetLicenseNum().GetNumber() == license)
+                if (buses[busIdx].GetLicenseNum() == Bus.MakeLicenseNum(license))
                     success = true;
                 else
                     busIdx++;
             }
             if (!success)
             {
-                Console.WriteLine("License plate doesnt exist in database, try again:\n");
+                Console.WriteLine("License plate doesnt exist in database, try again:");
                 return;
             }
 
@@ -152,10 +188,10 @@ namespace dotNet5781_01_8411_9616
             success = false;
             do
             {
-                Console.WriteLine("Enter 0 for refueling, 1 for repair:\n");
+                Console.WriteLine("Enter 'false' for refueling, 'true' for repair:");
                 success = bool.TryParse(Console.ReadLine(), out choice);
                 if (!success)
-                    Console.WriteLine("Invalid input, try again:\n");
+                    Console.WriteLine("Invalid input, try again:");
             } while (!success);
 
             if(choice)//Repair
@@ -167,11 +203,14 @@ namespace dotNet5781_01_8411_9616
                 buses[busIdx].Refuling();
             }
         }
+        
         private static void DisplayBus(List<Bus> buses)
         {
             foreach (Bus bus in buses)
-                Console.WriteLine("License: " + bus.GetLicenseNum().GetStringNumber() +
-                    ", milage: " + bus.GetMileage_Km() + '\n');         
+                Console.WriteLine("License: " + bus.GetLicenseNum() +
+                    ",\tmilage: " + bus.GetMileage_Km() + 
+                    ",\tfuel: " + bus.GetFuel()
+                    + '\n');         
         }
 
         static void Main(string[] args)
@@ -180,12 +219,14 @@ namespace dotNet5781_01_8411_9616
 
             CHOICE choice;
             
-            const string options = "Choose from the following:\n" +
-                             "Add a new buss - 1\n" +
-                             "Drive an existing bus - 2\n" +
-                             "Fix a bus - 3\n" +
-                             "Display a buses driving information since last fix - 4\n" +
-                             "Exit - 5\n";
+            const string options = "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                             "Choose from the following:\n" +
+                             "1 - Add a new buss.\n" +
+                             "2 - Drive an existing bus.\n" +
+                             "3 - Fix a bus.\n" +
+                             "4 - Display a buses driving information since last fix.\n" +
+                             "5 - Exit.\n" +
+                             "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 
             r = new Random(DateTime.Now.Millisecond);
 
@@ -211,7 +252,7 @@ namespace dotNet5781_01_8411_9616
                         break;
                     case CHOICE.INVALID:
                     default:
-                        Console.WriteLine("Invalid input, please try again:\n");
+                        Console.WriteLine("Invalid input, please try again:");
                         break;
                 }
 

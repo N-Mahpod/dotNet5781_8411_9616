@@ -14,7 +14,7 @@ namespace dotNet5781_01_8411_9616
         public const double KM_ALLOW_FROM_SERVICE = 20000;
 
 
-        private LicenseNum licenseNum;
+        private string licenseNum;
         private DateTime startDate;
         private DateTime serviceDate;
         private double kmFromService;
@@ -22,7 +22,7 @@ namespace dotNet5781_01_8411_9616
         private double fuel; // A number betwin 0 to 1200 that shows how much km the bus can drive
         private double kmFromRefueling;
 
-        public Bus(int _licenseNum, DateTime start)
+        public Bus(string _licenseNum, DateTime start)
         {
             Restart(_licenseNum, start, start, 0, 0, 0);
         }
@@ -32,14 +32,14 @@ namespace dotNet5781_01_8411_9616
             return startDate;
         }
 
-        public LicenseNum GetLicenseNum()
+        public string GetLicenseNum()
         {
             return licenseNum;
         }
 
-        public void ChangeLicenseNum(int ln)
+        public void ChangeLicenseNum(string ln)
         {
-            licenseNum = new LicenseNum(ln, startDate);
+            licenseNum = MakeLicenseNum(ln, startDate);
         }
 
         public DateTime GetServiceDate()
@@ -85,9 +85,9 @@ namespace dotNet5781_01_8411_9616
             return kmFromRefueling;
         }
 
-        public void Restart(int _licenseNum, DateTime start, DateTime service, double _kmFromService, double _mileage_km, double _kmFromRefueling)
+        public void Restart(string _licenseNum, DateTime start, DateTime service, double _kmFromService, double _mileage_km, double _kmFromRefueling)
         {
-            licenseNum = new LicenseNum(_licenseNum, start);
+            licenseNum = MakeLicenseNum(_licenseNum, start);
             startDate = start;
             serviceDate = service;
             kmFromService = _kmFromService;
@@ -101,7 +101,7 @@ namespace dotNet5781_01_8411_9616
             DateTime h = serviceDate;
             h.AddYears(5);
 
-            bool a, b, c;
+            bool a, b;//, c;
             a = (fuel - km) >= 0;
             b = kmFromService + km <= KM_ALLOW_FROM_SERVICE;
             //c = DateTime.Now < h;
@@ -120,6 +120,60 @@ namespace dotNet5781_01_8411_9616
             kmFromService += km;
             mileage_km += km;
             fuel -= km;
+        }
+
+        // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
+        public static string MakeLicenseNum(string _licenseNum, DateTime start)
+        {
+            if (start.Year < 2018)
+            {
+                // if the input was wrong
+                if (_licenseNum.Length == 8)
+                    _licenseNum = _licenseNum.Remove(7);
+
+                // s = [0, 1, 2, 3, 4, 5, 6]
+                // s = [0, 1, -, 2, 3, 4, 5, 6]
+                _licenseNum = _licenseNum.Insert(2, "-");
+                // s = [0, 1, -, 2, 3, 4, -, 5, 6]
+                _licenseNum = _licenseNum.Insert(6, "-");
+                return _licenseNum;
+            }
+            else
+            {
+                // if the input was wrong
+                if (_licenseNum.Length == 7)
+                    _licenseNum = _licenseNum.Insert(0, "0");
+
+                // s = [0, 1, 2, 3, 4, 5, 6, 7]
+                // s = [0, 1, 2, -, 3, 4, 5, 6, 7]
+                _licenseNum = _licenseNum.Insert(3, "-");
+                // s = [0, 1, 2, -, 3, 4, -, 5, 6, 7]
+                _licenseNum = _licenseNum.Insert(6, "-");
+                return _licenseNum;
+            }
+        }
+
+        // for some inputs in the Main file
+        public static string MakeLicenseNum(string _licenseNum)
+        {
+            if (_licenseNum.Length == 7)
+            { 
+                // s = [0, 1, 2, 3, 4, 5, 6]
+                // s = [0, 1, -, 2, 3, 4, 5, 6]
+                _licenseNum = _licenseNum.Insert(2, "-");
+                // s = [0, 1, -, 2, 3, 4, -, 5, 6]
+                _licenseNum = _licenseNum.Insert(6, "-");
+                return _licenseNum;
+            }
+            else
+            {
+                // s = [0, 1, 2, 3, 4, 5, 6, 7]
+                // s = [0, 1, 2, -, 3, 4, 5, 6, 7]
+                _licenseNum = _licenseNum.Insert(3, "-");
+                // s = [0, 1, 2, -, 3, 4, -, 5, 6, 7]
+                _licenseNum = _licenseNum.Insert(6, "-");
+                return _licenseNum;
+            }
         }
     }
 }
