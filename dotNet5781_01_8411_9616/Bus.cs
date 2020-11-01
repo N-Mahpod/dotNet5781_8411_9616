@@ -153,7 +153,7 @@ namespace dotNet5781_01_8411_9616
             }
         }
 
-        // for some inputs in the Main file
+        // for some inputs in the Main file, but we need input checking
         public static string MakeLicenseNum(string _licenseNum)
         {
             if (_licenseNum.Length == 7)
