@@ -17,7 +17,7 @@ namespace dotNet5781_01_8411_9616
             Restart(_number, _digits);
         }
 
-        public LicenseNum(int _number = 0, DateTime startDate)
+        public LicenseNum(int _number = 0, DateTime startDate = new DateTime())
         {
             if (startDate.Year < 2018)
             {

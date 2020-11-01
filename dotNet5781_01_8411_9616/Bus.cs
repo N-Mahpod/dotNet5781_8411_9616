@@ -99,8 +99,16 @@ namespace dotNet5781_01_8411_9616
         public bool CanDrive(double km)
         {
             DateTime h = serviceDate;
-            h.AddYears(1);
-            return ((fuel - km) >= 0) && (kmFromService + km <= KM_ALLOW_FROM_SERVICE) && (DateTime.Now < h);
+            h.AddYears(5);
+
+            bool a, b, c;
+            a = (fuel - km) >= 0;
+            b = kmFromService + km <= KM_ALLOW_FROM_SERVICE;
+            //c = DateTime.Now < h;
+
+            return a && b;// && c;
+
+            //return ((fuel - km) >= 0) && (kmFromService + km <= KM_ALLOW_FROM_SERVICE) && (DateTime.Now < h);
         }
 
         public void Drive(double km)
