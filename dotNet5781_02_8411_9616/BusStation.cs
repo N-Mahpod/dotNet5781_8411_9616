@@ -8,24 +8,34 @@ namespace dotNet5781_02_8411_9616
 {
     class BusStation
     {
-        private string busStationKey;
-        private double latitude;
+        // private variables
+        private static int busStationCounter = 1;
+        private int busStationKey;
+        private string busStationKeyString;
         private double longitude;
+        private double latitude;
         private string stationAdress;
+        
+        // a real rand num.
+        private static Random r = new Random();
 
-        private static bool IsProperKey(string k)
+
+        // private methods
+        // makes a proper key string
+        private static bool IsProperKey(ref string k)
         {
             if (k.Length > 6 || !IsNumber(k))
                 return false;
 
             while (k.Length < 6)
             {
-                k.Insert(0, "0");
+                k = k.Insert(0, "0");
             }
 
             return true;
         }
 
+        // checks if the string is num
         private static bool IsNumber(string n)
         {
             foreach (char ch in n)
@@ -34,6 +44,69 @@ namespace dotNet5781_02_8411_9616
                     return false;
             }
             return true;
+        }
+
+        // sets a rand val for the stat
+        private void RandStation()
+        {
+            busStationKey = busStationCounter;
+            busStationKeyString = busStationKey.ToString();
+            IsProperKey(ref busStationKeyString);
+
+            busStationCounter++;
+
+            latitude = GetRandomNumber(31, 33.3);
+            longitude = GetRandomNumber(34.3, 35.3);
+
+        }
+        
+        // public methods
+        public double Longitude { get => longitude; set => longitude = value; }
+        public double Latitude { get => latitude; set => latitude = value; }
+        public string StationAdress { get => stationAdress; set => stationAdress = value; }
+ 
+        public BusStation(string adress = "")
+        {
+            RandStation();
+            stationAdress = adress;
+        }
+
+        public BusStation(double _longitude, double _latitude, string adress = "")
+        {
+            busStationKey = busStationCounter;
+            busStationKeyString = busStationKey.ToString();
+            IsProperKey(ref busStationKeyString);
+
+            busStationCounter++;
+
+            longitude = _longitude;
+            latitude = _latitude;
+            stationAdress = adress;
+        }
+
+        public int GetBusStationKey()
+        {
+            return busStationKey;
+        }
+
+        public string GetBusStationKeyString()
+        {
+            return busStationKeyString;
+        }
+
+        public override string ToString()
+        {
+            string s = "Bus Station Code: " + busStationKeyString + ","
+                + "\tLongitude: " + longitude.ToString() + "dE,"
+                + "\tLatitude: " + latitude.ToString() + "dN,"
+                + "\tAdress: " + ((stationAdress == "") ? "NULL" : stationAdress);
+            return s;
+        }
+
+        // in order to get a real random number for litudes.
+        public static double GetRandomNumber(double minimum, double maximum)
+        {
+            return r.NextDouble() * (maximum - minimum) + minimum;
         }
     }
 }
