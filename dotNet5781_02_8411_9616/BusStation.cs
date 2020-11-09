@@ -9,12 +9,12 @@ namespace dotNet5781_02_8411_9616
     class BusStation
     {
         // private variables
-        private static int busStationCounter = 1;
-        private int busStationKey;
-        private string busStationKeyString;
-        private double longitude;
-        private double latitude;
-        private string stationAdress;
+        protected static int busStationCounter = 1;
+        protected int busStationKey;
+        protected string busStationKeyString;
+        protected double longitude;
+        protected double latitude;
+        protected string stationAdress;
         
         // a real rand num.
         private static Random r = new Random();
