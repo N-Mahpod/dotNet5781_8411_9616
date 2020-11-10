@@ -84,6 +84,15 @@ namespace dotNet5781_02_8411_9616
             stationAdress = adress;
         }
 
+        public BusStation(BusStation bs)
+        {
+            busStationKey = bs.busStationKey;
+            busStationKeyString = bs.busStationKeyString;
+            longitude = bs.longitude;
+            latitude = bs.latitude;
+            stationAdress = bs.stationAdress;
+        }
+
         public int GetBusStationKey()
         {
             return busStationKey;
@@ -107,6 +116,18 @@ namespace dotNet5781_02_8411_9616
         public static double GetRandomNumber(double minimum, double maximum)
         {
             return r.NextDouble() * (maximum - minimum) + minimum;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BusStation station &&
+                   busStationKey == station.busStationKey;
+        }
+
+        //Utility function to calculate distance between this station and another.
+        public double getDistance(in BusStation other)
+        {
+            return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
         }
     }
 }

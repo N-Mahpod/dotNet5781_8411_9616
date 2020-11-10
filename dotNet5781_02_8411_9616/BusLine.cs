@@ -6,40 +6,192 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_8411_9616
 {
-    class BusLineStation : BusStation
+    class BusLineStation : BusStation//, IComparable
     {
         //Distance from previous and next station in this line, respectively.
         private double distPrev;
         private double distNext;
+        private double minutesPrev;
 
-        //Getters for distances.
+        //Getters for parameters.
         public double DistPrev { get => distPrev; }
         public double DistNext { get => distNext; }
+        public double MinutesPrev { get => minutesPrev; }
 
-        //Utility function to calculate distance between this station and another.
-        private double getDistance(in BusLineStation other)
+
+
+        public override bool Equals(object obj)
         {
-            return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
+            return obj is BusLineStation station &&
+                   base.Equals(obj) &&
+                   busStationKey == station.busStationKey &&
+                   distPrev == station.distPrev &&
+                   minutesPrev == station.minutesPrev;
         }
 
-        public BusLineStation(in BusLineStation prev, in BusLineStation next, in string adress = "")
+
+        // public int CompareTo(object obj)
+        // {
+        //     if (!(obj is BusLineStation))
+        //         throw new ArgumentException();
+        // 
+        //     BusLineStation b = (BusLineStation)obj;
+        //     return minutesPrev.CompareTo(b.minutesPrev);
+        // }
+
+        public BusLineStation(BusLineStation prev, double minutesFromPrev, in BusLineStation next, in string adress = "")
             : base(adress)
         {
-            if(prev != null) 
-                distPrev = getDistance(prev);
+            distPrev = getDistance(prev);
+            minutesPrev = minutesFromPrev;
            
             if(next != null)
                 distNext = getDistance(next);
         }
+
+        public BusLineStation(BusStation bs, double _distPrev = 0, double tFromPrev = 0, double _distNext = 0)
+            : base(bs)
+        {
+            distPrev = _distPrev;
+            minutesPrev = tFromPrev;
+            distNext = _distNext;
+        }
     }
 
-    class BusLine
+    enum Area
+    {
+        Error, General, North, South, Center, Jerusalem
+    }
+
+    class BusLine: IComparable
     {
         //The line ID.
         private int id;
         //Starting and finishing stations respectively.
         private BusLineStation start;
         private BusLineStation finish;
+        private List<BusLineStation> stations;
+        Area area;
 
+        public BusLine(int _id = 0, int _area = 1)
+        {
+            id = _id;
+            area = (Area)_area;
+            stations = new List<BusLineStation>();
+        }
+
+        public string StationsString(string ch = "\n")
+        {
+            string s = "";
+            for (int i = 0; i < stations.Count; ++i)
+            {
+                s = s + (i + 1).ToString() + ": " + stations[i].GetBusStationKeyString() + "." + ch;
+            }
+            return s;
+        }
+
+        public override string ToString()
+        {
+            string s
+                = "Line Number: " + id.ToString() + ".\n"
+                + "Area: " + area.ToString() + ".\n"
+                + "Stations: " + StationsString("\t") + "\n";
+            return s;
+        }
+
+        public void Add(BusLineStation lineStation, int i = -1) // -1 for adding to the end of the list.
+        {
+            if (i == -1)
+                i = stations.Count; 
+            
+            if (i == 0)
+                start = lineStation;
+            if (i == stations.Count)
+                finish = lineStation;
+
+            stations.Insert(i, lineStation);
+        }
+
+        public void Remove(BusLineStation lineStation)
+        {
+            stations.Remove(lineStation);
+
+            if (stations.Count == 0)
+                return;
+
+            if (start == lineStation)
+                start = stations[0];
+            if (finish == lineStation)
+                finish = stations[stations.Count - 1];
+        }
+
+        public bool IsInclude(BusLineStation station)
+        {
+            if (FindStation(station) == -1)
+                return false;
+            return true;
+        }
+
+        public int FindStation(BusLineStation station)
+        {
+            for (int i = 0; i < stations.Count; ++i)
+            {
+                if (station.Equals(stations[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+        public BusLineStation this[int i]
+        {
+            get => stations[i];
+            set => stations[i] = value;
+        }
+
+        public double DistBetween(BusLineStation station0, BusLineStation station1)
+        {
+            double dist = 0;
+            int end = FindStation(station1);
+
+            for (int i = FindStation(station0); i < end; ++i)
+            {
+                dist += stations[i + 1].DistPrev;
+            }
+
+            return dist;
+        }
+
+        public double MinutesBetween(BusLineStation station0, BusLineStation station1)
+        {
+            double time = 0;
+            int end = FindStation(station1);
+
+            for (int i = FindStation(station0); i < end; ++i)
+            {
+                time += stations[i + 1].MinutesPrev;
+            }
+
+            return time;
+        }
+
+        public BusLine SubRoute(BusLineStation station0, BusLineStation station1)
+        {
+            BusLine subLine = new BusLine();
+
+            int end = FindStation(station1);
+
+            for (int i = FindStation(station0); i <= end; ++i)
+            {
+                subLine.Add(stations[i]);
+            }
+
+            return subLine;
+        }
+
+        public int CompareTo(object obj)
+        {
+            BusLine b = (BusLine)obj;
+            return MinutesBetween(start, finish).CompareTo(MinutesBetween(b.start, b.finish));
+        }
     }
 }
