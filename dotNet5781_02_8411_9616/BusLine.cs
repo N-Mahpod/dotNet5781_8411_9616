@@ -80,6 +80,14 @@ namespace dotNet5781_02_8411_9616
             stations = new List<BusLineStation>();
         }
 
+        public BusLineStation Start { get => start; }
+        
+        public BusLineStation Finish { get => finish; }
+
+        public int ID { get => id; }
+
+        public Area Area { get => area; }
+
         public string StationsString(string ch = "\n")
         {
             string s = "";
