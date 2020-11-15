@@ -39,9 +39,10 @@ namespace dotNet5781_02_8411_9616
         //     return minutesPrev.CompareTo(b.minutesPrev);
         // }
 
-        public BusLineStation(BusLineStation prev, double minutesFromPrev, in BusLineStation next, in string adress = "")
+        public BusLineStation(bool PrevFlag, BusLineStation prev, double minutesFromPrev, in BusLineStation next, in string adress = "")
             : base(adress)
         {
+            bool ahbal = PrevFlag;
             distPrev = getDistance(prev);
             minutesPrev = minutesFromPrev;
            

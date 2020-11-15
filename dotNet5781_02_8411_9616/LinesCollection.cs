@@ -64,7 +64,16 @@ namespace dotNet5781_02_8411_9616
             return lines;
         }
 
-
+        public override string ToString()
+        {
+            string s = "";
+            foreach (BusLine b in collection)
+            {
+                s += b.ToString();
+                s += "\n";
+            }
+            return s;
+        }
 
         // Implementation for the GetEnumerator method.
         IEnumerator IEnumerable.GetEnumerator()

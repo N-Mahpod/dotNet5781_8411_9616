@@ -10,6 +10,7 @@ namespace dotNet5781_02_8411_9616
     {
         static void Main(string[] args)
         {
+            /*
             List<BusStation> l = new List<BusStation>();
             Console.WriteLine("start (if it is'nt working, try to tap five adresses)");
             for (int i = 0; i < 5; i++)
@@ -37,7 +38,7 @@ namespace dotNet5781_02_8411_9616
 
             Console.WriteLine("OK:\n" + busLine.ToString());
             Console.ReadKey();
-
+            */
             Console.WriteLine("next level:\n");
             Console.WriteLine("Enter a lot of adresses");
 
@@ -51,14 +52,14 @@ namespace dotNet5781_02_8411_9616
                     BusStation bs = new BusStation(s);
                     BusLineStation bls2;
                     if (j == 0)
-                        bls2 = new BusLineStation(bs, i * j * 35);
+                        bls2 = new BusLineStation(bs);
                     else
-                        bls2 = new BusLineStation(bl[j - 1]);
+                        bls2 = new BusLineStation(true, bl[j - 1], i * j * 35);
                     bl.Add(bls2);
                 }
                 h.Add(bl);
             }
-            Console.WriteLine( h.ToString());
+            Console.WriteLine(h.ToString());
             Console.ReadKey();
         }
     }
