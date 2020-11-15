@@ -121,7 +121,9 @@ namespace dotNet5781_02_8411_9616
         public override bool Equals(object obj)
         {
             return obj is BusStation station &&
-                   busStationKey == station.busStationKey;
+                   busStationKey == station.busStationKey &&
+                   latitude == station.latitude &&
+                   longitude == station.longitude;
         }
 
         //Utility function to calculate distance between this station and another.

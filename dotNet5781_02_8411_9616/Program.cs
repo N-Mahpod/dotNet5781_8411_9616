@@ -38,6 +38,28 @@ namespace dotNet5781_02_8411_9616
             Console.WriteLine("OK:\n" + busLine.ToString());
             Console.ReadKey();
 
+            Console.WriteLine("next level:\n");
+            Console.WriteLine("Enter a lot of adresses");
+
+            LinesCollection h = new LinesCollection();
+            for (int i = 0; i < 5; i++)
+            {
+                BusLine bl = new BusLine(i, i);
+                for (int j = 0; j < 5; j++)
+                {
+                    string s = Console.ReadLine();
+                    BusStation bs = new BusStation(s);
+                    BusLineStation bls2;
+                    if (j == 0)
+                        bls2 = new BusLineStation(bs, i * j * 35);
+                    else
+                        bls2 = new BusLineStation(bl[j - 1]);
+                    bl.Add(bls2);
+                }
+                h.Add(bl);
+            }
+            Console.WriteLine( h.ToString());
+            Console.ReadKey();
         }
     }
 }

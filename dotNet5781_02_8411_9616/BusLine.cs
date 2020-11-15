@@ -20,14 +20,14 @@ namespace dotNet5781_02_8411_9616
 
 
 
-        public override bool Equals(object obj)
-        {
-            return obj is BusLineStation station &&
-                   base.Equals(obj) &&
-                   busStationKey == station.busStationKey &&
-                   distPrev == station.distPrev &&
-                   minutesPrev == station.minutesPrev;
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    return obj is BusLineStation station &&
+        //           base.Equals(obj) &&
+        //           busStationKey == station.busStationKey &&
+        //           distPrev == station.distPrev &&
+        //           minutesPrev == station.minutesPrev;
+        //}
 
 
         // public int CompareTo(object obj)
@@ -139,12 +139,28 @@ namespace dotNet5781_02_8411_9616
                 return false;
             return true;
         }
+        public bool IsInclude(int num)
+        {
+            if (FindStation(num) == -1)
+                return false;
+            return true;
+        }
 
         public int FindStation(BusLineStation station)
         {
             for (int i = 0; i < stations.Count; ++i)
             {
                 if (station.Equals(stations[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+        public int FindStation(int num)
+        {
+            for (int i = 0; i < stations.Count; ++i)
+            {
+                if (stations[i].GetBusStationKey() == num)
                     return i;
             }
             return -1;

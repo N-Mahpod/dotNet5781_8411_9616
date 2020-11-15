@@ -46,64 +46,30 @@ namespace dotNet5781_02_8411_9616
             }
         }
 
+        public List<BusLine> LinesOfStation(int StatNum)
+        {
+            List<BusLine> lines = new List<BusLine>();
+            foreach(BusLine b in collection)
+            {
+                if (b.IsInclude(StatNum))
+                    lines.Add(b);
+            }
+            return lines;
+        }
+
+        public List<BusLine> SortByTimeList()
+        {
+            List<BusLine> lines = collection;
+            lines.Sort();
+            return lines;
+        }
+
+
 
         // Implementation for the GetEnumerator method.
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
-        }
-
-        public LinesEnum GetEnumerator()
-        {
-            return new LinesEnum(collection);
-        }
-    }
-
-    class LinesEnum : IEnumerator
-    {
-        public List<BusLine> _lines;
-
-        // Enumerators are positioned before the first element
-        // until the first MoveNext() call.
-        int position = -1;
-
-        public LinesEnum(List<BusLine> list)
-        {
-            _lines = list;
-        }
-
-        public bool MoveNext()
-        {
-            position++;
-            return (position < _lines.Count);
-        }
-
-        public void Reset()
-        {
-            position = -1;
-        }
-
-        object IEnumerator.Current
-        {
-            get
-            {
-                return Current;
-            }
-        }
-
-        public BusLine Current
-        {
-            get
-            {
-                try
-                {
-                    return _lines[position];
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    throw new InvalidOperationException();
-                }
-            }
+            return collection.GetEnumerator();
         }
     }
 }
