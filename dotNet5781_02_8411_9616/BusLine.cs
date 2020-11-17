@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_8411_9616
 {
+    //Position in the line, speacial treatment for last and first.
+    enum POSITION { FIRST = -1, MIDDLE = 0, LAST = 1};
     class BusLineStation : BusStation//, IComparable
     {
         //Distance from previous and next station in this line, respectively.
+        private POSITION linePos;
         private double distPrev;
-        private double distNext;
+        //private double distNext;
         private double minutesPrev;
 
         //Getters for parameters.
         public double DistPrev { get => distPrev; }
-        public double DistNext { get => distNext; }
+        //public double DistNext { get => distNext; }
         public double MinutesPrev { get => minutesPrev; }
 
 
@@ -39,22 +42,36 @@ namespace dotNet5781_02_8411_9616
         //     return minutesPrev.CompareTo(b.minutesPrev);
         // }
 
-        public BusLineStation(bool PrevFlag, BusLineStation prev, double minutesFromPrev, in BusLineStation next, in string adress = "")
+        /*public BusLineStation(POSITION _linePos, BusLineStation prev, double minutesFromPrev, in BusLineStation next, in string adress = "")
             : base(adress)
         {
+            bool ahbal = PrevFlag;
             distPrev = getDistance(prev);
             minutesPrev = minutesFromPrev;
            
             if(next != null)
                 distNext = getDistance(next);
-        }
+        }*/
 
-        public BusLineStation(BusStation bs, double _distPrev = 0, double tFromPrev = 0, double _distNext = 0)
+        public BusLineStation(POSITION _linePos, BusStation bs, double _distPrev = 0, double tFromPrev = 0)//, double _distNext = 0)
             : base(bs)
         {
-            distPrev = _distPrev;
-            minutesPrev = tFromPrev;
-            distNext = _distNext;
+            linePos = _linePos;
+            if (linePos != POSITION.FIRST)
+            {
+                distPrev = _distPrev;
+                minutesPrev = tFromPrev;
+            }
+            else
+            {
+                distPrev = minutesPrev = -1;
+            }
+
+            /*if (linePos != POSITION.LAST)
+                distNext = _distNext;
+            else
+                distNext = -1;*/
+
         }
     }
 
@@ -79,6 +96,10 @@ namespace dotNet5781_02_8411_9616
             area = (Area)_area;
             stations = new List<BusLineStation>();
         }
+
+        public int GetSize() { return stations.Count(); }
+
+        public List<BusLineStation> Stations { get => stations; }
 
         public BusLineStation Start { get => start; }
         
