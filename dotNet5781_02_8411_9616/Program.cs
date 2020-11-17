@@ -53,21 +53,129 @@ namespace dotNet5781_02_8411_9616
                              "Searching:\n\tSearch lines that go through specific station: 5.\n\tSearch for direct buses between two stations: 6.\n" +
                              "Printing:\n\tAll existing bus lines: 7.\n\tEvery bus station and the lines its in: 8.\n" +
                              "Exit: 9.\n";
+            int lineId, key;
             do
             {
                 Console.WriteLine(options);
                 Int32.TryParse(Console.ReadLine(), out choice);
-                switch(choice)
-                {
-                    case 1:
+                switch (choice)
+                    {
+                        case 1:
+                        Console.WriteLine("Enter new line`s id:\n");
+                        lineId = Int32.Parse(Console.ReadLine());
 
+                        Console.WriteLine("Enter new line`s aerial code (1-general, 2-N, 3-S, 4-center, 5-Jr):\n");
+                        int lineArea = Int32.Parse(Console.ReadLine());
+
+                        if (lineArea < 1 || lineArea > 5)
+                        {
+                            Console.WriteLine("Error in aerial code, try again:\n");
+                            break;
+                        }
+
+                        foreach(BusLine bl in lc)
+                            if(bl.ID == lineId)
+                            {
+                                Console.WriteLine("Line ID already exists, try again:\n");
+                                break;
+                            }
+
+                        lc.Add(new BusLine(lineId, lineArea));
                         break;
+
                     case 2:
+                        Console.WriteLine("Enter line`s id:\n");
+                        int id = Int32.Parse(Console.ReadLine());
+                        
+                        /*int i = 0;
+                        bool found = false;
+                        foreach(BusLine bl in lc)
+                        {
+                            if (bl.ID == id)
+                            {
+                                found = true;
+                                break;
+                            }
+                            else
+                                i++;
+                        }
+                        
+                        if(found == false)
+                        {
+                            Console.WriteLine("Line doesnt exist, try again:\n");
+                            break;
+                        }*/
+
+                        Console.WriteLine("Enter station`s key:\n");
+                        key = Int32.Parse(Console.ReadLine());
+
+                        foreach(BusStation bs in bsArr)
+                            if(bs.GetBusStationKey() == key)
+                            {
+                                try
+                                {
+                                    BusLine bl = lc[id];
+                                    if (bl.GetSize() == 0)
+                                        bl.Add(new BusLineStation(POSITION.FIRST, bs));
+                                    else
+                                        bl.Add(new BusLineStation(POSITION.LAST, bs,
+                                            bs.getDistance(bl.Finish)));
+
+                                }catch(IndexOutOfRangeException e)
+                                {
+                                    Console.WriteLine(e.Data);
+                                    break;
+                                }
+                            }
+
+                        Console.WriteLine("Station doesnt exist, try again:\n");
                         break;
+
                     case 3:
+                        Console.WriteLine("Enter line`s id:\n");
+                        lineId = Int32.Parse(Console.ReadLine());
+
+                        try
+                        {
+                            BusLine bl = lc[lineId];
+                            lc.Remove(bl);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine(e.Data);
+                            break;
+                        }
                         break;
+
                     case 4:
+                        Console.WriteLine("Enter line`s id:\n");
+                        lineId = Int32.Parse(Console.ReadLine());
+
+                        Console.WriteLine("Enter station`s key:\n");
+                        key = Int32.Parse(Console.ReadLine());
+
+                        try
+                        {
+                            
+                            BusLine bl = lc[lineId];
+
+                            foreach(BusLineStation bls in bl.Stations)
+                                if(bls.GetBusStationKey() == key)
+                                {
+                                    bl.Remove(bls);
+                                    break;
+                                }
+
+                            Console.WriteLine("Sation doesnt exist in line, try again:\n");
+                            break;
+
+                        }
+                        catch(IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine(e.Data);
+                        }
                         break;
+
                     case 5:
                         break;
                     case 6:
@@ -82,7 +190,7 @@ namespace dotNet5781_02_8411_9616
                         Console.WriteLine("Not an option, try again:\n");
                         break;
                 }
-            }while(choice != 9)
+            } while (choice != 9);
         }
     }
 }

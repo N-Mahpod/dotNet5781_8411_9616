@@ -104,6 +104,10 @@ namespace dotNet5781_02_8411_9616
             stations = new List<BusLineStation>();
         }
 
+        public int GetSize() { return stations.Count(); }
+
+        public List<BusLineStation> Stations { get => stations; }
+
         public BusLineStation Start { get => start; }
         
         public BusLineStation Finish { get => finish; }
