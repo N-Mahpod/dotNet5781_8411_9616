@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace dotNet5781_02_8411_9616
 {
     //Position in the line, speacial treatment for last and first.
-    enum POSITION { FIRST = -1, MIDDLE = 0, LAST = 1};
+    enum POSITION { FIRST = -1, MIDDLE = 0, LAST = 1 };
     class BusLineStation : BusStation//, IComparable
     {
         //Distance from previous and next station in this line, respectively.
@@ -80,7 +80,7 @@ namespace dotNet5781_02_8411_9616
         Error, General, North, South, Center, Jerusalem
     }
 
-    class BusLine: IComparable
+    class BusLine : IComparable
     {
         //The line ID.
         private int id;
@@ -102,7 +102,7 @@ namespace dotNet5781_02_8411_9616
         public List<BusLineStation> Stations { get => stations; }
 
         public BusLineStation Start { get => start; }
-        
+
         public BusLineStation Finish { get => finish; }
 
         public int ID { get => id; }
@@ -131,8 +131,8 @@ namespace dotNet5781_02_8411_9616
         public void Add(BusLineStation lineStation, int i = -1) // -1 for adding to the end of the list.
         {
             if (i == -1)
-                i = stations.Count; 
-            
+                i = stations.Count;
+
             if (i == 0)
                 start = lineStation;
             if (i == stations.Count)
@@ -221,7 +221,7 @@ namespace dotNet5781_02_8411_9616
 
         public BusLine SubRoute(BusLineStation station0, BusLineStation station1)
         {
-            BusLine subLine = new BusLine();
+            BusLine subLine = new BusLine(id, (int)area);
 
             int end = FindStation(station1);
 

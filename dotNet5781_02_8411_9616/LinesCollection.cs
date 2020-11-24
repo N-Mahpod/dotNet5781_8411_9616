@@ -11,6 +11,11 @@ namespace dotNet5781_02_8411_9616
     {
         private List<BusLine> collection;
 
+
+        public List<BusLine> Lines
+        {
+            get => collection;
+        }
         public LinesCollection()
         {
             collection = new List<BusLine>();
@@ -23,7 +28,7 @@ namespace dotNet5781_02_8411_9616
                 if ((bus.ID == line.ID) && ((bus.Start != line.Finish) || (bus.Finish != line.Start)))
                     return;
             }
-            
+
             collection.Add(line);
         }
 
@@ -49,7 +54,7 @@ namespace dotNet5781_02_8411_9616
         public List<BusLine> LinesOfStation(int StatNum)
         {
             List<BusLine> lines = new List<BusLine>();
-            foreach(BusLine b in collection)
+            foreach (BusLine b in collection)
             {
                 if (b.IsInclude(StatNum))
                     lines.Add(b);
@@ -57,11 +62,10 @@ namespace dotNet5781_02_8411_9616
             return lines;
         }
 
-        public List<BusLine> SortByTimeList()
+        public void SortByTime()
         {
-            List<BusLine> lines = collection;
-            lines.Sort();
-            return lines;
+            collection.Sort();
+            collection.Reverse();
         }
 
         public override string ToString()
