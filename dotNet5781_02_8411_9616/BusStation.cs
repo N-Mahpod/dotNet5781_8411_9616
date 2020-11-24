@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_8411_9616
 {
-    class BusStation
+    public class BusStation
     {
         // private variables
         protected static int busStationCounter = 1;

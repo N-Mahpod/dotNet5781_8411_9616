@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace dotNet5781_02_8411_9616
 {
     //Position in the line, speacial treatment for last and first.
-    enum POSITION { FIRST = -1, MIDDLE = 0, LAST = 1 };
-    class BusLineStation : BusStation//, IComparable
+    public enum POSITION { FIRST = -1, MIDDLE = 0, LAST = 1 };
+    public class BusLineStation : BusStation//, IComparable
     {
         //Distance from previous and next station in this line, respectively.
         private POSITION linePos;
@@ -75,12 +75,12 @@ namespace dotNet5781_02_8411_9616
         }
     }
 
-    enum Area
+    public enum Area
     {
         Error, General, North, South, Center, Jerusalem
     }
 
-    class BusLine : IComparable
+    public class BusLine : IComparable
     {
         //The line ID.
         private int id;
@@ -107,7 +107,7 @@ namespace dotNet5781_02_8411_9616
 
         public int ID { get => id; }
 
-        public Area Area { get => area; }
+        public Area Area { get => area; set => area = value; }
 
         public string StationsString(string ch = "\n")
         {

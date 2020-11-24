@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_8411_9616
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Rand10Lines(ref LinesCollection lc, ref string[] addresses, ref BusStation[] bsArr)
         {
-
             Random r = new Random();
 
-            string[] addresses = new string[40]//Need to put here 40 names of fictional bus station addresses
+            addresses = new string[40]//Need to put here 40 names of fictional bus station addresses
             {
             "","","","","",
             "","","","","",
@@ -25,14 +24,14 @@ namespace dotNet5781_02_8411_9616
             "","","","","",
             };
 
-            BusStation[] bsArr = new BusStation[40];
+            bsArr = new BusStation[40];
             for (var i = 0; i < 40; ++i)
             {
                 bsArr[i] =
                     new BusStation(addresses[i]);
             }
 
-            LinesCollection lc = new LinesCollection();
+            lc = new LinesCollection();
 
             BusLine[] blArr = new BusLine[10];
             for (var i = 0; i < 10; ++i)
@@ -46,6 +45,15 @@ namespace dotNet5781_02_8411_9616
 
                 lc.Add(blArr[i]);
             }
+        }
+
+
+        static void Main(string[] args)
+        {
+            string[] addresses = new string[40];
+            BusStation[] bsArr = new BusStation[40];
+            LinesCollection lc = new LinesCollection();
+            Rand10Lines(ref lc, ref addresses, ref bsArr);
 
             int choice;
             string options = "\n\n~~~~> MAIN < ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
