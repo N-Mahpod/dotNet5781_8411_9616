@@ -106,8 +106,8 @@ namespace dotNet5781_02_8411_9616
         public override string ToString()
         {
             string s = "Bus Station Code: " + busStationKeyString + ","
-                + "\tLongitude: " + longitude.ToString() + "dE,"
-                + "\tLatitude: " + latitude.ToString() + "dN,"
+                + "\tLongitude: " + longitude.ToString().Remove(8) + "dE,"
+                + "\tLatitude: " + latitude.ToString().Remove(8) + "dN,"
                 + "\tAdress: " + ((stationAdress == "") ? "NULL" : stationAdress);
             return s;
         }

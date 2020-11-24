@@ -19,12 +19,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label      Content="Bus Line Number:"  Grid.Column="0"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch" FontSize="20" FontFamily="Comic Sans MS" FontWeight="Bold"/>
-            <ComboBox   Name="cbBusLines"           Grid.Column="1"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch" SelectionChanged="cbBusLines_SelectionChanged"/>
-            <Label      Content="Area:"             Grid.Column="2"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch" FontSize="20" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <TextBox    Name="tbArea"               Grid.Column="3"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch"    TextWrapping="Wrap" Text="{Binding Path=Area}"/>
+            <Label      Content="Bus Line Number:"  Grid.Column="0"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"/>
+            <ComboBox   Name="cbBusLines"           Grid.Column="1"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"  SelectionChanged="cbBusLines_SelectionChanged"/>
+            <Label      Content="Area:"             Grid.Column="2"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"/>
+            <TextBox    Name="tbArea"               Grid.Column="3"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="10,10,10,10" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"  TextWrapping="Wrap" Text="{Binding Path=Area}"/>
         </Grid>
 
-        <ListBox Name="lbBusLineStations" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" ItemsSource="{Binding}"/>
+        <ListBox Name="lbBusLineStations" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" ItemsSource="{Binding}" FontSize="16" FontFamily="Comic Sans MS"/>
     </Grid>
 </Window>
