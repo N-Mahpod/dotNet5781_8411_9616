@@ -196,7 +196,7 @@ namespace dotNet5781_01_8411_9616
 
             if(choice)//Repair
             {
-                buses[busIdx].Service(DateTime.Now.Date);
+                buses[busIdx].Service();
             }
             else//Refuel
             {

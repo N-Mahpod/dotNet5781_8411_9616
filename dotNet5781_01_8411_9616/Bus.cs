@@ -8,12 +8,19 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_01_8411_9616
 {
-    class Bus
+    public enum Status
     {
+        Ready, Driving, Refueling, Servicing, Danger
+    }
+
+
+    public class Bus
+    {
+
         public const double FULL_FUEL_TANK = 1200;
         public const double KM_ALLOW_FROM_SERVICE = 20000;
 
-
+        Status status;
         private string licenseNum;
         private DateTime startDate;
         private DateTime serviceDate;
@@ -21,6 +28,7 @@ namespace dotNet5781_01_8411_9616
         private double mileage_km;
         private double fuel; // A number betwin 0 to 1200 that shows how much km the bus can drive
         private double kmFromRefueling;
+
 
         public Bus(string _licenseNum, DateTime start)
         {
@@ -32,14 +40,50 @@ namespace dotNet5781_01_8411_9616
             return startDate;
         }
 
+        public DateTime StartDate
+        {
+            get => startDate;
+            set
+            {
+                if (value >= DateTime.Now)
+                {
+                    Restart(licenseNum, DateTime.Now, DateTime.Now, 0, 0, 0);
+                    return;
+                }
+                startDate = value;
+                if (startDate > serviceDate)
+                    ChangeService(StartDate);
+            }
+        }
+
         public string GetLicenseNum()
         {
             return licenseNum;
         }
 
+        public int GetLicenseInt()
+        {
+            string h = licenseNum.Replace("-", string.Empty);
+            int ln = 0;
+            int.TryParse(h, out ln);
+            return ln;
+        }
+
+
         public void ChangeLicenseNum(string ln)
         {
-            licenseNum = MakeLicenseNum(ln, startDate);
+            ChangeLicenseNum(ln, StartDate);
+        }
+
+        public void ChangeLicenseNum(string ln, DateTime start)
+        {
+            if (IsLicenseNum(ln))
+            {
+                if ((ln.Length == 9 && start.Year < 2018) || (ln.Length == 10 && start.Year >= 2018))
+                    licenseNum = ln;
+            }
+            else
+                licenseNum = MakeLicenseNum(ln, start);
         }
 
         public DateTime GetServiceDate()
@@ -47,9 +91,21 @@ namespace dotNet5781_01_8411_9616
             return serviceDate;
         }
 
-        public void Service(DateTime dateOfService)
+        public DateTime GetNextServiceDate()
+        {
+            return serviceDate.AddYears(1);
+        }
+
+        public void ChangeService(DateTime dateOfService)
         {
             serviceDate = dateOfService;
+            if (startDate > serviceDate)
+                serviceDate = startDate;
+        }
+
+        public void Service()
+        {
+            serviceDate = DateTime.Now;
             kmFromService = 0;
         }
 
@@ -87,19 +143,38 @@ namespace dotNet5781_01_8411_9616
 
         public void Restart(string _licenseNum, DateTime start, DateTime service, double _kmFromService, double _mileage_km, double _kmFromRefueling)
         {
-            licenseNum = MakeLicenseNum(_licenseNum, start);
             startDate = start;
-            serviceDate = service;
-            kmFromService = _kmFromService;
+            ChangeLicenseNum(_licenseNum);
+            ChangeService(service);
+
+            if (_mileage_km < 0)
+                _mileage_km = 0;
             mileage_km = _mileage_km;
+
+            if (_kmFromService < 0)
+                _kmFromService = 0;
+            if (_kmFromService > mileage_km)
+                _kmFromService = mileage_km;
+            kmFromService = _kmFromService;
+
+            if (_kmFromRefueling < 0)
+                _kmFromRefueling = 0;
+            if (_kmFromRefueling > mileage_km)
+                _kmFromRefueling = mileage_km;
+            if (_kmFromRefueling > FULL_FUEL_TANK)
+                _kmFromRefueling = FULL_FUEL_TANK;
             fuel = FULL_FUEL_TANK - _kmFromRefueling;
             kmFromRefueling = _kmFromRefueling;
+
+            status = Status.Ready;
         }
 
         public bool CanDrive(double km)
         {
-            DateTime h = serviceDate;
-            h.AddYears(5);
+            if (status != Status.Ready)
+                return false;
+            if (DateTime.Now > GetNextServiceDate())
+                return false;
 
             bool a, b;//, c;
             a = (fuel - km) >= 0;
@@ -111,20 +186,44 @@ namespace dotNet5781_01_8411_9616
             //return ((fuel - km) >= 0) && (kmFromService + km <= KM_ALLOW_FROM_SERVICE) && (DateTime.Now < h);
         }
 
+        public double CanDrive()
+        {
+            if (status != Status.Ready)
+                return 0;
+            if (DateTime.Now > GetNextServiceDate())
+                return 0;
+            else if (KM_ALLOW_FROM_SERVICE < kmFromService)
+                return 0;
+            else if (fuel < KM_ALLOW_FROM_SERVICE - kmFromService)
+                return fuel;
+            else
+                return KM_ALLOW_FROM_SERVICE - kmFromService;
+        }
+
         public void Drive(double km)
         {
             if (!CanDrive(km))
                 return;
+            
+            status = Status.Driving;
+            DriveWithoutChecking(km);
+        }
 
+        public void DriveWithoutChecking(double km)
+        {
             kmFromRefueling += km;
             kmFromService += km;
             mileage_km += km;
             fuel -= km;
+            if (fuel < 0)
+                fuel = 0;
         }
 
         // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
         public static string MakeLicenseNum(string _licenseNum, DateTime start)
         {
+            if (IsLicenseNum(_licenseNum))
+                _licenseNum = _licenseNum.Replace("-", string.Empty);
             if (start.Year < 2018)
             {
                 // if the input was wrong
@@ -156,8 +255,10 @@ namespace dotNet5781_01_8411_9616
         // for some inputs in the Main file, but we need input checking
         public static string MakeLicenseNum(string _licenseNum)
         {
+            if (IsLicenseNum(_licenseNum))
+                return _licenseNum;
             if (_licenseNum.Length == 7)
-            { 
+            {
                 // s = [0, 1, 2, 3, 4, 5, 6]
                 // s = [0, 1, -, 2, 3, 4, 5, 6]
                 _licenseNum = _licenseNum.Insert(2, "-");
@@ -174,6 +275,42 @@ namespace dotNet5781_01_8411_9616
                 _licenseNum = _licenseNum.Insert(6, "-");
                 return _licenseNum;
             }
+        }
+
+        public static bool IsLicenseNum(string _licenseNum)
+        {
+            if (_licenseNum.Length != 9 && _licenseNum.Length != 10)
+                return false;
+            string h = _licenseNum.Replace("-", string.Empty);
+            int ln = 0;
+            if (!int.TryParse(h, out ln))
+                return false;
+            if (h.Length != (_licenseNum.Length - 2))
+                return false;
+
+            if (_licenseNum.Length == 9)
+            {
+                if (_licenseNum[2] != '-' || _licenseNum[6] != '-')
+                    return false;
+            }
+            else if (_licenseNum[3] != '-' || _licenseNum[6] != '-')
+                return false;
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            string s = "Bus Number: " + licenseNum.ToString()
+                     + ".\nStatus: " + status.ToString()
+                     + ".\nStart Date: " + startDate.ToString()
+                     + ".\nMileage (in km): " + mileage_km.ToString()
+                     + ".\nLast Service Date: " + serviceDate.ToString()
+                     + ".\nKm From Service: " + kmFromService.ToString()
+                     + ".\nFuel (how much km the bus can drive): " + fuel.ToString()
+                     + ".\nKm From Refueling: " + kmFromRefueling.ToString()
+                     + ".\nCan Drive: " + CanDrive().ToString().Remove(7) + ".\n";
+            return s;
         }
     }
 }
