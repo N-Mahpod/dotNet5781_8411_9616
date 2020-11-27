@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 using dotNet5781_01_8411_9616;
 
 
@@ -24,12 +25,14 @@ namespace dotNet5781_03B_8411_9616
     {
         List<Bus> buses;
         Random rand = new Random();
+        DateTime nowSimulation;
+
         public MainWindow()
         {
             InitializeComponent();
 
             buses = new List<Bus>();
-
+            nowSimulation = DateTime.Now;
             Bus bus;
             int year, month, day, license_num;
             DateTime start;
@@ -41,19 +44,21 @@ namespace dotNet5781_03B_8411_9616
                     month = rand.Next(1, 12);
                     day = rand.Next(1, DateTime.DaysInMonth(year, month));
                     start = new DateTime(year, month, day);
-                } while (start > DateTime.Now);
+                } while (start > nowSimulation);
 
                 do {
                     if (start.Year < 2018)
                         license_num = rand.Next(1000000, 9999999);
                     else
                         license_num = rand.Next(10000000, 99999999);
-                } while (!IsExistLN(license_num.ToString()));
+                } while (IsExistLN(license_num.ToString()));
 
-                bus = new Bus(license_num.ToString(), start);
+                bus = new Bus(license_num.ToString(), start, true, nowSimulation);
 
                 bus.Service();
+                bus.MakeReady();
                 bus.Refuling();
+                bus.MakeReady();
                 buses.Add(bus);
             }
 
@@ -63,9 +68,29 @@ namespace dotNet5781_03B_8411_9616
             start.AddDays(-3);
             buses[1].ChangeService(start);
             buses[1].Refuling();
+            buses[1].MakeReady();
             buses[2].DriveWithoutChecking(Bus.KM_ALLOW_FROM_SERVICE - 10);
 
 
+            //~~~~~~~~~~~~~~~~~~~~~> UnWorking test:( <~~~~~~~~~~~~~~~|
+            UpGrid.DataContext = this;
+            //tbSimClok.DataContext = nowSimulation;
+            tbSimClok.Text = nowSimulation.ToString();
+
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    nowSimulation.AddMinutes(10);
+                    Bus.NowSimulation.AddMinutes(10);
+                    tbSimClok.Text = nowSimulation.ToString();
+                }
+            });//.Start();
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+
+
+            ShowBuses();
         }
 
         public bool IsExistLN(string license_num)
@@ -85,6 +110,16 @@ namespace dotNet5781_03B_8411_9616
                     return i;
             }
             return -1;
+        }
+
+        private void ShowBuses()
+        {
+            lbBusses.DataContext = buses;
+        }
+
+        private void AddBusButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

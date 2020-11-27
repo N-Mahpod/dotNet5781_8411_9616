@@ -16,11 +16,13 @@ namespace dotNet5781_01_8411_9616
 
     public class Bus
     {
+        public static DateTime NowSimulation;
+        private bool simulation;
 
         public const double FULL_FUEL_TANK = 1200;
         public const double KM_ALLOW_FROM_SERVICE = 20000;
 
-        Status status;
+        private Status status;
         private string licenseNum;
         private DateTime startDate;
         private DateTime serviceDate;
@@ -30,9 +32,15 @@ namespace dotNet5781_01_8411_9616
         private double kmFromRefueling;
 
 
-        public Bus(string _licenseNum, DateTime start)
+        public Bus(string _licenseNum, DateTime start, bool _simaulation = false, DateTime _nowSimulation = new DateTime())
         {
             Restart(_licenseNum, start, start, 0, 0, 0);
+            simulation = _simaulation;
+            NowSimulation = _nowSimulation;
+            if (simulation && NowSimulation == default(DateTime))
+            {
+                throw new ArgumentNullException("_nowSimulation", "You forgot to enter the simaulation time.");
+            }
         }
 
         public DateTime GetStartDate()
@@ -45,9 +53,10 @@ namespace dotNet5781_01_8411_9616
             get => startDate;
             set
             {
-                if (value >= DateTime.Now)
+
+                if (value >= Now())
                 {
-                    Restart(licenseNum, DateTime.Now, DateTime.Now, 0, 0, 0);
+                    Restart(licenseNum, Now(), Now(), 0, 0, 0);
                     return;
                 }
                 startDate = value;
@@ -55,6 +64,8 @@ namespace dotNet5781_01_8411_9616
                     ChangeService(StartDate);
             }
         }
+
+        public Status Status { get => status; }
 
         public string GetLicenseNum()
         {
@@ -68,7 +79,6 @@ namespace dotNet5781_01_8411_9616
             int.TryParse(h, out ln);
             return ln;
         }
-
 
         public void ChangeLicenseNum(string ln)
         {
@@ -101,12 +111,21 @@ namespace dotNet5781_01_8411_9616
             serviceDate = dateOfService;
             if (startDate > serviceDate)
                 serviceDate = startDate;
+
+            if (Now() > GetNextServiceDate())
+            {
+                status = Status.Danger;
+            }
         }
 
         public void Service()
         {
-            serviceDate = DateTime.Now;
+            if (status != Status.Ready)
+                throw new NotReadyException("This bus can't get service now.");
+
+            serviceDate = Now();
             kmFromService = 0;
+            status = Status.Servicing;
         }
 
         public double GetKmFromService()
@@ -126,6 +145,8 @@ namespace dotNet5781_01_8411_9616
 
         public void Refuling(double _fuel = FULL_FUEL_TANK)
         {
+            if (status != Status.Ready)
+                throw new NotReadyException("This bus can't refuel now.");
             if (fuel + _fuel >= FULL_FUEL_TANK)
             {
                 fuel = FULL_FUEL_TANK;
@@ -134,6 +155,7 @@ namespace dotNet5781_01_8411_9616
                 fuel += _fuel;
 
             kmFromRefueling = FULL_FUEL_TANK - fuel;
+            status = Status.Refueling;
         }
 
         public double GetKmFromRefueling()
@@ -173,7 +195,7 @@ namespace dotNet5781_01_8411_9616
         {
             if (status != Status.Ready)
                 return false;
-            if (DateTime.Now > GetNextServiceDate())
+            if (Now() > GetNextServiceDate())
                 return false;
 
             bool a, b;//, c;
@@ -190,7 +212,7 @@ namespace dotNet5781_01_8411_9616
         {
             if (status != Status.Ready)
                 return 0;
-            if (DateTime.Now > GetNextServiceDate())
+            if (Now() > GetNextServiceDate())
                 return 0;
             else if (KM_ALLOW_FROM_SERVICE < kmFromService)
                 return 0;
@@ -202,6 +224,8 @@ namespace dotNet5781_01_8411_9616
 
         public void Drive(double km)
         {
+            if (status != Status.Ready)
+                throw new NotReadyException("This bus can't drive now.");
             if (!CanDrive(km))
                 return;
             
@@ -299,18 +323,46 @@ namespace dotNet5781_01_8411_9616
             return true;
         }
 
+        public void MakeReady()
+        {
+            status = Status.Ready;
+        }
+
         public override string ToString()
         {
+            //string s = "Bus Number: " + licenseNum.ToString()
+            //         + ".\nStatus: " + status.ToString()
+            //         + ".\nStart Date: " + startDate.ToString()
+            //         + ".\nMileage (in km): " + mileage_km.ToString()
+            //         + ".\nLast Service Date: " + serviceDate.ToString()
+            //         + ".\nKm From Service: " + kmFromService.ToString()
+            //         + ".\nFuel (how much km the bus can drive): " + fuel.ToString()
+            //         + ".\nKm From Refueling: " + kmFromRefueling.ToString()
+            //         + ".\nCan Drive: " + ((CanDrive().ToString().Length > 7) ? CanDrive().ToString().Remove(7) : CanDrive().ToString()) + ".\n";
             string s = "Bus Number: " + licenseNum.ToString()
-                     + ".\nStatus: " + status.ToString()
-                     + ".\nStart Date: " + startDate.ToString()
-                     + ".\nMileage (in km): " + mileage_km.ToString()
-                     + ".\nLast Service Date: " + serviceDate.ToString()
-                     + ".\nKm From Service: " + kmFromService.ToString()
-                     + ".\nFuel (how much km the bus can drive): " + fuel.ToString()
-                     + ".\nKm From Refueling: " + kmFromRefueling.ToString()
-                     + ".\nCan Drive: " + CanDrive().ToString().Remove(7) + ".\n";
+                     + ".\tStatus: " + status.ToString()
+                     + ((status == Status.Ready) ?
+                     (".\tCan Drive: " + ((CanDrive().ToString().Length > 7) ? CanDrive().ToString().Remove(7) : CanDrive().ToString())) : "")
+                     + "\n";
             return s;
+        }
+
+        private DateTime Now()
+        {
+            if (simulation)
+                return NowSimulation;
+            return DateTime.Now;
+        }
+
+        [Serializable]
+        public class NotReadyException : Exception
+        {
+            public NotReadyException() { }
+            public NotReadyException(string message) : base(message) { }
+            public NotReadyException(string message, Exception inner) : base(message, inner) { }
+            protected NotReadyException(
+              System.Runtime.Serialization.SerializationInfo info,
+              System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
     }
 }

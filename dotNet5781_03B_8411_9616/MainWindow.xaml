@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotNet5781_03B_8411_9616"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+                Title="Pumba" Height="640" Width="800">
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="UpGrid" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF48D455">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="AddBusButton" Content="Add Bus" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" FontWeight="Bold" FontStyle="Oblique" FontSize="30" FontFamily="Comic Sans MS" Background="#FFA6FF4D" Click="AddBusButton_Click"/>
+
+            <Label      Content="Simulation Clock:" Grid.Column="2"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="5" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"/>
+            <TextBox    Name="tbSimClok"            Grid.Column="3"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="5" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"  TextWrapping="Wrap" Text="{Binding Path=simulationClock}"/>
+        </Grid>
+        <ListBox Name="lbBusses" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" ItemsSource="{Binding}" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8"/>
+
     </Grid>
 </Window>
