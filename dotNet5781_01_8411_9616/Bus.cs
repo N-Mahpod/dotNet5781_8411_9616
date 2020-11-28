@@ -72,6 +72,11 @@ namespace dotNet5781_01_8411_9616
             return licenseNum;
         }
 
+        public string LicenseNum
+        {
+            get => licenseNum;
+        }
+
         public int GetLicenseInt()
         {
             string h = licenseNum.Replace("-", string.Empty);
@@ -221,6 +226,12 @@ namespace dotNet5781_01_8411_9616
             else
                 return KM_ALLOW_FROM_SERVICE - kmFromService;
         }
+
+        public double CanDrive_H
+        {
+            get => CanDrive();
+        }
+
 
         public void Drive(double km)
         {

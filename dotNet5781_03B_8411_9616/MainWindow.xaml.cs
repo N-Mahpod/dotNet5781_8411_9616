@@ -26,6 +26,7 @@ namespace dotNet5781_03B_8411_9616
         List<Bus> buses;
         Random rand = new Random();
         DateTime nowSimulation;
+        bool stop_clk;
 
         public MainWindow()
         {
@@ -73,22 +74,9 @@ namespace dotNet5781_03B_8411_9616
 
 
             //~~~~~~~~~~~~~~~~~~~~~> UnWorking test:( <~~~~~~~~~~~~~~~|
-            UpGrid.DataContext = this;
-            //tbSimClok.DataContext = nowSimulation;
-            tbSimClok.Text = nowSimulation.ToString();
-
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                    nowSimulation.AddMinutes(10);
-                    Bus.NowSimulation.AddMinutes(10);
-                    tbSimClok.Text = nowSimulation.ToString();
-                }
-            });//.Start();
+            stop_clk = false;
+            PrintClock();
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-
 
             ShowBuses();
         }
@@ -112,14 +100,54 @@ namespace dotNet5781_03B_8411_9616
             return -1;
         }
 
+        private void PrintClock()
+        {
+            new Thread(() =>
+            {
+                while (!stop_clk)
+                {
+                    Thread.Sleep(1000);
+                    nowSimulation = nowSimulation.AddMinutes(10);
+                    Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
+                    //tbSimClok.Text = nowSimulation.ToString();
+                    if (!stop_clk)
+                        Dispatcher.Invoke(() =>
+                        {
+                            btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+                        });
+                    //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+
+                }
+            }).Start();
+
+        }
+
         private void ShowBuses()
         {
-            lbBusses.DataContext = buses;
+            //UpGrid.DataContext = this;
+            //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+            lvBusses.ItemsSource = buses;
         }
 
         private void AddBusButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void DriveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lbBusses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            stop_clk = true;
+            //this.Close();
         }
     }
 }
