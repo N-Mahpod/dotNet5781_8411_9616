@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="AddBusWindow" Height="450" Width="800">
     <Grid>
-        
+        <TextBlock HorizontalAlignment="Left" Height="32" Margin="56,28,0,0" TextWrapping="Wrap" 
+                   Text="Enter starting date:" VerticalAlignment="Top" Width="204" FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbDay" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Day" VerticalAlignment="Top" Width="115" Margin="260,28,0,0"   FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbMonth" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Month" VerticalAlignment="Top" Width="115" Margin="375,28,0,0" FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbYear" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Year" VerticalAlignment="Top" Width="115" Margin="490,28,0,0"  FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBlock HorizontalAlignment="Left" Height="32" Margin="56,143,0,0" TextWrapping="Wrap" 
+            Text="Enter License number:" VerticalAlignment="Top" Width="235" FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbLicenseNumber" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="314159265359" VerticalAlignment="Top" Width="148" Margin="305,143,0,0"   FontSize="20" FontFamily="Comic Sans MS"/>
+        <Button x:Name="SubmitBusButton" Content="Submit" HorizontalAlignment="Left" Margin="496,143,0,0" VerticalAlignment="Top" Width="109" Height="32" FontSize="20" FontFamily="Comic Sans MS" Foreground="DeepSkyBlue" Click="SubmitBusButton_Click"/>
+        <TextBlock x:Name="tbError" HorizontalAlignment="Left" Margin="56,223,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="79" Width="549" FontSize="20" FontFamily="Comic Sans MS" Foreground="Red"/>
+
     </Grid>
 </Window>

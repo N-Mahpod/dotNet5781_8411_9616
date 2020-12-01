@@ -23,5 +23,31 @@ namespace dotNet5781_03B_8411_9616
         {
             InitializeComponent();
         }
+
+        private void SubmitBusButton_Click(object sender, RoutedEventArgs e)
+        {
+            //SubmitBusButton.Content = "Done";
+
+            int d, m, y;
+            bool success = true;
+
+            success &= Int32.TryParse(tbDay.Text, out d);
+            success &= Int32.TryParse(tbMonth.Text, out m);
+            success &= Int32.TryParse(tbYear.Text, out y);
+
+            if(!success)
+            {
+                tbError.Text = "Error: Invalid date input!. try again.";
+                return;
+            }
+
+            DateTime start = new DateTime(d, m, y);
+
+            ///
+            //Needs test against the simulation clock!
+            ///
+
+
+        }
     }
 }

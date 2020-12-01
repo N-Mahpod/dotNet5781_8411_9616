@@ -131,7 +131,8 @@ namespace dotNet5781_03B_8411_9616
 
         private void AddBusButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AddBusWindow abw = new AddBusWindow();
+            abw.Show();
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
