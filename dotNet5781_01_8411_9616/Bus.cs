@@ -52,6 +52,11 @@ namespace dotNet5781_01_8411_9616
             return startDate;
         }
 
+        public bool IsReadyToDrive { get => (status == Status.Ready) && (CanDrive() > 0); }
+
+        public bool IsReadyToRefuel { get => (status == Status.Ready) && (fuel < FULL_FUEL_TANK); }
+
+
         public DateTime StartDate
         {
             get => startDate;

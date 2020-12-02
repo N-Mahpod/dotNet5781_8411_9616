@@ -26,19 +26,27 @@
             <Label      Name="btSimClok"  Content="{Binding}" Grid.Column="3"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="5" VerticalAlignment="Stretch"  FontSize="15"   FontWeight="Light"   FontFamily="Comic Sans MS"/>
             <!--<TextBox    Name="tbSimClok"            Grid.Column="3"     HorizontalAlignment="Stretch"   VerticalContentAlignment="Center"   HorizontalContentAlignment="Center"   Margin="5" VerticalAlignment="Stretch"  FontSize="20"   FontWeight="Bold"   FontFamily="Comic Sans MS"  TextWrapping="Wrap" Text="{Binding Path=DateTime}"/>-->
         </Grid>
-
-        <!--<ListBox Name="lbBusses" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8" SelectionChanged="lbBusses_SelectionChanged">-->
-        <ListView x:Name="lvBusses" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8">
+        
+        
+        <ListView x:Name="lvBusses" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8" MouseDoubleClick="lvBusses_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Bus Number"     DisplayMemberBinding="{Binding LicenseNum}"/>
-                    <GridViewColumn Header="Status"         DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="Can Drive (km)" DisplayMemberBinding="{Binding CanDrive_H}"/>
+                    <GridViewColumn Header="Bus Number"     Width="120"    DisplayMemberBinding="{Binding LicenseNum}"/>
+                    <GridViewColumn Header="Status"         Width="120"    DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Can Drive (km)" Width="120"    DisplayMemberBinding="{Binding CanDrive_H}"/>
 
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="DriveButton" Content="Drive" HorizontalAlignment="Stretch" Margin="5" FontSize="20" FontFamily="Comic Sans MS" Background="#FFA6FF4D" Click="DriveButton_Click"/>
+                                <Button x:Name="DriveButton" Content="Drive" HorizontalAlignment="Stretch" Margin="5" FontSize="20" FontFamily="Comic Sans MS" Background="#FFA6FF4D" Click="DriveButton_Click" IsEnabled="{Binding IsReadyToDrive}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="RefuelButton" Content="Refuel" HorizontalAlignment="Stretch" Margin="5" FontSize="20" FontFamily="Comic Sans MS" Background="#FFA6FF4D" Click="RefuelButton_Click" IsEnabled="{Binding IsReadyToRefuel}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

@@ -151,18 +151,29 @@ namespace dotNet5781_03B_8411_9616
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void lbBusses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            //Button sn = (Button)sender;
+            DriveWindow dw = new DriveWindow(this,(sender as Button).DataContext as Bus);
+            dw.Show();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             stop_clk = true;
             //this.Close();
+        }
+
+        private void RefuelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((sender as Button).DataContext as Bus).Refuling();
+            lvBusses.Items.Refresh();
+        }
+
+        private void lvBusses_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~> Wrong <~~~~~~~~~~~~~~~~~~
+            // how to do that? I don't know. good night!
+            string s = ((sender as Button).DataContext as Bus).LicenseNum;
+            MessageBox.Show(s);
         }
     }
 }
