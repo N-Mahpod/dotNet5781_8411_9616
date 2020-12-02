@@ -23,9 +23,9 @@ namespace dotNet5781_03B_8411_9616
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Bus> buses;
+        public List<Bus> buses;
         Random rand = new Random();
-        DateTime nowSimulation;
+        public DateTime nowSimulation;
         bool stop_clk;
 
         public MainWindow()
@@ -47,12 +47,13 @@ namespace dotNet5781_03B_8411_9616
                     start = new DateTime(year, month, day);
                 } while (start > nowSimulation);
 
-                do {
+                do
+                {
                     if (start.Year < 2018)
                         license_num = rand.Next(1000000, 9999999);
                     else
                         license_num = rand.Next(10000000, 99999999);
-                } while (IsExistLN(license_num.ToString()));
+                } while (IsExistLN(buses, license_num.ToString()));
 
                 bus = new Bus(license_num.ToString(), start, true, nowSimulation);
 
@@ -73,28 +74,27 @@ namespace dotNet5781_03B_8411_9616
             buses[2].DriveWithoutChecking(Bus.KM_ALLOW_FROM_SERVICE - 10);
 
 
-            //~~~~~~~~~~~~~~~~~~~~~> UnWorking test:( <~~~~~~~~~~~~~~~|
             stop_clk = false;
             PrintClock();
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+
 
             ShowBuses();
         }
 
-        public bool IsExistLN(string license_num)
+        public static bool IsExistLN(List<Bus> _buses, string license_num)
         {
-            if (SearchBus(license_num) == -1)
+            if (SearchBus(_buses, license_num) == -1)
                 return false;
             return true;
         }
 
-        public int SearchBus(string license_num)
+        public static int SearchBus(List<Bus> _buses, string license_num)
         {
             string ln = license_num.Replace("-", string.Empty);
 
-            for (int i = 0; i < buses.Count; ++i)
+            for (int i = 0; i < _buses.Count; ++i)
             {
-                if (ln == buses[i].GetLicenseNum().Replace("-", string.Empty))
+                if (ln == _buses[i].GetLicenseNum().Replace("-", string.Empty))
                     return i;
             }
             return -1;
@@ -126,12 +126,26 @@ namespace dotNet5781_03B_8411_9616
         {
             //UpGrid.DataContext = this;
             //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+
             lvBusses.ItemsSource = buses;
+
+
+            //new Thread(() =>
+            //{
+            //    while (!stop_clk)
+            //    {
+            //        Dispatcher.Invoke(() =>
+            //        {
+            //            lvBusses.ItemsSource = buses;
+            //        });
+            //        Thread.Sleep(1000);
+            //    }
+            //}).Start();
         }
 
         private void AddBusButton_Click(object sender, RoutedEventArgs e)
         {
-            AddBusWindow abw = new AddBusWindow();
+            AddBusWindow abw = new AddBusWindow(this);
             abw.Show();
         }
 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:dotNet5781_03B_8411_9616"
         mc:Ignorable="d"
         Closing="Window_Closing"
-                Title="Pumba" Height="640" Width="800">
+                Title="Pumbuses" Height="640" Width="800">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -28,7 +28,7 @@
         </Grid>
 
         <!--<ListBox Name="lbBusses" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8" SelectionChanged="lbBusses_SelectionChanged">-->
-        <ListView x:Name="lvBusses" HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8">
+        <ListView x:Name="lvBusses" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Bus Number"     DisplayMemberBinding="{Binding LicenseNum}"/>

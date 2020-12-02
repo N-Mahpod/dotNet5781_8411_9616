@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using dotNet5781_01_8411_9616;
+
 
 namespace dotNet5781_03B_8411_9616
 {
@@ -19,35 +21,90 @@ namespace dotNet5781_03B_8411_9616
     /// </summary>
     public partial class AddBusWindow : Window
     {
-        public AddBusWindow()
+        MainWindow mw;
+        public AddBusWindow(MainWindow _mw)
         {
+            mw = _mw;
             InitializeComponent();
+            tbDay.Text = mw.nowSimulation.Day.ToString();
+            tbMonth.Text = mw.nowSimulation.Month.ToString();
+            tbYear.Text = mw.nowSimulation.Year.ToString();
+
+            tbSrvDay.Text = mw.nowSimulation.Day.ToString();
+            tbSrvMonth.Text = mw.nowSimulation.Month.ToString();
+            tbSrvYear.Text = mw.nowSimulation.Year.ToString();
         }
 
         private void SubmitBusButton_Click(object sender, RoutedEventArgs e)
         {
             //SubmitBusButton.Content = "Done";
 
-            int d, m, y;
+            int d, m, y, sd, sm, sy, ln;
+            double milage, kmFrmSrv, fuel;
+            DateTime start = new DateTime(), srvDate = new DateTime();
             bool success = true;
 
             success &= Int32.TryParse(tbDay.Text, out d);
             success &= Int32.TryParse(tbMonth.Text, out m);
             success &= Int32.TryParse(tbYear.Text, out y);
+            
+            success &= Int32.TryParse(tbSrvDay.Text, out sd);
+            success &= Int32.TryParse(tbSrvMonth.Text, out sm);
+            success &= Int32.TryParse(tbSrvYear.Text, out sy);
+
+            success &= Int32.TryParse(tbLicenseNumber.Text, out ln);
+            success &= Double.TryParse(tbMilage.Text, out milage);
+            success &= Double.TryParse(tbKmFrmSrv.Text, out kmFrmSrv);
+            success &= Double.TryParse(tbFuel.Text, out fuel);
+
+            if (milage < 0 || kmFrmSrv < 0 || fuel < 0 || fuel > Bus.FULL_FUEL_TANK || ln < 0)
+                success = false;
+
+            try
+            {
+                start = new DateTime(y, m, d);
+                srvDate = new DateTime(sy, sm, sd);
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+
+            if (start > srvDate || start > mw.nowSimulation || srvDate > mw.nowSimulation)
+                success = false;
+
+            if (tbLicenseNumber.Text.Length > 8 || tbLicenseNumber.Text.Length < 7)
+                success = false;
 
             if(!success)
             {
-                tbError.Text = "Error: Invalid date input!. try again.";
+                tbError.Text = "Error: Invalid input.";
+                MessageBox.Show("Error: Invalid input! try again.");
                 return;
             }
 
-            DateTime start = new DateTime(d, m, y);
+            if(MainWindow.IsExistLN(mw.buses, tbLicenseNumber.Text))
+            {
+                tbError.Text = "Error: The license number is already exist.";
+                MessageBox.Show("Error: The license number is already exist! try again.");
+                return;
+            }
 
+            Bus b = new Bus(tbLicenseNumber.Text, start, true);
+            b.Restart(tbLicenseNumber.Text, start, srvDate, kmFrmSrv, milage, kmFrmSrv);
+
+            //mw.lvBusses.ItemsSource;
+
+            mw.buses.Add(b);
+            mw.lvBusses.Items.Refresh();
             ///
             //Needs test against the simulation clock!
             ///
 
+            
 
+            //~~~~~~~~> Close <~~~~~~~~~~~~|
+            Close();
         }
     }
 }

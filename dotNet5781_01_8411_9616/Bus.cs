@@ -17,6 +17,7 @@ namespace dotNet5781_01_8411_9616
     public class Bus
     {
         public static DateTime NowSimulation;
+        private static bool first = true;
         private bool simulation;
 
         public const double FULL_FUEL_TANK = 1200;
@@ -37,10 +38,13 @@ namespace dotNet5781_01_8411_9616
             Restart(_licenseNum, start, start, 0, 0, 0);
             simulation = _simaulation;
             NowSimulation = _nowSimulation;
-            if (simulation && NowSimulation == default(DateTime))
+            
+            if (first && simulation && NowSimulation == default(DateTime))
             {
                 throw new ArgumentNullException("_nowSimulation", "You forgot to enter the simaulation time.");
             }
+            
+            if (simulation) first = false;
         }
 
         public DateTime GetStartDate()

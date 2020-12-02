@@ -5,18 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotNet5781_03B_8411_9616"
         mc:Ignorable="d"
-        Title="AddBusWindow" Height="450" Width="800">
+        Title="Add Bus" Height="450" Width="800">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Height="32" Margin="56,28,0,0" TextWrapping="Wrap" 
                    Text="Enter starting date:" VerticalAlignment="Top" Width="204" FontSize="20" FontFamily="Comic Sans MS"/>
-        <TextBox x:Name="tbDay" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Day" VerticalAlignment="Top" Width="115" Margin="260,28,0,0"   FontSize="20" FontFamily="Comic Sans MS"/>
-        <TextBox x:Name="tbMonth" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Month" VerticalAlignment="Top" Width="115" Margin="375,28,0,0" FontSize="20" FontFamily="Comic Sans MS"/>
-        <TextBox x:Name="tbYear" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Year" VerticalAlignment="Top" Width="115" Margin="490,28,0,0"  FontSize="20" FontFamily="Comic Sans MS"/>
-        <TextBlock HorizontalAlignment="Left" Height="32" Margin="56,143,0,0" TextWrapping="Wrap" 
-            Text="Enter License number:" VerticalAlignment="Top" Width="235" FontSize="20" FontFamily="Comic Sans MS"/>
-        <TextBox x:Name="tbLicenseNumber" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="314159265359" VerticalAlignment="Top" Width="148" Margin="305,143,0,0"   FontSize="20" FontFamily="Comic Sans MS"/>
-        <Button x:Name="SubmitBusButton" Content="Submit" HorizontalAlignment="Left" Margin="496,143,0,0" VerticalAlignment="Top" Width="109" Height="32" FontSize="20" FontFamily="Comic Sans MS" Foreground="DeepSkyBlue" Click="SubmitBusButton_Click"/>
-        <TextBlock x:Name="tbError" HorizontalAlignment="Left" Margin="56,223,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="79" Width="549" FontSize="20" FontFamily="Comic Sans MS" Foreground="Red"/>
+        <TextBox x:Name="tbDay"     HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Day"   VerticalAlignment="Top" Width="115" Margin="265,28,0,0"     FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbMonth"   HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Month" VerticalAlignment="Top" Width="115" Margin="385,27,0,0"     FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbYear"    HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="Year"  VerticalAlignment="Top" Width="115" Margin="505,27,0,0"     FontSize="20" FontFamily="Comic Sans MS"/>
 
+        <TextBlock HorizontalAlignment="Left" Height="32" Margin="56,81,0,0" TextWrapping="Wrap" 
+            Text="Enter License number:" VerticalAlignment="Top" Width="235" FontSize="20" FontFamily="Comic Sans MS"/>
+        <TextBox x:Name="tbLicenseNumber" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" Text="314159265359" VerticalAlignment="Top" Width="148" Margin="291,80,0,0"   FontSize="20" FontFamily="Comic Sans MS"/>
+
+        <Button x:Name="SubmitBusButton" Content="Submit" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Bottom" Width="109" Height="32" FontSize="20" FontFamily="Comic Sans MS" Foreground="DeepSkyBlue" Click="SubmitBusButton_Click"/>
+        <TextBlock x:Name="tbError" HorizontalAlignment="Left" Margin="56,10" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Height="32" Width="549" FontSize="20" FontFamily="Comic Sans MS" Foreground="Red"/>
+        
+        <Expander Header="More details" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="56,118" FontSize="12" FontFamily="Comic Sans MS" IsExpanded="False">
+            <Grid HorizontalAlignment="Left" Height="218" Margin="10,0,0,0" Width="529">
+                <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Enter MileAge (in km):" VerticalAlignment="Top" FontSize="14" Height="23" Width="216"/>
+                <TextBox x:Name="tbMilage" HorizontalAlignment="Left" Height="23" Margin="252,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" FontSize="14"/>
+                
+                <TextBlock HorizontalAlignment="Left" Margin="10,28,0,0" TextWrapping="Wrap" Text="Enter Fuel:" VerticalAlignment="Top" Height="23" Width="216" FontSize="14"/>
+                <TextBox x:Name="tbFuel" HorizontalAlignment="Left" Height="23" Margin="252,28,0,0" TextWrapping="Wrap" Text="1200" VerticalAlignment="Top" Width="120" FontSize="14"/>
+                
+                <TextBlock HorizontalAlignment="Left" Margin="10,56,0,0" TextWrapping="Wrap" Text="Enter last service date:" VerticalAlignment="Top" Height="23" Width="216" FontSize="14"/>
+                <TextBox x:Name="tbSrvDay"      HorizontalAlignment="Left" Height="23" Margin="252,55,0,0" TextWrapping="Wrap" Text="Day"   VerticalAlignment="Top" Width="35" FontSize="14"/>
+                <TextBox x:Name="tbSrvMonth"    HorizontalAlignment="Left" Height="23" Margin="292,55,0,0" TextWrapping="Wrap" Text="Month" VerticalAlignment="Top" Width="49" FontSize="14"/>
+                <TextBox x:Name="tbSrvYear"     HorizontalAlignment="Left" Height="23" Margin="346,56,0,0" TextWrapping="Wrap" Text="Year"  VerticalAlignment="Top" Width="46" FontSize="14"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,84,0,0" TextWrapping="Wrap" Text="Enter KM from the last service:" VerticalAlignment="Top" Height="23" Width="216" FontSize="14"/>
+                <TextBox x:Name="tbKmFrmSrv" HorizontalAlignment="Left" Height="23" Margin="252,84,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" FontSize="14"/>
+
+
+
+            </Grid>
+
+
+            <!--<TextBlock Text="Enter Milage (in km):" FontSize="14"/>
+                <TextBox x:Name="tbMilage" Text=""/>-->
+
+        </Expander>
     </Grid>
 </Window>
