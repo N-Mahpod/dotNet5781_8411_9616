@@ -73,7 +73,7 @@ namespace dotNet5781_03B_8411_9616
             if (start > srvDate || start > mw.nowSimulation || srvDate > mw.nowSimulation)
                 success = false;
 
-            if (tbLicenseNumber.Text.Length > 8 || tbLicenseNumber.Text.Length < 7)
+            if ((start.Year >= 2018) && (tbLicenseNumber.Text.Length != 8) || (start.Year < 2018) && (tbLicenseNumber.Text.Length != 7))
                 success = false;
 
             if(!success)
@@ -105,6 +105,20 @@ namespace dotNet5781_03B_8411_9616
 
             //~~~~~~~~> Close <~~~~~~~~~~~~|
             Close();
+        }
+
+        private void tbYear_KeyUp(object sender, KeyEventArgs e)
+        {
+            int y = 0;
+            bool f = Int32.TryParse(tbYear.Text, out y);
+
+            if (!f)
+                return;
+
+            if (y < 2018)
+                tbDigits.Text = "(7 digits)";
+            else
+                tbDigits.Text = "(8 digits)";
         }
     }
 }

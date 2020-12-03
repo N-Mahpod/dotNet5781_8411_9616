@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotNet5781_03B_8411_9616"
         mc:Ignorable="d"
-        Title="Drive" Height="250" Width="600">
+        Title="Drive" Height="250" Width="652.555">
     <Grid>
-        <TextBlock  x:Name="tbLabel"    HorizontalAlignment="Stretch"   Margin="10"             TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text="halloo"    Height="36"             FontSize="30" FontFamily="Comic Sans MS"/>
-        <TextBox    x:Name="tbKM"       HorizontalAlignment="Stretch"   Margin="10,70,10,0"     TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text="TextBox"   Height="50" Width="300" FontSize="35" FontFamily="Ink Free"     KeyUp="tbKM_KeyUp" KeyDown="tbKM_KeyDown"/>
-        <TextBlock  x:Name="tbError"    HorizontalAlignment="Stretch"   Margin="10,125,10,0"    TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text=""          Foreground="Red"       FontSize="30" FontFamily="Comic Sans MS"/>
+        <TextBlock  x:Name="tbLabel"    HorizontalAlignment="Stretch"   Margin="10,10,10,0"     TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text=""  Height="97"             FontSize="30" FontFamily="Comic Sans MS"/>
+        <TextBox    x:Name="tbKM"       HorizontalAlignment="Stretch"   Margin="10,112,10,0"    TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text=""  Height="50" Width="300" FontSize="35" FontFamily="Ink Free"     KeyUp="tbKM_KeyUp" KeyDown="tbKM_KeyDown"/>
+        <TextBlock  x:Name="tbError"    HorizontalAlignment="Stretch"   Margin="10,167,10,0"    TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Text=""  Foreground="Red"      FontSize="30" FontFamily="Comic Sans MS"/>
 
     </Grid>
 </Window>
