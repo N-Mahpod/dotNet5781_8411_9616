@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 
 namespace dotNet5781_01_8411_9616
@@ -18,10 +18,21 @@ namespace dotNet5781_01_8411_9616
     {
         public static DateTime NowSimulation;
         private static bool first = true;
+        private static int minutesInSecond;
         private bool simulation;
+
+        private double timer = 0;
+        private double timeTarget = 0;
+
 
         public const double FULL_FUEL_TANK = 1200;
         public const double KM_ALLOW_FROM_SERVICE = 20000;
+        public const int MINUTES_OF_SERVICE = 24 * 60;
+        public const int MINUTES_OF_REFUEL = 2 * 60;
+        public const int MAX_KMpH = 50;
+        public const int MIN_KMpH = 20;
+
+        private Random rand;
 
         private Status status;
         private string licenseNum;
@@ -33,17 +44,23 @@ namespace dotNet5781_01_8411_9616
         private double kmFromRefueling;
 
 
-        public Bus(string _licenseNum, DateTime start, bool _simaulation = false, DateTime _nowSimulation = new DateTime())
+        public Bus(string _licenseNum, DateTime start, bool _simaulation = false, DateTime _nowSimulation = new DateTime(), int minutes_in_second = 0)
         {
+            rand = new Random();
             Restart(_licenseNum, start, start, 0, 0, 0);
             simulation = _simaulation;
             NowSimulation = _nowSimulation;
+            minutesInSecond = minutes_in_second;
             
             if (first && simulation && NowSimulation == default(DateTime))
             {
                 throw new ArgumentNullException("_nowSimulation", "You forgot to enter the simaulation time.");
             }
-            
+            if (first && simulation && minutesInSecond == 0)
+            {
+                throw new ArgumentNullException("minutes_in_second", "You forgot to enter minutes in one second.");
+            }
+
             if (simulation) first = false;
         }
 
@@ -51,6 +68,12 @@ namespace dotNet5781_01_8411_9616
         {
             return startDate;
         }
+
+        public double Timer { get => timer; set => timer = value; }
+
+        public double TimeTarget { get => timeTarget; set => timeTarget = value; }
+
+        public bool IsReady { get => (status == Status.Ready); }
 
         public bool IsReadyToDrive { get => (status == Status.Ready) && (CanDrive() > 0); }
 
@@ -132,7 +155,7 @@ namespace dotNet5781_01_8411_9616
             }
         }
 
-        public void Service()
+        public void Service(bool hagdara = false)
         {
             if (status != Status.Ready)
                 throw new NotReadyException("This bus can't get service now.");
@@ -140,6 +163,24 @@ namespace dotNet5781_01_8411_9616
             serviceDate = Now();
             kmFromService = 0;
             status = Status.Servicing;
+
+            if (hagdara)
+                return;
+
+            timer = 0;
+            timeTarget = MINUTES_OF_SERVICE;
+
+            new Thread(() =>
+            {
+                while (timer < timeTarget)
+                {
+                    Thread.Sleep(1000);
+                    timer += minutesInSecond;
+                    if (minutesInSecond == 0)
+                        timer += (double)1 / 60;
+                }
+                status = Status.Ready;
+            }).Start();
         }
 
         public double GetKmFromService()
@@ -157,7 +198,7 @@ namespace dotNet5781_01_8411_9616
             return fuel;
         }
 
-        public void Refuling(double _fuel = FULL_FUEL_TANK)
+        public void Refuling( bool hagdara = false, double _fuel = FULL_FUEL_TANK)
         {
             if (status != Status.Ready)
                 throw new NotReadyException("This bus can't refuel now.");
@@ -170,6 +211,24 @@ namespace dotNet5781_01_8411_9616
 
             kmFromRefueling = FULL_FUEL_TANK - fuel;
             status = Status.Refueling;
+
+            if (hagdara)
+                return;
+
+            timer = 0;
+            timeTarget = MINUTES_OF_REFUEL;
+
+            new Thread(() =>
+            {
+                while (timer < timeTarget)
+                {
+                    Thread.Sleep(1000);
+                    timer += minutesInSecond;
+                    if (minutesInSecond == 0)
+                        timer += (double)1 / 60;
+                }
+                status = Status.Ready;
+            }).Start();
         }
 
         public double GetKmFromRefueling()
@@ -241,7 +300,6 @@ namespace dotNet5781_01_8411_9616
             get => CanDrive();
         }
 
-
         public void Drive(double km)
         {
             if (status != Status.Ready)
@@ -250,7 +308,31 @@ namespace dotNet5781_01_8411_9616
                 return;
             
             status = Status.Driving;
-            DriveWithoutChecking(km);
+            //DriveWithoutChecking(km);
+
+
+            timer = 0;
+            int kmph = rand.Next(MIN_KMpH, MAX_KMpH);
+            timeTarget = kmph * (int)km;
+
+            new Thread(() =>
+            {
+                while (timer < timeTarget)
+                {
+                    Thread.Sleep(1000);
+                    if (minutesInSecond != 0)
+                    {
+                        timer += minutesInSecond;
+                        DriveWithoutChecking(((double)1 / 600) * kmph /** minutesInSecond*/);
+                    }
+                    else
+                    {
+                        timer += (double)1 / 60;
+                        DriveWithoutChecking(((double)1 / 3600) * kmph);
+                    }
+                }
+                status = Status.Ready;
+            }).Start();
         }
 
         public void DriveWithoutChecking(double km)

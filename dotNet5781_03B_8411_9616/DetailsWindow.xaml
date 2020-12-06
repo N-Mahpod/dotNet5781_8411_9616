@@ -1,0 +1,31 @@
+﻿<Window x:Class="dotNet5781_03B_8411_9616.DetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotNet5781_03B_8411_9616"
+        mc:Ignorable="d"
+        Title="Details Window" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto">
+            <Label Content="Details"      Grid.Column = "0"   HorizontalAlignment="Stretch" Height="auto" Margin="10,10,0,0"  FontSize="22" FontFamily="Comic Sans MS" VerticalAlignment="Top" Width="auto" Grid.ColumnSpan="2" FontWeight="Bold"/>
+            <TextBlock x:Name="tbDetails" Grid.Column = "0"   HorizontalAlignment="Stretch" Height="auto" Margin="10,68,0,0"  FontSize="18" FontFamily="Comic Sans MS" VerticalAlignment="Top" TextWrapping="Wrap" Text="{Binding}" Width="auto" Grid.ColumnSpan="2"/>
+
+        </Grid>
+        <Grid x:Name="ButtonGrid" Grid.Column="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" DataContext="{Binding}">
+            <Button x:Name="bDrive"     Content="Drive"         HorizontalAlignment="Stretch" Margin="10,10,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bDrive_Click"      IsEnabled="{Binding IsReadyToDrive}"/>
+            <Button x:Name="bService"   Content="Service"       HorizontalAlignment="Stretch" Margin="10,50,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bService_Click"    IsEnabled="{Binding IsReady}"/>
+            <Button x:Name="bRefuel"    Content="Refuel"        HorizontalAlignment="Stretch" Margin="10,90,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bRefuel_Click"     IsEnabled="{Binding IsReadyToRefuel}"/>
+            <Button x:Name="bDelete"    Content="Delete Bus"    HorizontalAlignment="Stretch" Margin="10,130,10,0"  VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bDelete_Click"/>
+
+
+        </Grid>
+
+
+
+    </Grid>
+</Window>
