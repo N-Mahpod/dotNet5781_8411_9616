@@ -26,7 +26,8 @@ namespace dotNet5781_03B_8411_9616
         public List<Bus> buses;
         Random rand = new Random();
         public DateTime nowSimulation;
-        bool stop_clk;
+        Thread clock;
+        
 
         public MainWindow()
         {
@@ -73,12 +74,28 @@ namespace dotNet5781_03B_8411_9616
             buses[1].MakeReady();
             buses[2].DriveWithoutChecking(Bus.KM_ALLOW_FROM_SERVICE - 10);
 
+            
+            //~~~~~~~~~~~~> Clock Sim
+            clock = new Thread(() =>
+            {
+                while (true)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+                    });
+                    Thread.Sleep(1000);
+                    nowSimulation = nowSimulation.AddMinutes(10);
+                    Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
+                    //tbSimClok.Text = nowSimulation.ToString();
+                    //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
 
-            stop_clk = false;
-            PrintClock();
+                }
+            });
+            clock.Start();
 
 
-            ShowBuses();
+            lvBusses.ItemsSource = buses;
         }
 
         public static bool IsExistLN(List<Bus> _buses, string license_num)
@@ -100,49 +117,6 @@ namespace dotNet5781_03B_8411_9616
             return -1;
         }
 
-        private void PrintClock()
-        {
-            new Thread(() =>
-            {
-                while (!stop_clk)
-                {
-                    Thread.Sleep(1000);
-                    nowSimulation = nowSimulation.AddMinutes(10);
-                    Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
-                    //tbSimClok.Text = nowSimulation.ToString();
-                    if (!stop_clk)
-                        Dispatcher.Invoke(() =>
-                        {
-                            btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-                        });
-                    //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-
-                }
-            }).Start();
-
-        }
-
-        private void ShowBuses()
-        {
-            //UpGrid.DataContext = this;
-            //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-
-            lvBusses.ItemsSource = buses;
-
-
-            //new Thread(() =>
-            //{
-            //    while (!stop_clk)
-            //    {
-            //        Dispatcher.Invoke(() =>
-            //        {
-            //            lvBusses.ItemsSource = buses;
-            //        });
-            //        Thread.Sleep(1000);
-            //    }
-            //}).Start();
-        }
-
         private void AddBusButton_Click(object sender, RoutedEventArgs e)
         {
             AddBusWindow abw = new AddBusWindow(this);
@@ -158,8 +132,7 @@ namespace dotNet5781_03B_8411_9616
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            stop_clk = true;
-            //this.Close();
+            clock.Abort();
         }
 
         private void RefuelButton_Click(object sender, RoutedEventArgs e)
@@ -172,7 +145,8 @@ namespace dotNet5781_03B_8411_9616
         {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~> Wrong <~~~~~~~~~~~~~~~~~~
             // how to do that? I don't know. good night!
-            string s = ((sender as Button).DataContext as Bus).LicenseNum;
+            Bus b = (Bus)lvBusses.SelectedItem;
+            string s = b.LicenseNum;
             MessageBox.Show(s);
         }
     }
