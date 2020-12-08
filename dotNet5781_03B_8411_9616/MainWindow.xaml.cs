@@ -75,30 +75,19 @@ namespace dotNet5781_03B_8411_9616
             buses[1].MakeReady();
             buses[2].DriveWithoutChecking(Bus.KM_ALLOW_FROM_SERVICE - 10);
 
+            bool h = buses[0].IsInDanger;
+            h = buses[1].IsInDanger;
+            h = buses[2].IsInDanger;
+
+            h = buses[0].IsNeedRefuel;
+            h = buses[1].IsNeedRefuel;
+            h = buses[2].IsNeedRefuel;
+
 
             //~~~~~~~~~~~~> Clock Sim
             clock = new BackgroundWorker();
             clock.DoWork += Clock_DoWork;
             clock.RunWorkerAsync();
-
-            //(() =>
-            //{
-            //    while (true)
-            //    {
-            //        Dispatcher.Invoke(() =>
-            //        {
-            //            btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-            //        });
-            //        Thread.Sleep(1000);
-            //        nowSimulation = nowSimulation.AddMinutes(10);
-            //        Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
-            //        //tbSimClok.Text = nowSimulation.ToString();
-            //        //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-            //
-            //    }
-            //});
-            //clock.Start();
-
 
             lvBusses.ItemsSource = buses;
         }
@@ -119,9 +108,6 @@ namespace dotNet5781_03B_8411_9616
                 Thread.Sleep(1000);
                 nowSimulation = nowSimulation.AddMinutes(10);
                 Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
-                //tbSimClok.Text = nowSimulation.ToString();
-                //btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-
             }
         }
 
@@ -152,7 +138,6 @@ namespace dotNet5781_03B_8411_9616
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
         {
-            //Button sn = (Button)sender;
             DriveWindow dw = new DriveWindow(this,(sender as Button).DataContext as Bus);
             dw.Show();
         }

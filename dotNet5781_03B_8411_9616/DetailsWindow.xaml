@@ -18,7 +18,7 @@
         </Grid>
         <Grid x:Name="ButtonGrid" Grid.Column="1" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" DataContext="{Binding}">
             <Button x:Name="bDrive"     Content="Drive"         HorizontalAlignment="Stretch" Margin="10,10,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bDrive_Click"      IsEnabled="{Binding IsReadyToDrive}"/>
-            <Button x:Name="bService"   Content="Service"       HorizontalAlignment="Stretch" Margin="10,50,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bService_Click"    IsEnabled="{Binding IsReady}"/>
+            <Button x:Name="bService"   Content="Service"       HorizontalAlignment="Stretch" Margin="10,50,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bService_Click"    IsEnabled="{Binding IsReadyToService}"/>
             <Button x:Name="bRefuel"    Content="Refuel"        HorizontalAlignment="Stretch" Margin="10,90,10,0"   VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bRefuel_Click"     IsEnabled="{Binding IsReadyToRefuel}"/>
             <Button x:Name="bDelete"    Content="Delete Bus"    HorizontalAlignment="Stretch" Margin="10,130,10,0"  VerticalAlignment="Top" Width="auto" Height="34" FontFamily="Comic Sans MS" FontSize="18" Click="bDelete_Click"/>
 

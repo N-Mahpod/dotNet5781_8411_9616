@@ -10,7 +10,7 @@ namespace dotNet5781_01_8411_9616
 {
     public enum Status
     {
-        Ready, Driving, Refueling, Servicing, Danger
+        Ready, Driving, Refueling, Servicing, Danger, NeedRefuel
     }
 
 
@@ -73,13 +73,46 @@ namespace dotNet5781_01_8411_9616
 
         public double TimeTarget { get => timeTarget; set => timeTarget = value; }
 
+        // ~~~~~~~~~~~~~> Status Getters
         public bool IsReady { get => (status == Status.Ready); }
+
+        public bool IsReadyToService { get => (status == Status.Ready || status == Status.NeedRefuel || status == Status.Danger); }
 
         public bool IsReadyToDrive { get => (status == Status.Ready) && (CanDrive() > 0); }
 
-        public bool IsReadyToRefuel { get => (status == Status.Ready) && (fuel < FULL_FUEL_TANK); }
+        public bool IsReadyToRefuel { get => (status == Status.Ready || status == Status.NeedRefuel || status == Status.Danger) && (fuel < FULL_FUEL_TANK); }
+
+        public bool IsInDanger
+        {
+            get
+            {
+                if (simulation && (NowSimulation.AddDays(1) >= GetNextServiceDate()))
+                    status = Status.Danger;
+                else if (!simulation && (DateTime.Now >= GetNextServiceDate()))
+                    status = Status.Danger;
+
+                if (kmFromService >= KM_ALLOW_FROM_SERVICE)
+                    status = Status.Danger;
 
 
+                return (status == Status.Danger);
+            }
+        }
+
+        public bool IsNeedRefuel
+        {
+            get
+            {
+                if (fuel == 0)
+                    status = Status.NeedRefuel;
+
+                return (status == Status.NeedRefuel);
+            }
+        }
+
+        public Status Status { get => status; }
+        
+        // ~~~~~~~~~~~~> Getters
         public DateTime StartDate
         {
             get => startDate;
@@ -96,8 +129,6 @@ namespace dotNet5781_01_8411_9616
                     ChangeService(StartDate);
             }
         }
-
-        public Status Status { get => status; }
 
         public string GetLicenseNum()
         {
@@ -157,7 +188,7 @@ namespace dotNet5781_01_8411_9616
 
         public void Service(bool hagdara = false)
         {
-            if (status != Status.Ready)
+            if (status != Status.Ready && status != Status.Danger)
                 throw new NotReadyException("This bus can't get service now.");
 
             serviceDate = Now();
@@ -198,9 +229,9 @@ namespace dotNet5781_01_8411_9616
             return fuel;
         }
 
-        public void Refuling( bool hagdara = false, double _fuel = FULL_FUEL_TANK)
+        public void Refuling(bool hagdara = false, double _fuel = FULL_FUEL_TANK)
         {
-            if (status != Status.Ready)
+            if (!hagdara && status != Status.Ready && status != Status.NeedRefuel && status != Status.Danger)
                 throw new NotReadyException("This bus can't refuel now.");
             if (fuel + _fuel >= FULL_FUEL_TANK)
             {
@@ -228,6 +259,7 @@ namespace dotNet5781_01_8411_9616
                         timer += (double)1 / 60;
                 }
                 status = Status.Ready;
+                bool h = IsInDanger;
             }).Start();
         }
 
@@ -262,6 +294,9 @@ namespace dotNet5781_01_8411_9616
             kmFromRefueling = _kmFromRefueling;
 
             status = Status.Ready;
+
+            bool h = IsNeedRefuel;
+            h = IsInDanger;
         }
 
         public bool CanDrive(double km)
@@ -295,9 +330,15 @@ namespace dotNet5781_01_8411_9616
                 return KM_ALLOW_FROM_SERVICE - kmFromService;
         }
 
-        public double CanDrive_H
+        public string CanDrive_H
         {
-            get => CanDrive();
+            get
+            {
+                string s = ((CanDrive()).ToString().Length > 7) ? ((CanDrive()).ToString().Remove(7)) : (CanDrive()).ToString();
+                if (s == "0")
+                    return "";
+                return s;
+            }
         }
 
         public void Drive(double km)
@@ -313,7 +354,8 @@ namespace dotNet5781_01_8411_9616
 
             timer = 0;
             int kmph = rand.Next(MIN_KMpH, MAX_KMpH);
-            timeTarget = kmph * (int)km;
+            timeTarget = (km / kmph) * 60;
+            DriveWithoutChecking(km);
 
             new Thread(() =>
             {
@@ -323,15 +365,17 @@ namespace dotNet5781_01_8411_9616
                     if (minutesInSecond != 0)
                     {
                         timer += minutesInSecond;
-                        DriveWithoutChecking(((double)1 / 600) * kmph /** minutesInSecond*/);
+                        //DriveWithoutChecking(((double)1 / 600) * kmph /** minutesInSecond*/);
                     }
                     else
                     {
                         timer += (double)1 / 60;
-                        DriveWithoutChecking(((double)1 / 3600) * kmph);
+                        //DriveWithoutChecking(((double)1 / 3600) * kmph);
                     }
                 }
                 status = Status.Ready;
+                bool h = IsNeedRefuel;
+                h = IsInDanger;
             }).Start();
         }
 
@@ -343,6 +387,9 @@ namespace dotNet5781_01_8411_9616
             fuel -= km;
             if (fuel < 0)
                 fuel = 0;
+
+            bool h = IsNeedRefuel;
+            h = IsInDanger;
         }
 
         // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
