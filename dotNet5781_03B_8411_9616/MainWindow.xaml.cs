@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Threading;
 using dotNet5781_01_8411_9616;
+using System.Timers;
 
 
 namespace dotNet5781_03B_8411_9616
@@ -27,7 +28,8 @@ namespace dotNet5781_03B_8411_9616
         public List<Bus> buses;
         Random rand = new Random();
         public DateTime nowSimulation;
-        BackgroundWorker clock;
+        //BackgroundWorker clock;
+        public static System.Timers.Timer timer;
         
 
         public MainWindow()
@@ -85,16 +87,45 @@ namespace dotNet5781_03B_8411_9616
 
 
             //~~~~~~~~~~~~> Clock Sim
-            clock = new BackgroundWorker();
-            clock.DoWork += Clock_DoWork;
-            clock.RunWorkerAsync();
+            SetTimer();
 
             lvBusses.ItemsSource = buses;
         }
 
+
+        //~~~~~~~~~> CHECKING TIMER <~~~~~~~~~~
+        private void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            timer = new System.Timers.Timer(1000);
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            // Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", e.SignalTime);
+            Dispatcher.Invoke(() =>
+            {
+                btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+            });
+            Dispatcher.Invoke(() =>
+            {
+                lvBusses.Items.Refresh();
+            });
+            nowSimulation = nowSimulation.AddMinutes(10);
+            Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
+        }
+
+
+
+
+
         private void Clock_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            //while (true)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -144,7 +175,7 @@ namespace dotNet5781_03B_8411_9616
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            clock.Dispose();
+            timer.Close();
         }
 
         private void RefuelButton_Click(object sender, RoutedEventArgs e)

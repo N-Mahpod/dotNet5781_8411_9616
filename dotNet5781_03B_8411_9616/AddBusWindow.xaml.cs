@@ -24,8 +24,8 @@ namespace dotNet5781_03B_8411_9616
         MainWindow mw;
         public AddBusWindow(MainWindow _mw)
         {
-            mw = _mw;
             InitializeComponent();
+            mw = _mw;
             tbDay.Text = mw.nowSimulation.Day.ToString();
             tbMonth.Text = mw.nowSimulation.Month.ToString();
             tbYear.Text = mw.nowSimulation.Year.ToString();
@@ -95,15 +95,22 @@ namespace dotNet5781_03B_8411_9616
 
             //mw.lvBusses.ItemsSource;
 
+            //Dispatcher.Invoke(() =>
+            //    {
             mw.buses.Add(b);
+
+            //    });
             mw.lvBusses.Items.Refresh();
+
+            //mw.lvBusses.
             ///
             //Needs test against the simulation clock!
             ///
 
-            
+
 
             //~~~~~~~~> Close <~~~~~~~~~~~~|
+            
             Close();
         }
 
