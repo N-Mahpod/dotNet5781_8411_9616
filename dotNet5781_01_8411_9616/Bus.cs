@@ -349,7 +349,7 @@ namespace dotNet5781_01_8411_9616
                 return;
             
             status = Status.Driving;
-            //DriveWithoutChecking(km);
+            //DriveWithoutChecking(km)
 
 
             timer = 0;
