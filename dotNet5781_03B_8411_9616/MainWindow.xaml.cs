@@ -123,24 +123,24 @@ namespace dotNet5781_03B_8411_9616
 
 
 
-        private void Clock_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //while (true)
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
-                });
-                Dispatcher.Invoke(() =>
-                {
-                    lvBusses.Items.Refresh();
-                });
-
-                Thread.Sleep(1000);
-                nowSimulation = nowSimulation.AddMinutes(10);
-                Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
-            }
-        }
+        // private void Clock_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    //while (true)
+        //    {
+        //        Dispatcher.Invoke(() =>
+        //        {
+        //            btSimClok.Content = nowSimulation.ToShortDateString() + "\n" + nowSimulation.ToLongTimeString();
+        //        });
+        //        Dispatcher.Invoke(() =>
+        //        {
+        //            lvBusses.Items.Refresh();
+        //        });
+        //
+        //        Thread.Sleep(1000);
+        //        nowSimulation = nowSimulation.AddMinutes(10);
+        //        Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
+        //    }
+        //}
 
         public static bool IsExistLN(List<Bus> _buses, string license_num)
         {
@@ -165,6 +165,11 @@ namespace dotNet5781_03B_8411_9616
         {
             AddBusWindow abw = new AddBusWindow(this);
             abw.Show();
+            abw.Closing += (object _s, System.ComponentModel.CancelEventArgs _e) =>
+            {
+                buses.Add(abw.bus);
+                //lvBusses.Items.Refresh();
+            };
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)

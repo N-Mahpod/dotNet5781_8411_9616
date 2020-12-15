@@ -22,10 +22,13 @@ namespace dotNet5781_03B_8411_9616
     public partial class AddBusWindow : Window
     {
         MainWindow mw;
-        public AddBusWindow(MainWindow _mw)
+        public Bus bus;
+
+        public AddBusWindow(MainWindow _mw/*, ref Bus _b*/)
         {
             InitializeComponent();
             mw = _mw;
+            // b = _b;
             tbDay.Text = mw.nowSimulation.Day.ToString();
             tbMonth.Text = mw.nowSimulation.Month.ToString();
             tbYear.Text = mw.nowSimulation.Year.ToString();
@@ -90,17 +93,17 @@ namespace dotNet5781_03B_8411_9616
                 return;
             }
 
-            Bus b = new Bus(tbLicenseNumber.Text, start, true);
-            b.Restart(tbLicenseNumber.Text, start, srvDate, kmFrmSrv, milage, kmFrmSrv);
+            bus = new Bus(tbLicenseNumber.Text, start, true);
+            bus.Restart(tbLicenseNumber.Text, start, srvDate, kmFrmSrv, milage, kmFrmSrv);
 
             //mw.lvBusses.ItemsSource;
 
             //Dispatcher.Invoke(() =>
             //    {
-            mw.buses.Add(b);
+            //~~mw.buses.Add(b);
 
             //    });
-            mw.lvBusses.Items.Refresh();
+            //~~mw.lvBusses.Items.Refresh();
 
             //mw.lvBusses.
             ///

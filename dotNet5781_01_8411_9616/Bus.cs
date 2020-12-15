@@ -22,6 +22,7 @@ namespace dotNet5781_01_8411_9616
         private static int minutesInSecond;
         private bool simulation;
 
+        System.Timers.Timer th;
         private double timer = 0;
         private double timeTarget = 0;
 
@@ -158,7 +159,7 @@ namespace dotNet5781_01_8411_9616
         {
             return startDate;
         }
-        
+
         public string LicenseNum
         {
             get => licenseNum;
@@ -249,20 +250,22 @@ namespace dotNet5781_01_8411_9616
             if (hagdara)
                 return;
 
-            timer = 0;
             timeTarget = MINUTES_OF_SERVICE;
+            DoInTime();
 
-            new Thread(() =>
-            {
-                while (timer < timeTarget)
-                {
-                    Thread.Sleep(1000);
-                    timer += minutesInSecond;
-                    if (minutesInSecond == 0)
-                        timer += (double)1 / 60;
-                }
-                status = Status.Ready;
-            }).Start();
+
+
+            //new Thread(() =>
+            //{
+            //    while (timer < timeTarget)
+            //    {
+            //        Thread.Sleep(1000);
+            //        timer += minutesInSecond;
+            //        if (minutesInSecond == 0)
+            //            timer += (double)1 / 60;
+            //    }
+            //    status = Status.Ready;
+            //}).Start();
         }
         public void Refuling(bool hagdara = false, double _fuel = FULL_FUEL_TANK)
         {
@@ -281,21 +284,27 @@ namespace dotNet5781_01_8411_9616
             if (hagdara)
                 return;
 
-            timer = 0;
             timeTarget = MINUTES_OF_REFUEL;
 
-            new Thread(() =>
-            {
-                while (timer < timeTarget)
-                {
-                    Thread.Sleep(1000);
-                    timer += minutesInSecond;
-                    if (minutesInSecond == 0)
-                        timer += (double)1 / 60;
-                }
-                status = Status.Ready;
-                bool h = IsInDanger;
-            }).Start();
+            DoInTime();
+            bool h = IsInDanger;
+
+
+
+            //timer = 0;
+            //
+            //new Thread(() =>
+            //{
+            //    while (timer < timeTarget)
+            //    {
+            //        Thread.Sleep(1000);
+            //        timer += minutesInSecond;
+            //        if (minutesInSecond == 0)
+            //            timer += (double)1 / 60;
+            //    }
+            //    status = Status.Ready;
+            //    
+            //}).Start();
         }
         public void Drive(double km)
         {
@@ -308,31 +317,34 @@ namespace dotNet5781_01_8411_9616
             //DriveWithoutChecking(km)
 
 
-            timer = 0;
+            //timer = 0;
             int kmph = rand.Next(MIN_KMpH, MAX_KMpH);
             timeTarget = (km / kmph) * 60;
             DriveWithoutChecking(km);
 
-            new Thread(() =>
-            {
-                while (timer < timeTarget)
-                {
-                    Thread.Sleep(1000);
-                    if (minutesInSecond != 0)
-                    {
-                        timer += minutesInSecond;
-                        //DriveWithoutChecking(((double)1 / 600) * kmph /** minutesInSecond*/);
-                    }
-                    else
-                    {
-                        timer += (double)1 / 60;
-                        //DriveWithoutChecking(((double)1 / 3600) * kmph);
-                    }
-                }
-                status = Status.Ready;
-                bool h = IsNeedRefuel;
-                h = IsInDanger;
-            }).Start();
+            DoInTime();
+            bool h = IsNeedRefuel;
+            h = IsInDanger;
+
+            //new Thread(() =>
+            //{
+            //    while (timer < timeTarget)
+            //    {
+            //        Thread.Sleep(1000);
+            //        if (minutesInSecond != 0)
+            //        {
+            //            timer += minutesInSecond;
+            //            //DriveWithoutChecking(((double)1 / 600) * kmph /** minutesInSecond*/);
+            //        }
+            //        else
+            //        {
+            //            timer += (double)1 / 60;
+            //            //DriveWithoutChecking(((double)1 / 3600) * kmph);
+            //        }
+            //    }
+            //    status = Status.Ready;
+            //   
+            //}).Start();
         }
         public void DriveWithoutChecking(double km)
         {
@@ -345,6 +357,32 @@ namespace dotNet5781_01_8411_9616
 
             bool h = IsNeedRefuel;
             h = IsInDanger;
+        }
+        private void DoInTime()
+        {
+            timer = 0;
+            th = new System.Timers.Timer(1000);
+            // Hook up the Elapsed event for the timer. 
+            th.Elapsed += ((Object source, ElapsedEventArgs e) =>
+            {
+                timer += minutesInSecond;
+                if (minutesInSecond == 0)
+                    timer += (double)1 / 60;
+            });
+            th.AutoReset = true;
+            th.Enabled = true;
+
+            new Thread(() =>
+            {
+                if (minutesInSecond == 0)
+                    Thread.Sleep((int)timeTarget * 60 * 1000);
+                else
+                    Thread.Sleep(1000 * ((int)timeTarget / minutesInSecond));
+                th.Close();
+                status = Status.Ready;
+                timer = 0;
+                timeTarget = 0;
+            }).Start();
         }
 
 
@@ -391,7 +429,7 @@ namespace dotNet5781_01_8411_9616
 
 
         // ~~~~~~~~~~~~~~~> Static Funcs
-            // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
+        // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
         public static string MakeLicenseNum(string _licenseNum, DateTime start)
         {
             if (IsLicenseNum(_licenseNum))
@@ -423,7 +461,7 @@ namespace dotNet5781_01_8411_9616
                 return _licenseNum;
             }
         }
-            // for some inputs in the Main file, but we need input checking
+        // for some inputs in the Main file, but we need input checking
         public static string MakeLicenseNum(string _licenseNum)
         {
             if (IsLicenseNum(_licenseNum))
