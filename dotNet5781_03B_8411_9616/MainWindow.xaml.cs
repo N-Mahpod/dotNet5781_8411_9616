@@ -92,8 +92,6 @@ namespace dotNet5781_03B_8411_9616
             lvBusses.ItemsSource = buses;
         }
 
-
-        //~~~~~~~~~> CHECKING TIMER <~~~~~~~~~~
         private void SetTimer()
         {
             // Create a timer with a two second interval.
@@ -118,8 +116,6 @@ namespace dotNet5781_03B_8411_9616
             nowSimulation = nowSimulation.AddMinutes(10);
             Bus.NowSimulation = Bus.NowSimulation.AddMinutes(10);
         }
-
-
 
 
 

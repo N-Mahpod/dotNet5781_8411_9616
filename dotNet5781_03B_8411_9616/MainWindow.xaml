@@ -29,6 +29,11 @@
         
         
         <ListView x:Name="lvBusses" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" FontSize="16" FontFamily="Comic Sans MS" Background="#FFB0FFA8" MouseDoubleClick="lvBusses_MouseDoubleClick">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="{Binding BackgroundColor}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Bus Number"     Width="120"    DisplayMemberBinding="{Binding LicenseNum}"/>

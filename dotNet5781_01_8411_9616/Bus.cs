@@ -23,6 +23,7 @@ namespace dotNet5781_01_8411_9616
         private bool simulation;
 
         System.Timers.Timer th;
+        Thread hlpT;
         private double timer = 0;
         private double timeTarget = 0;
 
@@ -52,14 +53,17 @@ namespace dotNet5781_01_8411_9616
             rand = new Random();
             Restart(_licenseNum, start, start, 0, 0, 0);
             simulation = _simaulation;
-            NowSimulation = _nowSimulation;
-            minutesInSecond = minutes_in_second;
+            if (first && simulation)
+            {
+                NowSimulation = _nowSimulation;
+                minutesInSecond = minutes_in_second;
+            }
 
-            if (first && simulation && NowSimulation == default(DateTime))
+            if (first && simulation && _nowSimulation == default(DateTime))
             {
                 throw new ArgumentNullException("_nowSimulation", "You forgot to enter the simaulation time.");
             }
-            if (first && simulation && minutesInSecond == 0)
+            if (first && simulation && minutes_in_second == 0)
             {
                 throw new ArgumentNullException("minutes_in_second", "You forgot to enter minutes in one second.");
             }
@@ -96,6 +100,23 @@ namespace dotNet5781_01_8411_9616
             bool h = IsNeedRefuel;
             h = IsInDanger;
         }
+        //~Bus()
+        //{
+        //    try
+        //    {
+        //        th.Close();
+        //        hlpT.Interrupt();
+        //        hlpT.Abort();
+        //    }
+        //    catch(System.NullReferenceException e1)
+        //    {
+        //        
+        //    }
+        //    catch (Exception e2)
+        //    {
+        //
+        //    }
+        //}
 
 
         // ~~~~~~~~~~~~~> Status S/Getters
@@ -138,6 +159,36 @@ namespace dotNet5781_01_8411_9616
         // ~~~~~~~~~~~~> Getters
         public double Timer { get => timer; set => timer = value; }
         public double TimeTarget { get => timeTarget; set => timeTarget = value; }
+        public string BackgroundColor
+        {
+            get
+            {
+                switch (status)
+                {
+                    case Status.Ready:
+                        return "Green";
+                    //break;
+                    case Status.Driving:
+                        return "Orange";
+                    //break;
+                    case Status.Refueling:
+                        return "Orange";
+                    //break;
+                    case Status.Servicing:
+                        return "Orange";
+                    //break;
+                    case Status.Danger:
+                        return "Red";
+                    //break;
+                    case Status.NeedRefuel:
+                        return "Red";
+                    //break;
+                    default:
+                        break;
+                }
+                return "Black";
+            }
+        }
 
         public DateTime StartDate
         {
@@ -372,7 +423,7 @@ namespace dotNet5781_01_8411_9616
             th.AutoReset = true;
             th.Enabled = true;
 
-            new Thread(() =>
+            hlpT = new Thread(() =>
             {
                 if (minutesInSecond == 0)
                     Thread.Sleep((int)timeTarget * 60 * 1000);
@@ -382,7 +433,8 @@ namespace dotNet5781_01_8411_9616
                 status = Status.Ready;
                 timer = 0;
                 timeTarget = 0;
-            }).Start();
+            });
+            hlpT.Start();
         }
 
 
