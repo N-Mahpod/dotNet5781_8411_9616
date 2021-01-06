@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Pumbuses - log in" Height="300" Width="400">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Right" Margin="0,0,0,10" TextWrapping="Wrap" Text="User Name:" VerticalAlignment="Bottom" Height="32" Width="85"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Height="32" Width="85" Grid.Row="1"/>
+        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1"/>
+        <PasswordBox x:Name="tbPassword" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="142" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="btnLogin" Content="כניסה" HorizontalAlignment="Left" Margin="10,47,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="btnLogin_Click"/>
+        <Button x:Name="btnSignup" Content="הרשמה" HorizontalAlignment="Right" Margin="0,47,10,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click ="btnSignup_Click"/>
+
     </Grid>
 </Window>
