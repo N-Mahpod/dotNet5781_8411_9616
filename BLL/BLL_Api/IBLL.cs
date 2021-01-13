@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BLL.BLL_Api
 {
-    interface IBLL
+    public interface IBLL
     {
+        bool IsAdmin(string name, string password);
     }
 }

@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using BLL;
+using BLL.BLL_Api;
+using BLL.BLL_Object;
 
 namespace PL_Gui
 {
@@ -21,6 +22,9 @@ namespace PL_Gui
     /// </summary>
     public partial class MainWindow : Window
     {
+        IBLL bl = BLL_Factory.GetBL();
+        bool admin;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,7 +32,14 @@ namespace PL_Gui
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                admin = bl.IsAdmin(tbUserName.Text, tbPassword.Password);
+            }
+            catch (IncorrectSomethingExeption)
+            {
+                MessageBox.Show("user name = bob, password = 123");
+            }
         }
 
         private void btnSignup_Click(object sender, RoutedEventArgs e)

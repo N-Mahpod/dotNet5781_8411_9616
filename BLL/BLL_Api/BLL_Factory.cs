@@ -7,18 +7,18 @@ using BLL;
 
 namespace BLL.BLL_Api
 {
-    class BLL_Factory
+    public static class BLL_Factory
     {
-        public static IBLL GetBL(string type)
+        public static IBLL GetBL(string type = "")
         {
             switch (type)
             {
                 case "1":
-                    return new BLImp();
+                    return new BLLImp();
                 case "2":
                 //return new BLImp2();
                 default:
-                    return new BLImp();
+                    return new BLLImp();
             }
         }
     }
