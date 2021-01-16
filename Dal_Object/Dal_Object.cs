@@ -8,7 +8,7 @@ using Dal_Api;
 using Dal_Api.DO;
 using DS;
 
-namespace Dal_Object
+namespace Dal
 {
     sealed class Dal_Object : IDal
     {
@@ -37,11 +37,11 @@ namespace Dal_Object
 
         IEnumerable<User> IDal.GetAllUsers()
         {
-            return from person in DataSource.ListUsers
-                   select person.Clone();
+            return from user in DataSource.ListUsers
+                   select user.Clone();
         }
 
-        User IDal.GetPerson(int id)
+        User IDal.GetUser(int id)
         {
             throw new NotImplementedException();
         }
@@ -52,6 +52,43 @@ namespace Dal_Object
         }
 
         void IDal.UpdateUser(int id, Action<User> update)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Bus
+        void IDal.AddBus(Bus bus)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<User> IDal.GetAllBuses()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<User> IDal.GetAllBusesBy(Predicate<Bus> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        User IDal.GetBus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.UpdateBus(Bus bus)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.UpdateBus(int id, Action<Bus> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.DeleteBus(int id)
         {
             throw new NotImplementedException();
         }

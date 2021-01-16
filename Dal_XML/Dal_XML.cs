@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using Dal_Api;
 using Dal_Api.DO;
 
-namespace Dal_XML
+namespace Dal
 {
     sealed class Dal_XML:IDal
     {
@@ -39,7 +39,7 @@ namespace Dal_XML
             throw new NotImplementedException();
         }
 
-        public User GetPerson(int id)
+        public User GetUser(int id)
         {
             throw new NotImplementedException();
         }
@@ -50,6 +50,43 @@ namespace Dal_XML
         }
 
         public void UpdateUser(int id, Action<User> update)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Bus
+        void IDal.AddBus(Bus bus)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.DeleteBus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<User> IDal.GetAllBuses()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<User> IDal.GetAllBusesBy(Predicate<Bus> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        User IDal.GetBus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.UpdateBus(Bus bus)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.UpdateBus(int id, Action<Bus> update)
         {
             throw new NotImplementedException();
         }

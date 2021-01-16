@@ -27,4 +27,15 @@ namespace BLL.BLL_Object
         {
         }
     }
+
+    [Serializable]
+    public class NotReadyException : Exception
+    {
+        public NotReadyException() { }
+        public NotReadyException(string message) : base(message) { }
+        public NotReadyException(string message, Exception inner) : base(message, inner) { }
+        protected NotReadyException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
 }
