@@ -10,7 +10,7 @@ namespace Dal_Api.DO
     {
         public int LicenseNum { get; set; }
         public DateTime StartDate { get; set; }
-        public Status Status { get; set; }
+        public Status BStatus { get; set; }
         public DateTime serviceDate { get; set; }
         public double kmFromService { get; set; }
         public double mileage_km { get; set; }

@@ -39,6 +39,13 @@ namespace PL_Gui
             catch (IncorrectSomethingExeption)
             {
                 MessageBox.Show("user name = bob, password = 123");
+                return;
+            }
+            if (admin)
+            {
+                AdminWindow adwin = new AdminWindow(bl);
+                adwin.Show();
+                this.Hide();
             }
         }
 

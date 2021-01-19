@@ -66,17 +66,22 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        IEnumerable<User> IDal.GetAllBuses()
+        IEnumerable<Bus> IDal.GetAllBuses()
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<User> IDal.GetAllBusesBy(Predicate<Bus> predicate)
+        IEnumerable<Bus> IDal.GetAllBusesBy(Predicate<Bus> predicate)
         {
             throw new NotImplementedException();
         }
 
-        User IDal.GetBus(int id)
+        Bus IDal.GetBus(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<object> IDal.GetBusesLNs(Func<int, string, object> generate)
         {
             throw new NotImplementedException();
         }

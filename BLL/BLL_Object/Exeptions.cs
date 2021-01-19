@@ -38,4 +38,24 @@ namespace BLL.BLL_Object
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+
+    [Serializable]
+    public class LnNotExistExeption : Exception
+    {
+        public LnNotExistExeption()
+        {
+        }
+
+        public LnNotExistExeption(string message) : base(message)
+        {
+        }
+
+        public LnNotExistExeption(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected LnNotExistExeption(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
 }

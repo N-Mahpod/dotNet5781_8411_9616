@@ -9,5 +9,9 @@ namespace BLL.BLL_Api
     public interface IBLL
     {
         bool IsAdmin(string name, string password);
+
+        BLL_Object.Bus GetBus(int licenseNum);
+
+        IEnumerable<BLL_Object.Bus> GetAllBuses();
     }
 }

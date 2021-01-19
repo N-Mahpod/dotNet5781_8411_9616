@@ -63,17 +63,17 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        IEnumerable<User> IDal.GetAllBuses()
+        IEnumerable<Bus> IDal.GetAllBuses()
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<User> IDal.GetAllBusesBy(Predicate<Bus> predicate)
+        IEnumerable<Bus> IDal.GetAllBusesBy(Predicate<Bus> predicate)
         {
             throw new NotImplementedException();
         }
 
-        User IDal.GetBus(int id)
+        Bus IDal.GetBus(int id)
         {
             throw new NotImplementedException();
         }
@@ -91,6 +91,12 @@ namespace Dal
         void IDal.DeleteBus(int id)
         {
             throw new NotImplementedException();
+        }
+
+        IEnumerable<object> IDal.GetBusesLNs(Func<int, object> generate)
+        {
+            return from bus in DataSource.ListBuses
+                   select generate(bus.LicenseNum);
         }
         #endregion
 

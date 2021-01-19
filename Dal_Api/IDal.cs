@@ -22,9 +22,10 @@ namespace Dal_Api
 
         #region Bus
         void AddBus(Bus bus);
-        IEnumerable<User> GetAllBuses();
-        IEnumerable<User> GetAllBusesBy(Predicate<Bus> predicate);
-        User GetBus(int id);
+        IEnumerable<Bus> GetAllBuses();
+        IEnumerable<Bus> GetAllBusesBy(Predicate<Bus> predicate);
+        IEnumerable<object> GetBusesLNs(Func<int, object> generate);
+        Bus GetBus(int id);
         void UpdateBus(Bus bus);
         void UpdateBus(int id, Action<Bus> update); //method that knows to updt specific fields in Person
         void DeleteBus(int id);

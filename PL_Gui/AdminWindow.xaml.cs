@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using BLL.BLL_Api;
+using BLL.BLL_Object;
 
 namespace PL_Gui
 {
@@ -19,9 +22,19 @@ namespace PL_Gui
     /// </summary>
     public partial class AdminWindow : Window
     {
-        public AdminWindow()
+        IBLL bl;
+        ObservableCollection<BLL.BLL_Object.Bus> ObserListOfBuses = new ObservableCollection<BLL.BLL_Object.Bus>();
+
+        public AdminWindow(IBLL _bl)
         {
             InitializeComponent();
+            
+            bl = _bl;
+
+            foreach (var item in bl.GetAllBuses())
+            {
+                ObserListOfBuses.Add(item);
+            }
         }
     }
 }

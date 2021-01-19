@@ -22,12 +22,12 @@ namespace BLL.BLL_Object
         #endregion
 
         #region Consts
-        public const double FULL_FUEL_TANK = 1200;
-        public const double KM_ALLOW_FROM_SERVICE = 20000;
-        public const int MINUTES_OF_SERVICE = 24 * 60;
-        public const int MINUTES_OF_REFUEL = 2 * 60;
-        public const int MAX_KMpH = 50;
-        public const int MIN_KMpH = 20;
+        public readonly double FULL_FUEL_TANK = 1200;
+        public readonly double KM_ALLOW_FROM_SERVICE = 20000;
+        public readonly int MINUTES_OF_SERVICE = 24 * 60;
+        public readonly int MINUTES_OF_REFUEL = 2 * 60;
+        public readonly int MAX_KMpH = 50;
+        public readonly int MIN_KMpH = 20;
         #endregion
 
         public static DateTime NowSimulation;
@@ -246,6 +246,10 @@ namespace BLL.BLL_Object
             int ln = 0;
             int.TryParse(h, out ln);
             return ln;
+        }
+        public int LicenseInt
+        {
+            get => GetLicenseInt();
         }
 
         public DateTime GetServiceDate()
