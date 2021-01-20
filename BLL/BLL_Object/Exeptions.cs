@@ -7,6 +7,25 @@ using System.Threading.Tasks;
 
 namespace BLL.BLL_Object
 {
+    [Serializable]
+    public class TooLongNumExeption : Exception
+    {
+        public TooLongNumExeption()
+        {
+        }
+
+        public TooLongNumExeption(string message) : base(message)
+        {
+        }
+
+        public TooLongNumExeption(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected TooLongNumExeption(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
 
     [Serializable]
     public class IncorrectSomethingExeption : Exception

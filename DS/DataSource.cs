@@ -42,22 +42,22 @@ namespace DS
                     LicenseNum = 1234567,
                     StartDate = new DateTime(2000,1,1),
                     BStatus = Status.Ready,
-                    serviceDate = DateTime.Now,
-                    kmFromService = 0,
-                    mileage_km = 0,
-                    fuel = FULL_FUEL_TANK,
-                    kmFromRefueling = 0
+                    ServiceDate = DateTime.Now,
+                    KmFromService = 0,
+                    Mileage_km = 0,
+                    Fuel = FULL_FUEL_TANK,
+                    KmFromRefueling = 0
                 },
                 new Bus
                 {
                     LicenseNum = 12345678,
                     StartDate = new DateTime(2020,1,1),
                     BStatus = Status.Ready,
-                    serviceDate = DateTime.Now,
-                    kmFromService = 100,
-                    mileage_km = 4000,
-                    fuel = FULL_FUEL_TANK,
-                    kmFromRefueling = 0
+                    ServiceDate = DateTime.Now,
+                    KmFromService = 100,
+                    Mileage_km = 4000,
+                    Fuel = FULL_FUEL_TANK,
+                    KmFromRefueling = 0
                 }
             };
         }

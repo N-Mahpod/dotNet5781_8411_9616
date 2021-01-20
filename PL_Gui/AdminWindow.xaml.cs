@@ -35,6 +35,18 @@ namespace PL_Gui
             {
                 ObserListOfBuses.Add(item);
             }
+
+            lvBuses.ItemsSource = ObserListOfBuses;
+        }
+
+        private void DriveButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("The function doesn't exist yet:(");
+        }
+
+        private void RefuelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("The function doesn't exist yet:(");
         }
     }
 }

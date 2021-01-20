@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="500" Width="1000">
+        Title="AdminWindow" Height="500" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -23,7 +23,33 @@
             <ListView x:Name="lvBuses" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn/>
+                        <GridViewColumn Header="Bus Number"     Width="75"    DisplayMemberBinding="{Binding LicenseNum}"/>
+                        <GridViewColumn Header="Status"         Width="45"    DisplayMemberBinding="{Binding Status}"/>
+                        <GridViewColumn Header="Can Drive (km)" Width="55"    DisplayMemberBinding="{Binding CanDrive_H}"/>
+
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="DriveButton" Content="Drive" HorizontalAlignment="Stretch" Margin="2" Click="DriveButton_Click" IsEnabled="{Binding IsReadyToDrive}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="RefuelButton" Content="Refuel" HorizontalAlignment="Stretch" Margin="2" Click="RefuelButton_Click" IsEnabled="{Binding IsReadyToRefuel}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Progress Bar" Width="60">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ProgressBar Minimum="0" Maximum="{Binding TimeTarget}" Value="{Binding Timer}" Width="50" Height="10"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

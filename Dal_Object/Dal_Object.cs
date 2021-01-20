@@ -73,9 +73,14 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        Bus IDal.GetBus(int id)
+        Bus IDal.GetBus(int ln)
         {
-            throw new NotImplementedException();
+            Dal_Api.DO.Bus bus = DataSource.ListBuses.Find(p => p.LicenseNum == ln);
+
+            if (bus != null)
+                return bus.Clone();
+            else
+                throw new Dal_Api.DO.LnNotExistExeption();
         }
 
         void IDal.UpdateBus(Bus bus)
@@ -83,12 +88,12 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        void IDal.UpdateBus(int id, Action<Bus> update)
+        void IDal.UpdateBus(int ln, Action<Bus> update)
         {
             throw new NotImplementedException();
         }
 
-        void IDal.DeleteBus(int id)
+        void IDal.DeleteBus(int ln)
         {
             throw new NotImplementedException();
         }

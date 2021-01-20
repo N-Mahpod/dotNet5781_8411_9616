@@ -25,10 +25,10 @@ namespace Dal_Api
         IEnumerable<Bus> GetAllBuses();
         IEnumerable<Bus> GetAllBusesBy(Predicate<Bus> predicate);
         IEnumerable<object> GetBusesLNs(Func<int, object> generate);
-        Bus GetBus(int id);
+        Bus GetBus(int ln);
         void UpdateBus(Bus bus);
-        void UpdateBus(int id, Action<Bus> update); //method that knows to updt specific fields in Person
-        void DeleteBus(int id);
+        void UpdateBus(int ln, Action<Bus> update); //method that knows to updt specific fields in Person
+        void DeleteBus(int ln);
         #endregion
     }
 }

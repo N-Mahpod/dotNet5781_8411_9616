@@ -15,7 +15,7 @@ namespace BLL
     {
         IDal dl = Dal_Factory.GetDL();
 
-        BLL_Object.Bus IBLL.GetBus(int licenseNum)
+        public BLL_Object.Bus GetBus(int licenseNum)
         {
             Dal_Api.DO.Bus db;
             try
@@ -26,10 +26,12 @@ namespace BLL
             {
                 throw new BLL_Object.LnNotExistExeption("This License Number doesn't exist");
             }
-            string ln = BLL_Object.Bus.MakeLicenseNum(licenseNum,).// Now Im here!!!!!!!!!!!!!!!!!!!!!!!! I didn't finish. good night!
+            BLL_Object.Bus bb = new BLL_Object.Bus(licenseNum, db.StartDate);
+            bb.Restart(licenseNum, db.StartDate, db.ServiceDate, db.KmFromService, db.Mileage_km, db.KmFromRefueling);
+            return bb;
         }
 
-        IEnumerable<BLL_Object.Bus> IBLL.GetAllBuses()
+        public IEnumerable<BLL_Object.Bus> GetAllBuses()
         {
             return from item in dl.GetBusesLNs((ln) => { return GetBus(ln); })
                    let bus = item as BLL_Object.Bus
@@ -37,7 +39,7 @@ namespace BLL
                    select bus;
         }
 
-        bool IBLL.IsAdmin(string name, string password)
+        public bool IsAdmin(string name, string password)
         {
             IEnumerable<User> usersList = dl.GetAllUsers();
             foreach (User u in usersList)
@@ -47,6 +49,5 @@ namespace BLL
             }
             throw new IncorrectSomethingExeption();
         }
-
     }
 }

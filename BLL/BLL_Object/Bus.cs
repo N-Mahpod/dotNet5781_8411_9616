@@ -12,7 +12,7 @@ namespace BLL.BLL_Object
     {
         #region Properties
         private Status status;
-        private string licenseNum;
+        private int licenseNum;
         private DateTime startDate;
         private DateTime serviceDate;
         private double kmFromService;
@@ -22,12 +22,12 @@ namespace BLL.BLL_Object
         #endregion
 
         #region Consts
-        public readonly double FULL_FUEL_TANK = 1200;
-        public readonly double KM_ALLOW_FROM_SERVICE = 20000;
-        public readonly int MINUTES_OF_SERVICE = 24 * 60;
-        public readonly int MINUTES_OF_REFUEL = 2 * 60;
-        public readonly int MAX_KMpH = 50;
-        public readonly int MIN_KMpH = 20;
+        public const double FULL_FUEL_TANK = 1200;
+        public const double KM_ALLOW_FROM_SERVICE = 20000;
+        public const int MINUTES_OF_SERVICE = 24 * 60;
+        public const int MINUTES_OF_REFUEL = 2 * 60;
+        public const int MAX_KMpH = 50;
+        public const int MIN_KMpH = 20;
         #endregion
 
         public static DateTime NowSimulation;
@@ -44,7 +44,7 @@ namespace BLL.BLL_Object
 
 
         #region Constructors
-        public Bus(string _licenseNum, DateTime start, bool _simaulation = false, DateTime _nowSimulation = new DateTime(), int minutes_in_second = 0)
+        public Bus(int _licenseNum, DateTime start, bool _simaulation = false, DateTime _nowSimulation = new DateTime(), int minutes_in_second = 0)
         {
             rand = new Random();
             Restart(_licenseNum, start, start, 0, 0, 0);
@@ -66,7 +66,7 @@ namespace BLL.BLL_Object
 
             if (simulation) first = false;
         }
-        public void Restart(string _licenseNum, DateTime start, DateTime service, double _kmFromService, double _mileage_km, double _kmFromRefueling)
+        public void Restart(int _licenseNum, DateTime start, DateTime service, double _kmFromService, double _mileage_km, double _kmFromRefueling)
         {
             startDate = start;
             ChangeLicenseNum(_licenseNum);
@@ -234,22 +234,11 @@ namespace BLL.BLL_Object
 
         public string LicenseNum
         {
-            get => licenseNum;
-        }
-        public string GetLicenseNum()
-        {
-            return licenseNum;
-        }
-        public int GetLicenseInt()
-        {
-            string h = licenseNum.Replace("-", string.Empty);
-            int ln = 0;
-            int.TryParse(h, out ln);
-            return ln;
+            get => MakeLicenseNum(licenseNum, StartDate);
         }
         public int LicenseInt
         {
-            get => GetLicenseInt();
+            get => licenseNum;
         }
 
         public DateTime GetServiceDate()
@@ -286,19 +275,15 @@ namespace BLL.BLL_Object
         #endregion
 
         #region Change
-        public void ChangeLicenseNum(string ln)
+        public void ChangeLicenseNum(int ln)
         {
             ChangeLicenseNum(ln, StartDate);
         }
-        public void ChangeLicenseNum(string ln, DateTime start)
+        public void ChangeLicenseNum(int ln, DateTime start)
         {
-            if (IsLicenseNum(ln))
-            {
-                if ((ln.Length == 9 && start.Year < 2018) || (ln.Length == 10 && start.Year >= 2018))
-                    licenseNum = ln;
-            }
-            else
-                licenseNum = MakeLicenseNum(ln, start);
+            if (((start.Year < 2018) && (ln.ToString().Length > 7)) || (ln.ToString().Length > 8))
+                throw new TooLongNumExeption();
+            licenseNum = ln;
         }
         public void ChangeService(DateTime dateOfService)
         {
@@ -411,63 +396,19 @@ namespace BLL.BLL_Object
 
         #region Static Funcs - LicenseNum
         // The next func takes a string of a number and a date and return a string with those "-" (1234567 -> 12-345-67).
-        public static string MakeLicenseNum(string _licenseNum, DateTime start)
+        public static string MakeLicenseNum(int _licenseNum, DateTime start)
         {
-            if (IsLicenseNum(_licenseNum))
-                _licenseNum = _licenseNum.Replace("-", string.Empty);
             if (start.Year < 2018)
             {
                 // if the input was wrong
-                if (_licenseNum.Length == 8)
-                    _licenseNum = _licenseNum.Remove(7);
-
-                // s = [0, 1, 2, 3, 4, 5, 6]
-                // s = [0, 1, -, 2, 3, 4, 5, 6]
-                _licenseNum = _licenseNum.Insert(2, "-");
-                // s = [0, 1, -, 2, 3, 4, -, 5, 6]
-                _licenseNum = _licenseNum.Insert(6, "-");
-                return _licenseNum;
+                return string.Format("{0:00-000-00}", _licenseNum);
             }
             else
             {
-                // if the input was wrong
-                if (_licenseNum.Length == 7)
-                    _licenseNum = _licenseNum.Insert(0, "0");
-
-                // s = [0, 1, 2, 3, 4, 5, 6, 7]
-                // s = [0, 1, 2, -, 3, 4, 5, 6, 7]
-                _licenseNum = _licenseNum.Insert(3, "-");
-                // s = [0, 1, 2, -, 3, 4, -, 5, 6, 7]
-                _licenseNum = _licenseNum.Insert(6, "-");
-                return _licenseNum;
+                return string.Format("{0:000-00-000}", _licenseNum);
             }
         }
-
-        // for some inputs in the Main file, but we need input checking
-        public static string MakeLicenseNum(string _licenseNum)
-        {
-            if (IsLicenseNum(_licenseNum))
-                return _licenseNum;
-            if (_licenseNum.Length == 7)
-            {
-                // s = [0, 1, 2, 3, 4, 5, 6]
-                // s = [0, 1, -, 2, 3, 4, 5, 6]
-                _licenseNum = _licenseNum.Insert(2, "-");
-                // s = [0, 1, -, 2, 3, 4, -, 5, 6]
-                _licenseNum = _licenseNum.Insert(6, "-");
-                return _licenseNum;
-            }
-            else
-            {
-                // s = [0, 1, 2, 3, 4, 5, 6, 7]
-                // s = [0, 1, 2, -, 3, 4, 5, 6, 7]
-                _licenseNum = _licenseNum.Insert(3, "-");
-                // s = [0, 1, 2, -, 3, 4, -, 5, 6, 7]
-                _licenseNum = _licenseNum.Insert(6, "-");
-                return _licenseNum;
-            }
-        }
-        public static bool IsLicenseNum(string _licenseNum)
+        public static bool IsLicenseNumFormat(string _licenseNum)
         {
             if (_licenseNum.Length != 9 && _licenseNum.Length != 10)
                 return false;

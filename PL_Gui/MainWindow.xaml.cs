@@ -45,7 +45,7 @@ namespace PL_Gui
             {
                 AdminWindow adwin = new AdminWindow(bl);
                 adwin.Show();
-                this.Hide();
+                this.Close();
             }
         }
 
