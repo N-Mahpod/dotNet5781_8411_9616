@@ -11,6 +11,7 @@ namespace DS
     {
         public static List<User> ListUsers;
         public static List<Bus> ListBuses;
+        public static List<Station> ListStations;
 
         public static readonly double FULL_FUEL_TANK = 1200;
         public static readonly double KM_ALLOW_FROM_SERVICE = 20000;
@@ -58,6 +59,33 @@ namespace DS
                     Mileage_km = 4000,
                     Fuel = FULL_FUEL_TANK,
                     KmFromRefueling = 0
+                }
+            };
+
+            ListStations = new List<Station>
+            {
+                new Station
+                {
+                    Key = 0,
+                    Adress = "Heifa Mercaz",
+                    Longitude = 32.00224,
+                    Latitude = 34.7055603
+                },
+                
+                new Station
+                {
+                    Key = 1,
+                    Adress = "Mercazit yerusalaim",
+                    Longitude = 33.05324,
+                    Latitude = 33.6105603
+                },
+                
+                new Station
+                {
+                    Key = 2,
+                    Adress = "elkana",
+                    Longitude = 33.10235,
+                    Latitude = 35.8603
                 }
             };
         }

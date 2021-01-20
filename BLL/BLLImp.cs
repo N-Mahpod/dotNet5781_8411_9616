@@ -39,6 +39,29 @@ namespace BLL
                    select bus;
         }
 
+        public BLL_Object.Station GetStation(int key)
+        {
+            Dal_Api.DO.Station ds;
+            try
+            {
+                ds = dl.GetStation(key);
+            }
+            catch (Dal_Api.DO.KeyNotExistExeption ex)
+            {
+                throw new BLL_Object.KeyNotExistExeption("This Bus Station Key doesn't exist");
+            }
+            BLL_Object.Station bs = new BLL_Object.Station(ds.Longitude, ds.Latitude, ds.Adress, ds.Key);
+            return bs;
+        }
+
+        public IEnumerable<BLL_Object.Station> GetAllStations()
+        {
+            return from item in dl.GetStationsKeys((key) => { return GetStation(key); })
+                   let stat = item as BLL_Object.Station
+                   orderby stat.BusStationKey
+                   select stat;
+        }
+
         public bool IsAdmin(string name, string password)
         {
             IEnumerable<User> usersList = dl.GetAllUsers();

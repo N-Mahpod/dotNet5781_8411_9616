@@ -47,6 +47,7 @@
     <Compile Include="BLL_Object\Bus.cs" />
     <Compile Include="BLL_Object\Enums.cs" />
     <Compile Include="BLL_Object\Exeptions.cs" />
+    <Compile Include="BLL_Object\Station.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

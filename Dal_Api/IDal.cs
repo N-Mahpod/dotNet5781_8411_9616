@@ -30,5 +30,16 @@ namespace Dal_Api
         void UpdateBus(int ln, Action<Bus> update); //method that knows to updt specific fields in Person
         void DeleteBus(int ln);
         #endregion
+
+        #region Station
+        void AddStation(Station station);
+        IEnumerable<Station> GetAllStations();
+        IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate);
+        IEnumerable<object> GetStationsKeys(Func<int, object> generate);
+        Station GetStation(int key);
+        void UpdateStation(Station station);
+        void UpdateStation(int key, Action<Station> update); //method that knows to updt specific fields in Person
+        void DeleteStation(int key);
+        #endregion
     }
 }

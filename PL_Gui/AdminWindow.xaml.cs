@@ -24,6 +24,7 @@ namespace PL_Gui
     {
         IBLL bl;
         ObservableCollection<BLL.BLL_Object.Bus> ObserListOfBuses = new ObservableCollection<BLL.BLL_Object.Bus>();
+        ObservableCollection<BLL.BLL_Object.Station> ObserListOfStations = new ObservableCollection<BLL.BLL_Object.Station>();
 
         public AdminWindow(IBLL _bl)
         {
@@ -35,8 +36,13 @@ namespace PL_Gui
             {
                 ObserListOfBuses.Add(item);
             }
-
             lvBuses.ItemsSource = ObserListOfBuses;
+
+            foreach (var item in bl.GetAllStations())
+            {
+                ObserListOfStations.Add(item);
+            }
+            lvStations.ItemsSource = ObserListOfStations;
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)

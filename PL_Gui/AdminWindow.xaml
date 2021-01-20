@@ -69,7 +69,10 @@
             <ListView x:Name="lvStations" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn/>
+                        <GridViewColumn Header="Station key"  Width="75"    DisplayMemberBinding="{Binding BusStationKeyString}"/>
+                        <GridViewColumn Header="Adress"       Width="75"    DisplayMemberBinding="{Binding StationAdress}"/>
+                        <GridViewColumn Header="Longitude"    Width="75"    DisplayMemberBinding="{Binding LongitudeInFormat}"/>
+                        <GridViewColumn Header="Latitude"     Width="75"    DisplayMemberBinding="{Binding LatitudeInFormat}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -77,4 +77,24 @@ namespace BLL.BLL_Object
         {
         }
     }
+    
+    [Serializable]
+    public class KeyNotExistExeption : Exception
+    {
+        public KeyNotExistExeption()
+        {
+        }
+
+        public KeyNotExistExeption(string message) : base(message)
+        {
+        }
+
+        public KeyNotExistExeption(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected KeyNotExistExeption(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
 }

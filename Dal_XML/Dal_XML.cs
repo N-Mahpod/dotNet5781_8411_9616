@@ -9,7 +9,7 @@ using Dal_Api.DO;
 
 namespace Dal
 {
-    sealed class Dal_XML:IDal
+    sealed class Dal_XML : IDal
     {
         #region singleton
         static readonly Dal_XML instance = new Dal_XML();
@@ -56,42 +56,84 @@ namespace Dal
         #endregion
 
         #region Bus
-        void IDal.AddBus(Bus bus)
+        public void AddBus(Bus bus)
         {
             throw new NotImplementedException();
         }
 
-        void IDal.DeleteBus(int id)
+        public void DeleteBus(int id)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Bus> IDal.GetAllBuses()
+        public IEnumerable<Bus> GetAllBuses()
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<Bus> IDal.GetAllBusesBy(Predicate<Bus> predicate)
+        public IEnumerable<Bus> GetAllBusesBy(Predicate<Bus> predicate)
         {
             throw new NotImplementedException();
         }
 
-        Bus IDal.GetBus(int id)
+        public Bus GetBus(int id)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerable<object> IDal.GetBusesLNs(Func<int, string, object> generate)
+        public IEnumerable<object> GetBusesLNs(Func<int, object> generate)
         {
             throw new NotImplementedException();
         }
 
-        void IDal.UpdateBus(Bus bus)
+        public void UpdateBus(Bus bus)
         {
             throw new NotImplementedException();
         }
 
-        void IDal.UpdateBus(int id, Action<Bus> update)
+        public void UpdateBus(int id, Action<Bus> update)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Station
+        public void AddStation(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Station> GetAllStations()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<object> GetStationsKeys(Func<int, object> generate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Station GetStation(int key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateStation(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateStation(int key, Action<Station> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteStation(int key)
         {
             throw new NotImplementedException();
         }

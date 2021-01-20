@@ -11,7 +11,9 @@ namespace BLL.BLL_Api
         bool IsAdmin(string name, string password);
 
         BLL_Object.Bus GetBus(int licenseNum);
-
         IEnumerable<BLL_Object.Bus> GetAllBuses();
+
+        BLL_Object.Station GetStation(int key);
+        IEnumerable<BLL_Object.Station> GetAllStations();
     }
 }

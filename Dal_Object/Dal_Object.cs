@@ -75,7 +75,7 @@ namespace Dal
 
         Bus IDal.GetBus(int ln)
         {
-            Dal_Api.DO.Bus bus = DataSource.ListBuses.Find(p => p.LicenseNum == ln);
+            Dal_Api.DO.Bus bus = DataSource.ListBuses.Find(b => b.LicenseNum == ln);
 
             if (bus != null)
                 return bus.Clone();
@@ -105,5 +105,52 @@ namespace Dal
         }
         #endregion
 
+        #region Station
+        void IDal.AddStation(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Station> IDal.GetAllStations()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Station> IDal.GetAllStationsBy(Predicate<Station> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<object> IDal.GetStationsKeys(Func<int, object> generate)
+        {
+            return from stat in DataSource.ListStations
+                   select generate(stat.Key);
+        }
+
+        Station IDal.GetStation(int key)
+        {
+            Dal_Api.DO.Station stat = DataSource.ListStations.Find(s => s.Key == key);
+
+            if (stat != null)
+                return stat.Clone();
+            else
+                throw new Dal_Api.DO.KeyNotExistExeption();
+        }
+
+        void IDal.UpdateStation(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.UpdateStation(int key, Action<Station> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDal.DeleteStation(int key)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
