@@ -45,6 +45,7 @@
     <Compile Include="BLL_Api\BLL_Factory.cs" />
     <Compile Include="BLL_Api\IBLL.cs" />
     <Compile Include="BLL_Object\Bus.cs" />
+    <Compile Include="BLL_Object\BusLine.cs" />
     <Compile Include="BLL_Object\Enums.cs" />
     <Compile Include="BLL_Object\Exeptions.cs" />
     <Compile Include="BLL_Object\Station.cs" />

@@ -54,5 +54,11 @@ namespace PL_Gui
         {
             MessageBox.Show("The function doesn't exist yet:(");
         }
+
+        private void lvStations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            StationsWindow sw = new StationsWindow(bl, ObserListOfStations, lvStations.SelectedItem as Station);
+            sw.ShowDialog();
+        }
     }
 }

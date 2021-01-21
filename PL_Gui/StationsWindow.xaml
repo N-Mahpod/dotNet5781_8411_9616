@@ -5,8 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="StationsWindow" Height="450" Width="800">
+        Title="StationsWindow" Height="340.8" Width="630.8">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="34*"/>
+            <ColumnDefinition Width="55*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="127*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Station:" Grid.Row="0" HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top" Height="25" Width="90"/>
+        <ComboBox x:Name="cbStations" Text="" HorizontalAlignment="Left" ItemsSource="{Binding}" Margin="78,19,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectionChanged="cbStations_SelectionChanged"/>
+
+        <Button x:Name="AddButton" Content="Add Station" HorizontalAlignment="Left" Margin="34,21,0,0" VerticalAlignment="Top" Width="95" Height="20" Grid.Column="1" Click="AddButton_Click"/>
+        <Button x:Name="RemoveButton" Content="Remove Station" HorizontalAlignment="Left" Margin="164,21,0,0" VerticalAlignment="Top" Width="95" Height="20" Grid.Column="1" Click="RemoveButton_Click"/>
+
+        <Grid x:Name="gridOneStation"  HorizontalAlignment="Left" Margin="27,29,0,0" VerticalAlignment="Top" Grid.Row="1" Height="96" Width="196">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label  Content="Adress:"       Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="0" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="tbAdress"      Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="0" Text="{Binding StationAdress, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Longitude:"     Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="1" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="tbLongitude"   Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="1" Text="{Binding Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Latitude:"      Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="2" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="tbLatitude"    Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="2" Text="{Binding Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        </Grid>
+        <DataGrid x:Name="dgLinesStation" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="300" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="LineIDColumn" Binding="{Binding ID}" Header="Line ID" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="StartStatColumn" Binding="{Binding StartStation}" Header="Start Station" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="FinishStatColumn" Binding="{Binding FinishStation}" Header="Finish Station" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="AreaColumn" Binding="{Binding Area}" Header="Area" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

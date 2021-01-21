@@ -112,27 +112,19 @@ namespace BLL.BLL_Object
             return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
         }
 
-        public override string ToString()
-        {
-            string s = "Bus Station Code: " + BusStationKeyString + ","
-                + "\tLongitude: " + longitude.ToString().Remove(8) + "dE,"
-                + "\tLatitude: " + latitude.ToString().Remove(8) + "dN,"
-                + "\tAdress: " + ((stationAdress == "") ? "NULL" : stationAdress);
-            return s;
-        }
+        //public override string ToString()
+        //{
+        //    string s = "Bus Station Code: " + BusStationKeyString + ","
+        //        + "\tLongitude: " + longitude.ToString().Remove(8) + "dE,"
+        //        + "\tLatitude: " + latitude.ToString().Remove(8) + "dN,"
+        //        + "\tAdress: " + ((stationAdress == "") ? "NULL" : stationAdress);
+        //    return s;
+        //}
 
         // in order to get a real random number for litudes.
         public static double GetRandomNumber(double minimum, double maximum)
         {
             return r.NextDouble() * (maximum - minimum) + minimum;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Station station &&
-                   busStationKey == station.busStationKey &&
-                   latitude == station.latitude &&
-                   longitude == station.longitude;
         }
     }
 }
