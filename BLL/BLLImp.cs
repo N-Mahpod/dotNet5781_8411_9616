@@ -73,10 +73,10 @@ namespace BLL
             {
                 throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
             }
-            BLL_Object.BusLine bl = new BLL_Object.BusLine { key = key, stations = new List<int>() };
+            BLL_Object.BusLine bl = new BLL_Object.BusLine { Key = key, Stations = new List<int>() };
             foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
             {
-                bl.stations.Add(dbls.stationID);
+                bl.Stations.Add(dbls.stationID);
             }
 
             return bl;

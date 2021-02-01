@@ -42,6 +42,8 @@ namespace Dal_Api
         void DeleteStation(int key);
         #endregion
 
+        #region Bus Line
         BusLine GetBusLine(int key);
+        #endregion
     }
 }

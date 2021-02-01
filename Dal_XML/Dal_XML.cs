@@ -138,5 +138,12 @@ namespace Dal
             throw new NotImplementedException();
         }
         #endregion
+
+        #region Bus Line
+        public BusLine GetBusLine(int key)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
