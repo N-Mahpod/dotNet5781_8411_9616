@@ -12,6 +12,9 @@ namespace DS
         public static List<User> ListUsers;
         public static List<Bus> ListBuses;
         public static List<Station> ListStations;
+        public static List<BusLine> ListLines;
+
+        public static List<List<Tuple<int,double>>> TimeDistanceMatrix;
 
         public static readonly double FULL_FUEL_TANK = 1200;
         public static readonly double KM_ALLOW_FROM_SERVICE = 20000;
@@ -23,6 +26,7 @@ namespace DS
         static DataSource()
         {
             InitAllLists();
+            InitStationMatrix();
         }
         static void InitAllLists()
         {
@@ -88,6 +92,59 @@ namespace DS
                     Latitude = 35.8603
                 }
             };
+
+            BusLineStation bls_l1_s1 = new BusLineStation { stationID = 0, prevStationID = -1, NextStationID = 1 };
+            BusLineStation bls_l1_s2 = new BusLineStation { stationID = 1, prevStationID = 0, NextStationID = 2 };
+            BusLineStation bls_l1_s3 = new BusLineStation { stationID = 2, prevStationID = 1, NextStationID = -1 };
+            
+            BusLineStation bls_l2_s1 = new BusLineStation { stationID = 2, prevStationID = -1, NextStationID = 0 };
+            BusLineStation bls_l2_s2 = new BusLineStation { stationID = 0, prevStationID = 2, NextStationID = -1 };
+
+            ListLines = new List<BusLine>
+            {
+                new BusLine
+                {
+                    key = 1,
+                    stations = new List<BusLineStation>{bls_l1_s1, bls_l1_s2, bls_l1_s3 }
+                },
+
+                new BusLine
+                {
+                    key = 2,
+                    stations = new List<BusLineStation>{bls_l2_s1, bls_l2_s2 }
+                }
+            };
+
+        }
+
+        static void InitStationMatrix()
+        {
+            Random rand = new Random();
+            int size = ListStations.Count();
+            TimeDistanceMatrix = new List<List<Tuple<int, double>>>();
+            for (int i = 0; i < size; ++i) 
+            {
+                TimeDistanceMatrix[i] = new List<Tuple<int, double>>();
+                for (int j = 0; j < size; ++j) 
+                {
+                    if(i == j)//Relative to self.
+                        TimeDistanceMatrix[i].Add(new Tuple<int, double>(0,0));
+                    else if(i > j)//Allready calculated this pair.
+                        TimeDistanceMatrix[i].Add(TimeDistanceMatrix[j][i]);
+                    else//Need to calculate.
+                    {
+                        double x1 = ListStations[i].Latitude;
+                        double y1 = ListStations[i].Longitude;
+
+                        double x2 = ListStations[j].Latitude;
+                        double y2 = ListStations[j].Longitude;
+
+                        double dis = Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+                        int time = rand.Next(1, 10);
+                        TimeDistanceMatrix[i].Add(new Tuple<int, double>(time, dis));
+                    }
+                }
+            }
         }
     }
 }

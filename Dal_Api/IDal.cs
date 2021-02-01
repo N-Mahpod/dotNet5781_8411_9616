@@ -41,5 +41,7 @@ namespace Dal_Api
         void UpdateStation(int key, Action<Station> update); //method that knows to updt specific fields in Person
         void DeleteStation(int key);
         #endregion
+
+        BusLine GetBusLine(int key);
     }
 }

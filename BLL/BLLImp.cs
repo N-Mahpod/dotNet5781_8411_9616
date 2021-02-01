@@ -62,6 +62,26 @@ namespace BLL
                    select stat;
         }
 
+        public BLL_Object.BusLine GetBusLine(int key)
+        {
+            Dal_Api.DO.BusLine dbl;
+            try
+            {
+                dbl = dl.GetBusLine(key);
+            }
+            catch(Dal_Api.DO.KeyNotExistExeption ex)
+            {
+                throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
+            }
+            BLL_Object.BusLine bl = new BLL_Object.BusLine { key = key, stations = new List<int>() };
+            foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
+            {
+                bl.stations.Add(dbls.stationID);
+            }
+
+            return bl;
+        }
+
         public bool IsAdmin(string name, string password)
         {
             IEnumerable<User> usersList = dl.GetAllUsers();

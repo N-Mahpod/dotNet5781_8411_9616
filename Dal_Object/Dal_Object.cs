@@ -152,5 +152,15 @@ namespace Dal
             throw new NotImplementedException();
         }
         #endregion
+
+        BusLine IDal.GetBusLine(int key)
+        {
+            Dal_Api.DO.BusLine bl = DataSource.ListLines.Find(line => line.key == key);
+
+            if (bl != null)
+                return bl.Clone();
+            else
+                throw new Dal_Api.DO.KeyNotExistExeption();
+        }
     }
 }

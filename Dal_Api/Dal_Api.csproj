@@ -44,6 +44,8 @@
     <Compile Include="Dal_Config.cs" />
     <Compile Include="Dal_Factory.cs" />
     <Compile Include="DO\Bus.cs" />
+    <Compile Include="DO\BusLine.cs" />
+    <Compile Include="DO\BusLineStation.cs" />
     <Compile Include="DO\Enums.cs" />
     <Compile Include="DO\Exeptions.cs" />
     <Compile Include="DO\Station.cs" />

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.BLL_Object
+namespace Dal_Api.DO
 {
     public class BusLine
     {
         public int key { get; set; }//ID of the line.
-        public List<int> stations { get; set; }//List of station IDs.
+        public List<BusLineStation> stations { get; set; }
     }
 }
