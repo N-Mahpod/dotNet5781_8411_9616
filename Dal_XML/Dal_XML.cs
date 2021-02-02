@@ -144,6 +144,10 @@ namespace Dal
         {
             throw new NotImplementedException();
         }
+        public IEnumerable<object> GetBusLinesKeys(Func<int, object> generate)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

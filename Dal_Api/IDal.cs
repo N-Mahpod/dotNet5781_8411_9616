@@ -44,6 +44,7 @@ namespace Dal_Api
 
         #region Bus Line
         BusLine GetBusLine(int key);
+        IEnumerable<object> GetBusLinesKeys(Func<int, object> generate);
         #endregion
     }
 }

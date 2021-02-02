@@ -8,8 +8,10 @@ namespace Dal_Api.DO
 {
     public class BusLineStation
     {
+        public int lineID { get; set; }
         public int stationID { get; set; }
         public int prevStationID { get; set; }
         public int NextStationID { get; set; }
+        public double minutesToNext { get; set; }
     }
 }

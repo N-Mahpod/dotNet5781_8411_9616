@@ -10,5 +10,7 @@ namespace Dal_Api.DO
     {
         public int key { get; set; }//ID of the line.
         public List<BusLineStation> stations { get; set; }
+        public Area area { get; set; }
+
     }
 }

@@ -104,14 +104,12 @@ namespace BLL.BLL_Object
         {
             get => string.Format("{0:000000 }", busStationKey);
         }
-        #endregion
-
         //Utility function to calculate distance between this station and another.
         public double getDistance(in Station other)
         {
             return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
         }
-
+        #endregion
         //public override string ToString()
         //{
         //    string s = "Bus Station Code: " + BusStationKeyString + ","
@@ -125,6 +123,11 @@ namespace BLL.BLL_Object
         public static double GetRandomNumber(double minimum, double maximum)
         {
             return r.NextDouble() * (maximum - minimum) + minimum;
+        }
+
+        public static string StationKeyFormat(int key)
+        {
+            return string.Format("{0:000000 }", key);
         }
     }
 }

@@ -59,7 +59,11 @@
             <ListView x:Name="lvLines" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn/>
+                        <GridViewColumn Header="Line Number"    Width="75"    DisplayMemberBinding="{Binding Key}"/>
+                        <GridViewColumn Header="Area"           Width="50"    DisplayMemberBinding="{Binding Area}"/>
+                        <GridViewColumn Header="Num Stations"   Width="75"    DisplayMemberBinding="{Binding NumStations}"/>
+                        <GridViewColumn Header="First Station"  Width="75"    DisplayMemberBinding="{Binding FirstStation}"/>
+                        <GridViewColumn Header="Last Station"   Width="75"    DisplayMemberBinding="{Binding LastStation}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

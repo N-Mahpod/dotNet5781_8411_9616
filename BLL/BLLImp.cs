@@ -15,6 +15,7 @@ namespace BLL
     {
         IDal dl = Dal_Factory.GetDL();
 
+        #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
         {
             Dal_Api.DO.Bus db;
@@ -30,7 +31,6 @@ namespace BLL
             bb.Restart(licenseNum, db.StartDate, db.ServiceDate, db.KmFromService, db.Mileage_km, db.KmFromRefueling);
             return bb;
         }
-
         public IEnumerable<BLL_Object.Bus> GetAllBuses()
         {
             return from item in dl.GetBusesLNs((ln) => { return GetBus(ln); })
@@ -38,7 +38,9 @@ namespace BLL
                    orderby bus.LicenseInt
                    select bus;
         }
+        #endregion
 
+        #region Station
         public BLL_Object.Station GetStation(int key)
         {
             Dal_Api.DO.Station ds;
@@ -53,7 +55,6 @@ namespace BLL
             BLL_Object.Station bs = new BLL_Object.Station(ds.Longitude, ds.Latitude, ds.Adress, ds.Key);
             return bs;
         }
-
         public IEnumerable<BLL_Object.Station> GetAllStations()
         {
             return from item in dl.GetStationsKeys((key) => { return GetStation(key); })
@@ -61,7 +62,9 @@ namespace BLL
                    orderby stat.BusStationKey
                    select stat;
         }
+        #endregion
 
+        #region Bus Line
         public BLL_Object.BusLine GetBusLine(int key)
         {
             Dal_Api.DO.BusLine dbl;
@@ -73,14 +76,24 @@ namespace BLL
             {
                 throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
             }
-            BLL_Object.BusLine bl = new BLL_Object.BusLine { Key = key, Stations = new List<int>() };
+            BLL_Object.BusLine bl = new BLL_Object.BusLine { Key = key, Stations = new List<int>(),TimeSpanStations = new List<TimeSpan>(), Area = (BLL_Object.Area)dbl.area };
             foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
             {
                 bl.Stations.Add(dbls.stationID);
+                TimeSpan ts = TimeSpan.FromMinutes(dbls.minutesToNext);
+                bl.TimeSpanStations.Add(ts);
             }
 
             return bl;
         }
+        public IEnumerable<BLL_Object.BusLine> GetAllBusLines()
+        {
+            return from item in dl.GetBusLinesKeys((key) => { return GetBusLine(key); })
+                   let l = item as BLL_Object.BusLine
+                   orderby l.Key
+                   select l;
+        }
+        #endregion
 
         public bool IsAdmin(string name, string password)
         {

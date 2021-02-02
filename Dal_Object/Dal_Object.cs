@@ -158,6 +158,7 @@ namespace Dal
         }
         #endregion
 
+        #region Bus Line
         BusLine IDal.GetBusLine(int key)
         {
             Dal_Api.DO.BusLine bl = DataSource.ListLines.Find(line => line.key == key);
@@ -167,5 +168,12 @@ namespace Dal
             else
                 throw new Dal_Api.DO.KeyNotExistExeption();
         }
+
+        public IEnumerable<object> GetBusLinesKeys(Func<int, object> generate)
+        {
+            return from l in DataSource.ListLines
+                   select generate(l.key);
+        }
+        #endregion
     }
 }

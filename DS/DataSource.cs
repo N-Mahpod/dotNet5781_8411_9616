@@ -93,23 +93,25 @@ namespace DS
                 }
             };
 
-            BusLineStation bls_l1_s1 = new BusLineStation { stationID = 0, prevStationID = -1, NextStationID = 1 };
-            BusLineStation bls_l1_s2 = new BusLineStation { stationID = 1, prevStationID = 0, NextStationID = 2 };
-            BusLineStation bls_l1_s3 = new BusLineStation { stationID = 2, prevStationID = 1, NextStationID = -1 };
+            BusLineStation bls_l1_s1 = new BusLineStation { lineID = 1, stationID = 0, prevStationID = -1, NextStationID = 1,  minutesToNext = 6 };
+            BusLineStation bls_l1_s2 = new BusLineStation { lineID = 1, stationID = 1, prevStationID = 0,  NextStationID = 2,  minutesToNext = 6.5};
+            BusLineStation bls_l1_s3 = new BusLineStation { lineID = 1, stationID = 2, prevStationID = 1,  NextStationID = -1, minutesToNext = 0 };
             
-            BusLineStation bls_l2_s1 = new BusLineStation { stationID = 2, prevStationID = -1, NextStationID = 0 };
-            BusLineStation bls_l2_s2 = new BusLineStation { stationID = 0, prevStationID = 2, NextStationID = -1 };
+            BusLineStation bls_l2_s1 = new BusLineStation { lineID = 2, stationID = 2, prevStationID = -1, NextStationID = 0, minutesToNext = 7.25};
+            BusLineStation bls_l2_s2 = new BusLineStation { lineID = 2, stationID = 0, prevStationID = 2, NextStationID = -1, minutesToNext = 0 };
 
             ListLines = new List<BusLine>
             {
                 new BusLine
                 {
+                    area = Area.Center,
                     key = 1,
                     stations = new List<BusLineStation>{bls_l1_s1, bls_l1_s2, bls_l1_s3 }
                 },
 
                 new BusLine
                 {
+                    area = Area.Jerusalem,
                     key = 2,
                     stations = new List<BusLineStation>{bls_l2_s1, bls_l2_s2 }
                 }

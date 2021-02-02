@@ -15,5 +15,8 @@ namespace BLL.BLL_Api
 
         BLL_Object.Station GetStation(int key);
         IEnumerable<BLL_Object.Station> GetAllStations();
+
+        BLL_Object.BusLine GetBusLine(int key);
+        IEnumerable<BLL_Object.BusLine> GetAllBusLines();
     }
 }
