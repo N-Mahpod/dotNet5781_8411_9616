@@ -62,6 +62,57 @@ namespace BLL
                    orderby stat.BusStationKey
                    select stat;
         }
+        public void RemoveStation(int key)
+        {
+            dl.DeleteStation(key);
+
+            foreach (BLL.BLL_Object.BusLine v in GetAllBusLines())
+            {
+                if(v.RemoveStat(key))
+                {
+                    dl.UpdateBusLine(v.Key, (Dal_Api.DO.BusLine bl) =>
+                     {
+                         BusLineStation bs = bl.stations.Find((BusLineStation bls) => bls.stationID == key);
+                         int i = bl.stations.IndexOf(bs);
+                         if (i > 0)
+                         {
+                             bl.stations[i - 1].NextStationID = bs.NextStationID;
+                             bl.stations[i - 1].minutesToNext += bs.minutesToNext;
+                         }
+                         if (i < bl.stations.Count - 1)
+                             bl.stations[i + 1].prevStationID = bs.prevStationID;
+                         if (i == bl.stations.Count - 1 && i > 0)
+                         {
+                             bl.stations[i - 1].minutesToNext = 0;
+                         }
+                         bl.stations.Remove(bs);
+                     });
+                }
+            }
+        }
+        public BLL_Object.Station AddStation()
+        {
+            BLL_Object.Station ns = new BLL_Object.Station();
+            Dal_Api.DO.Station dns = new Dal_Api.DO.Station() { Adress = ns.StationAdress, Key = ns.BusStationKey, Latitude = ns.Latitude, Longitude = ns.Longitude };
+            dl.AddStation(dns);
+            return ns;
+        }
+        public void UpdateStation(int key, string newadd, double newlong, double newlat)
+        {
+            dl.UpdateStation(key, (Dal_Api.DO.Station ds) =>
+            {
+                ds.Adress = newadd;
+                ds.Latitude = newlat;
+                ds.Longitude = newlong;
+            });
+        }
+        public IEnumerable<BLL_Object.BusLine> GetLinesInStation(int stationKey)
+        {
+            return from l in GetAllBusLines()
+                   where l.IncludeStat(stationKey)
+                   select l;
+        }
+
         #endregion
 
         #region Bus Line
@@ -76,12 +127,10 @@ namespace BLL
             {
                 throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
             }
-            BLL_Object.BusLine bl = new BLL_Object.BusLine { Key = key, Stations = new List<int>(),TimeSpanStations = new List<TimeSpan>(), Area = (BLL_Object.Area)dbl.area };
+            BLL_Object.BusLine bl = new BLL_Object.BusLine(key, dbl.area.ToBLArea());
             foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
             {
-                bl.Stations.Add(dbls.stationID);
-                TimeSpan ts = TimeSpan.FromMinutes(dbls.minutesToNext);
-                bl.TimeSpanStations.Add(ts);
+                bl.AddStat(dbls.stationID, dbls.minutesToNext);
             }
 
             return bl;

@@ -113,7 +113,7 @@ namespace Dal
         #region Station
         void IDal.AddStation(Station station)
         {
-            throw new NotImplementedException();
+            DataSource.ListStations.Add(station);
         }
 
         IEnumerable<Station> IDal.GetAllStations()
@@ -132,7 +132,7 @@ namespace Dal
                    select generate(stat.Key);
         }
 
-        Station IDal.GetStation(int key)
+        public Station GetStation(int key)
         {
             Dal_Api.DO.Station stat = DataSource.ListStations.Find(s => s.Key == key);
 
@@ -149,17 +149,19 @@ namespace Dal
 
         void IDal.UpdateStation(int key, Action<Station> update)
         {
-            throw new NotImplementedException();
+            update(GetStation(key));
         }
 
         void IDal.DeleteStation(int key)
         {
-            throw new NotImplementedException();
+            int i = DataSource.ListStations.RemoveAll((Station s) => s.Key == key);
+            if (i == 0)
+                throw new KeyNotExistExeption();
         }
         #endregion
 
         #region Bus Line
-        BusLine IDal.GetBusLine(int key)
+        public BusLine GetBusLine(int key)
         {
             Dal_Api.DO.BusLine bl = DataSource.ListLines.Find(line => line.key == key);
 
@@ -168,7 +170,10 @@ namespace Dal
             else
                 throw new Dal_Api.DO.KeyNotExistExeption();
         }
-
+        void IDal.UpdateBusLine(int key, Action<BusLine> update)
+        {
+            update(GetBusLine(key));
+        }
         public IEnumerable<object> GetBusLinesKeys(Func<int, object> generate)
         {
             return from l in DataSource.ListLines

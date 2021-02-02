@@ -40,9 +40,9 @@
         </Grid>
         <DataGrid x:Name="dgLinesStation" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="300" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="1">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="LineIDColumn" Binding="{Binding ID}" Header="Line ID" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="StartStatColumn" Binding="{Binding StartStation}" Header="Start Station" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="FinishStatColumn" Binding="{Binding FinishStation}" Header="Finish Station" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="LineIDColumn" Binding="{Binding Key}" Header="Line ID" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="StartStatColumn" Binding="{Binding FirstStation}" Header="Start Station" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="FinishStatColumn" Binding="{Binding LastStation}" Header="Finish Station" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="AreaColumn" Binding="{Binding Area}" Header="Area" Width="SizeToHeader"/>
             </DataGrid.Columns>
         </DataGrid>

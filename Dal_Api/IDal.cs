@@ -27,7 +27,7 @@ namespace Dal_Api
         IEnumerable<object> GetBusesLNs(Func<int, object> generate);
         Bus GetBus(int ln);
         void UpdateBus(Bus bus);
-        void UpdateBus(int ln, Action<Bus> update); //method that knows to updt specific fields in Person
+        void UpdateBus(int ln, Action<Bus> update);
         void DeleteBus(int ln);
         #endregion
 
@@ -44,6 +44,7 @@ namespace Dal_Api
 
         #region Bus Line
         BusLine GetBusLine(int key);
+        void UpdateBusLine(int key, Action<BusLine> update);
         IEnumerable<object> GetBusLinesKeys(Func<int, object> generate);
         #endregion
     }

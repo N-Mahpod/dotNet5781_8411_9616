@@ -37,18 +37,33 @@ namespace PL_Gui
             cbStations.DisplayMemberPath = "BusStationKeyString";
             cbStations.SelectedIndex = 0;
             cbStations.DataContext = ObserListOfStations;
-            
+
+            foreach (var item in bl.GetLinesInStation())
+            {
+                ObserListOfBusLines.Add(item);
+            }
+            dgLinesStation.ItemsSource = ObserListOfBusLines;
+
             gridOneStation.DataContext = stat;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            Station ns = bl.AddStation();
+            ObserListOfStations.Add(ns);
+            cbStations.SelectedItem = ns;
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ObserListOfStations.Count <=1)
+            {
+                MessageBox.Show("You can't remove this poor last station. It will be sad:-/");
+                return;
+            }    
+            bl.RemoveStation((gridOneStation.DataContext as Station).BusStationKey);
+            ObserListOfStations.Remove(gridOneStation.DataContext as Station);
+            cbStations.SelectedIndex = 0;
         }
 
         private void cbStations_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -57,5 +72,29 @@ namespace PL_Gui
 
             gridOneStation.DataContext = stat;
         }
+
+        //unnesesery
+        //private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    string newadd = tbAdress.Text;
+        //    
+        //    double newLat;
+        //    bool f = double.TryParse(tbLatitude.Text, out newLat);
+        //    if (!f)
+        //    {
+        //        MessageBox.Show("latitiude isn't correct");
+        //        return;
+        //    }
+        //    
+        //    double newLong;
+        //    f = double.TryParse(tbLatitude.Text, out newLong);
+        //    if (!f)
+        //    {
+        //        MessageBox.Show("longitiude isn't correct");
+        //        return;
+        //    }
+        //
+        //    bl.UpdateStation((cbStations.SelectedItem as BLL.BLL_Object.Station).BusStationKey, newadd, newLong, newLat);
+        //}
     }
 }

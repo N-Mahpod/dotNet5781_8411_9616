@@ -41,5 +41,43 @@ namespace BLL.BLL_Object
                 return ts;
             }
         }
+
+        public BusLine(int key, Area area)
+        {
+            Key = key;
+            Area = area;
+            Stations = new List<int>();
+            TimeSpanStations = new List<TimeSpan>();
+        }
+        public bool IncludeStat(int stationKey)
+        {
+            return Stations.Contains(stationKey);
+        }
+        public bool RemoveStat(int stationKey)
+        {
+            int i = Stations.IndexOf(stationKey);
+            if (i < 0)
+            {
+                return false;
+            }
+            Stations.RemoveAt(i);
+            TimeSpanStations.RemoveAt(i);
+            return true;
+        }
+        public void AddStat(int stationKey, double minutesToNext = 0, int i = -1)
+        {
+            if (i == -1)
+            {
+                Stations.Add(stationKey);
+                TimeSpanStations.Add(TimeSpan.FromMinutes(minutesToNext));
+            }
+            else if (i >= 0 && i < NumStations)
+            {
+                Stations.Insert(i, stationKey);
+                TimeSpanStations.Insert(i, TimeSpan.FromMinutes(minutesToNext));
+            }
+            else
+                throw new IndexOutOfRangeException();
+        }
     }
 }

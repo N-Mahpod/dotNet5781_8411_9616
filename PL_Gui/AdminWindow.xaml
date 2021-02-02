@@ -70,7 +70,7 @@
         </Grid>
 
         <Grid Grid.Column="2"       HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
-            <ListView x:Name="lvStations" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" SelectionChanged="lvStations_SelectionChanged">
+            <ListView x:Name="lvStations" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" MouseDoubleClick="lvStations_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Station key"  Width="75"    DisplayMemberBinding="{Binding BusStationKeyString}"/>

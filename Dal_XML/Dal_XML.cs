@@ -148,6 +148,11 @@ namespace Dal
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateBusLine(int ln, Action<BusLine> update)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }
