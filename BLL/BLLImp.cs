@@ -22,7 +22,7 @@ namespace BLL
             {
                 db = dl.GetBus(licenseNum);
             }
-            catch(Dal_Api.DO.LnNotExistExeption ex)
+            catch (Dal_Api.DO.LnNotExistExeption)
             {
                 throw new BLL_Object.LnNotExistExeption("This License Number doesn't exist");
             }
@@ -46,7 +46,7 @@ namespace BLL
             {
                 ds = dl.GetStation(key);
             }
-            catch (Dal_Api.DO.KeyNotExistExeption ex)
+            catch (Dal_Api.DO.KeyNotExistExeption)
             {
                 throw new BLL_Object.KeyNotExistExeption("This Bus Station Key doesn't exist");
             }
@@ -69,7 +69,7 @@ namespace BLL
             {
                 dbl = dl.GetBusLine(key);
             }
-            catch(Dal_Api.DO.KeyNotExistExeption ex)
+            catch(Dal_Api.DO.KeyNotExistExeption)
             {
                 throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
             }

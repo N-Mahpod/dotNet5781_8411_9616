@@ -124,7 +124,7 @@ namespace DS
             TimeDistanceMatrix = new List<List<Tuple<int, double>>>();
             for (int i = 0; i < size; ++i) 
             {
-                TimeDistanceMatrix[i] = new List<Tuple<int, double>>();
+                TimeDistanceMatrix.Add(new List<Tuple<int, double>>());
                 for (int j = 0; j < size; ++j) 
                 {
                     if(i == j)//Relative to self.

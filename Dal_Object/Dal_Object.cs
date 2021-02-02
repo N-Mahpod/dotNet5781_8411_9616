@@ -37,8 +37,13 @@ namespace Dal
 
         IEnumerable<User> IDal.GetAllUsers()
         {
-            return from user in DataSource.ListUsers
-                   select user.Clone();
+            //return from user in DataSource.ListUsers
+            //       select user.Clone();
+            
+            IEnumerable<User> ul = from u in DataSource.ListUsers
+                                   select u.Clone();
+
+            return ul;
         }
 
         User IDal.GetUser(int id)
