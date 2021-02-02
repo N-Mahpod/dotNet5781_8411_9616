@@ -38,7 +38,7 @@ namespace PL_Gui
             cbStations.SelectedIndex = 0;
             cbStations.DataContext = ObserListOfStations;
 
-            foreach (var item in bl.GetLinesInStation())
+            foreach (var item in bl.GetLinesInStation(stat.BusStationKey))
             {
                 ObserListOfBusLines.Add(item);
             }
@@ -71,6 +71,12 @@ namespace PL_Gui
             BLL.BLL_Object.Station stat = (cbStations.SelectedItem as BLL.BLL_Object.Station);
 
             gridOneStation.DataContext = stat;
+
+            ObserListOfBusLines.Clear();
+            foreach (var item in bl.GetLinesInStation(stat.BusStationKey))
+            {
+                ObserListOfBusLines.Add(item);
+            }
         }
 
         //unnesesery
