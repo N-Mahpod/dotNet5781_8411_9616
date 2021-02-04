@@ -176,6 +176,7 @@ namespace dotNet5781_03B_8411_9616
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Environment.Exit(Environment.ExitCode);
             timer.Close();
         }
 

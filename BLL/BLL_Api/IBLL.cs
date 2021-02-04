@@ -10,8 +10,11 @@ namespace BLL.BLL_Api
     {
         bool IsAdmin(string name, string password);
 
+        #region Bus
         BLL_Object.Bus GetBus(int licenseNum);
         IEnumerable<BLL_Object.Bus> GetAllBuses();
+        void DriveBus(int licenseNum, double km);
+        #endregion
 
         #region Station
         BLL_Object.Station GetStation(int key);

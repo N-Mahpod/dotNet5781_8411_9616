@@ -33,5 +33,15 @@ namespace BLL.BLL_Object
         {
             return (Dal_Api.DO.Area)Enum.Parse(typeof(Dal_Api.DO.Area), a.ToString());
         }
+
+        public static Status ToBLStatus(this Dal_Api.DO.Status a)
+        {
+            return (Status)Enum.Parse(typeof(Status), a.ToString());
+        }
+
+        public static Dal_Api.DO.Status ToDLStatus(this Status a)
+        {
+            return (Dal_Api.DO.Status)Enum.Parse(typeof(Dal_Api.DO.Status), a.ToString());
+        }
     }
 }

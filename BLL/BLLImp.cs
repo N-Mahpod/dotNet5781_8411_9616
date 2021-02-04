@@ -38,6 +38,25 @@ namespace BLL
                    orderby bus.LicenseInt
                    select bus;
         }
+        public void DriveBus(int licenseNum, double km)
+        {
+            BLL_Object.Bus b = GetBus(licenseNum);
+            b.Drive(km);
+            UpdateBus(b);
+        }
+        public void UpdateBus(BLL_Object.Bus b)
+        {
+            dl.UpdateBus(b.LicenseInt, (Dal_Api.DO.Bus db) =>
+             {
+                 db.StartDate = b.StartDate;
+                 db.ServiceDate = b.GetServiceDate();
+                 db.Mileage_km = b.GetMileage_Km();
+                 db.KmFromService = b.GetKmFromService();
+                 db.KmFromRefueling = b.GetKmFromRefueling();
+                 db.Fuel = b.GetFuel();
+                 db.BStatus = b.Status.ToDLStatus();
+             });
+        }
         #endregion
 
         #region Station
@@ -112,7 +131,6 @@ namespace BLL
                    where l.IncludeStat(stationKey)
                    select l;
         }
-
         #endregion
 
         #region Bus Line

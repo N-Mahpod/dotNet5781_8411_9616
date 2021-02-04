@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Threading;
 using System.Collections.ObjectModel;
 using BLL.BLL_Api;
 using BLL.BLL_Object;
@@ -26,6 +28,7 @@ namespace PL_Gui
         ObservableCollection<BLL.BLL_Object.Bus> ObserListOfBuses = new ObservableCollection<BLL.BLL_Object.Bus>();
         ObservableCollection<BLL.BLL_Object.Station> ObserListOfStations = new ObservableCollection<BLL.BLL_Object.Station>();
         ObservableCollection<BLL.BLL_Object.BusLine> ObserListOfLines = new ObservableCollection<BLL.BLL_Object.BusLine>();
+        BackgroundWorker bk;
 
         public AdminWindow(IBLL _bl)
         {
@@ -50,11 +53,38 @@ namespace PL_Gui
                 ObserListOfLines.Add(item);
             }
             lvLines.ItemsSource = ObserListOfLines;
+
+            this.Closing += AdminWindow_Closing;
+
+            bk = new BackgroundWorker();
+            bk.WorkerReportsProgress = true;
+            bk.WorkerSupportsCancellation = true;
+        }
+
+        private void AdminWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
         }
 
         private void DriveButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("The function doesn't exist yet:(");
+            Bus b = (sender as Button).DataContext as Bus;
+            DriveWindow dw = new DriveWindow(bl, b);
+            dw.ShowDialog();
+
+            lvBuses.Items.Refresh();
+            bk.DoWork += (object s, DoWorkEventArgs ev) =>
+            {
+                do
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        lvBuses.Items.Refresh();
+                    });
+                    Thread.Sleep(1000);
+                } while (b.Timer < b.TimeTarget);
+            };
+            bk.RunWorkerAsync();
         }
 
         private void RefuelButton_Click(object sender, RoutedEventArgs e)
@@ -66,6 +96,16 @@ namespace PL_Gui
         private void lvStations_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             StationsWindow sw = new StationsWindow(bl, ObserListOfStations, lvStations.SelectedItem as Station);
+            sw.ShowDialog();
+
+            lvLines.Items.Refresh();
+
+            lvStations.Items.Refresh();
+        }
+
+        private void lvLines_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            LinesWindow sw = new LinesWindow(bl, ObserListOfLines, lvLines.SelectedItem as Line);
             sw.ShowDialog();
 
             lvLines.Items.Refresh();

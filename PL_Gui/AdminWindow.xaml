@@ -56,7 +56,7 @@
         </Grid>
 
         <Grid Grid.Column="1"       HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
-            <ListView x:Name="lvLines" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
+            <ListView x:Name="lvLines" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" MouseDoubleClick="lvLines_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Line Number"    Width="75"    DisplayMemberBinding="{Binding Key}"/>

@@ -78,7 +78,7 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        Bus IDal.GetBus(int ln)
+        public Bus GetBus(int ln)
         {
             Dal_Api.DO.Bus bus = DataSource.ListBuses.Find(b => b.LicenseNum == ln);
 
@@ -93,9 +93,16 @@ namespace Dal
             throw new NotImplementedException();
         }
 
-        void IDal.UpdateBus(int ln, Action<Bus> update)
+        public void UpdateBus(int ln, Action<Bus> update)
         {
-            throw new NotImplementedException();
+            try
+            {
+                update(DataSource.ListBuses.Find(b => b.LicenseNum == ln));
+            }
+            catch
+            {
+                throw new Dal_Api.DO.LnNotExistExeption();
+            }
         }
 
         void IDal.DeleteBus(int ln)
@@ -149,7 +156,14 @@ namespace Dal
 
         void IDal.UpdateStation(int key, Action<Station> update)
         {
-            update(GetStation(key));
+            try
+            {
+                update(DataSource.ListStations.Find(b => b.Key == key));
+            }
+            catch
+            {
+                throw new Dal_Api.DO.KeyNotExistExeption();
+            }
         }
 
         void IDal.DeleteStation(int key)
@@ -172,7 +186,14 @@ namespace Dal
         }
         void IDal.UpdateBusLine(int key, Action<BusLine> update)
         {
-            update(GetBusLine(key));
+            try
+            {
+                update(DataSource.ListLines.Find(b => b.key == key));
+            }
+            catch
+            {
+                throw new Dal_Api.DO.KeyNotExistExeption();
+            }
         }
         public IEnumerable<object> GetBusLinesKeys(Func<int, object> generate)
         {
