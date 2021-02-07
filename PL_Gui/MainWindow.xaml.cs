@@ -28,6 +28,12 @@ namespace PL_Gui
         public MainWindow()
         {
             InitializeComponent();
+/*#if DEBUG
+            admin = bl.IsAdmin("bob", "123");
+            AdminWindow adwin = new AdminWindow(bl);
+            adwin.Show();
+            this.Close();
+#endif*/
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)

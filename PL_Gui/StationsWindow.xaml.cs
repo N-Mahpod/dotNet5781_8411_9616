@@ -69,7 +69,12 @@ namespace PL_Gui
         private void cbStations_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BLL.BLL_Object.Station stat = (cbStations.SelectedItem as BLL.BLL_Object.Station);
-
+            if(stat==null)
+            {
+                cbStations.SelectedIndex = 0;
+                return;
+            }
+            
             gridOneStation.DataContext = stat;
 
             ObserListOfBusLines.Clear();
