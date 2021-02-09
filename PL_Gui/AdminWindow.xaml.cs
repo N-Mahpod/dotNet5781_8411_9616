@@ -101,7 +101,13 @@ namespace PL_Gui
             StationsWindow sw = new StationsWindow(bl, ObserListOfStations, lvStations.SelectedItem as Station);
             sw.ShowDialog();
 
-            lvLines.Items.Refresh();
+            ObserListOfLines.Clear();
+            foreach (var item in bl.GetAllBusLines())
+            {
+                ObserListOfLines.Add(item);
+            }
+            lvLines.ItemsSource = ObserListOfLines;
+            lvLines.SelectedIndex = 0;
 
             lvStations.Items.Refresh();
         }
