@@ -5,8 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="LinesWindow" Height="450" Width="800">
+        Title="Lines Window" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="34*"/>
+            <ColumnDefinition Width="55*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="127*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Line:" Grid.Row="0" HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top" Height="25" Width="90"/>
+        <ComboBox x:Name="cbLines" Text="" HorizontalAlignment="Left" ItemsSource="{Binding}" Margin="78,19,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectionChanged="cbLines_SelectionChanged"/>
+
+        <Button x:Name="AddButton" Content="Add Line" HorizontalAlignment="Left" Margin="34,21,0,0" VerticalAlignment="Top" Width="95" Height="20" Grid.Column="1" Click="AddButton_Click"/>
+        <Button x:Name="RemoveButton" Content="Remove Line" HorizontalAlignment="Left" Margin="164,21,0,0" VerticalAlignment="Top" Width="95" Height="20" Grid.Column="1" Click="RemoveButton_Click"/>
+
+        <Grid x:Name="gridOneLine"  HorizontalAlignment="Left" Margin="27,29,0,0" VerticalAlignment="Top" Grid.Row="1" Height="96" Width="216">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="73"/>
+                <ColumnDefinition Width="Auto" MinWidth="123"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label  Content="Area:"         Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="0" VerticalAlignment="Center" Height="26" Width="70"/>
+            <ComboBox x:Name="cbArea"       Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="0" Text="{Binding Area, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Num Stations:"  Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="1" VerticalAlignment="Center" Height="26" Width="90"/>
+            <TextBlock x:Name="tbnumStat"   Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="1" Text="{Binding NumStations, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Total Time:"    Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="2" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBlock x:Name="tbTotalTime" Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="2" Text="{Binding TotalTime, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        </Grid>
+
+        <ListView x:Name="lvStations" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="324" Grid.Row="1" Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Station key"  Width="auto"    DisplayMemberBinding="{Binding BusStationKeyString}"/>
+                    <GridViewColumn Header="Adress"       Width="auto"    DisplayMemberBinding="{Binding StationAdress}"/>
+                    <GridViewColumn Header="Longitude"    Width="auto"    DisplayMemberBinding="{Binding LongitudeInFormat}"/>
+                    <GridViewColumn Header="Latitude"     Width="auto"    DisplayMemberBinding="{Binding LatitudeInFormat}"/>
+                    <GridViewColumn Header="Remove"       Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="RemoveStatButton" Content="Remove" HorizontalAlignment="Stretch" Margin="1" Click="RemoveStatButton_Click"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="AddStatbutton" Content="Add Station" Grid.Column="1" HorizontalAlignment="Left" Margin="363,30,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="AddStatbutton_Click"/>
     </Grid>
 </Window>

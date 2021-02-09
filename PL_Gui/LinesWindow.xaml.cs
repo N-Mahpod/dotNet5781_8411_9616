@@ -24,12 +24,56 @@ namespace PL_Gui
     {
         IBLL bl;
         ObservableCollection<BusLine> ObserListOfLines;
-        public LinesWindow(IBLL _bl, ObservableCollection<BusLine> _ObserListOfLines, Line l)
+        ObservableCollection<Station> ObserListOfStations;
+        BusLine l;
+
+        public LinesWindow(IBLL _bl, ObservableCollection<BusLine> _ObserListOfLines, BusLine _l)
         {
             InitializeComponent();
 
             bl = _bl;
             ObserListOfLines = _ObserListOfLines;
+            ObserListOfStations = new ObservableCollection<Station>();
+
+            cbLines.DisplayMemberPath = "Key";
+            cbLines.DataContext = ObserListOfLines;
+            cbLines.SelectedIndex = 0;
+
+            cbArea.ItemsSource = Enum.GetValues(typeof(BLL.BLL_Object.Area));
+
+            lvStations.ItemsSource = ObserListOfStations;
+        }
+
+        private void cbLines_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            l = cbLines.SelectedItem as BusLine;
+            gridOneLine.DataContext = l;
+
+            ObserListOfStations.Clear();
+            foreach(var s in l.Stations)
+            {
+                ObserListOfStations.Add(bl.GetStation(s));
+            }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddStatbutton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveStatButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

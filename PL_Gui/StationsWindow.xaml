@@ -38,13 +38,15 @@
             <Label Content="Latitude:"      Grid.Column="0" HorizontalAlignment="Left"              Margin="3,3,0,3" Grid.Row="2" VerticalAlignment="Center" Height="26" Width="70"/>
             <TextBox x:Name="tbLatitude"    Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="2" Text="{Binding Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
         </Grid>
-        <DataGrid x:Name="dgLinesStation" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="300" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="1">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Name="LineIDColumn" Binding="{Binding Key}" Header="Line ID" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="StartStatColumn" Binding="{Binding FirstStation}" Header="Start Station" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="FinishStatColumn" Binding="{Binding LastStation}" Header="Finish Station" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="AreaColumn" Binding="{Binding Area}" Header="Area" Width="SizeToHeader"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ListView x:Name="dgLinesStation" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="300" Grid.Row="1" Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="LineIDColumn"       DisplayMemberBinding="{Binding Key}"             Header="Line ID"        Width="auto"/>
+                    <GridViewColumn x:Name="StartStatColumn"    DisplayMemberBinding="{Binding FirstStation}"    Header="Start Station"  Width="auto"/>
+                    <GridViewColumn x:Name="FinishStatColumn"   DisplayMemberBinding="{Binding LastStation}"     Header="Finish Station" Width="auto"/>
+                    <GridViewColumn x:Name="AreaColumn"         DisplayMemberBinding="{Binding Area}"            Header="Area"           Width="auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

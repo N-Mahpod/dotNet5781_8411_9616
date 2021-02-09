@@ -41,18 +41,21 @@ namespace PL_Gui
                 ObserListOfBuses.Add(item);
             }
             lvBuses.ItemsSource = ObserListOfBuses;
+            lvBuses.SelectedIndex = 0;
 
             foreach (var item in bl.GetAllStations())
             {
                 ObserListOfStations.Add(item);
             }
             lvStations.ItemsSource = ObserListOfStations;
+            lvStations.SelectedIndex = 0;
 
             foreach (var item in bl.GetAllBusLines())
             {
                 ObserListOfLines.Add(item);
             }
             lvLines.ItemsSource = ObserListOfLines;
+            lvLines.SelectedIndex = 0;
 
             this.Closing += AdminWindow_Closing;
 
@@ -105,7 +108,7 @@ namespace PL_Gui
 
         private void lvLines_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            LinesWindow sw = new LinesWindow(bl, ObserListOfLines, lvLines.SelectedItem as Line);
+            LinesWindow sw = new LinesWindow(bl, ObserListOfLines, lvLines.SelectedItem as BusLine);
             sw.ShowDialog();
 
             lvLines.Items.Refresh();
