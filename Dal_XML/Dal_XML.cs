@@ -157,6 +157,16 @@ namespace Dal
         {
             throw new NotImplementedException();
         }
+
+        public void ClearBusLines()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddBusLine(BusLine b)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

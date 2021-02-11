@@ -47,6 +47,8 @@ namespace Dal_Api
         void UpdateBusLine(int key, Action<BusLine> update);
         IEnumerable<object> GetBusLinesKeys(Func<int, object> generate);
         void DeleteBusLine(int key);
+        void ClearBusLines();
+        void AddBusLine(BusLine b);
         #endregion
     }
 }

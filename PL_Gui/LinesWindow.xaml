@@ -8,8 +8,8 @@
         Title="Lines Window" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="34*"/>
-            <ColumnDefinition Width="55*"/>
+            <ColumnDefinition Width="32*"/>
+            <ColumnDefinition Width="67*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="28*"/>
@@ -39,7 +39,7 @@
             <TextBlock x:Name="tbTotalTime" Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="2" Text="{Binding TotalTime, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
         </Grid>
 
-        <ListView x:Name="lvStations" ItemsSource="{Binding}" Margin="34,29,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="324" Grid.Row="1" Grid.Column="1">
+        <ListView x:Name="lvStations" ItemsSource="{Binding}" Margin="10,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="307" Grid.Row="1" Grid.Column="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Station key"  Width="auto"    DisplayMemberBinding="{Binding BusStationKeyString}"/>
@@ -56,6 +56,36 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="AddStatbutton" Content="Add Station" Grid.Column="1" HorizontalAlignment="Left" Margin="363,30,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="AddStatbutton_Click"/>
+        <Button x:Name="AddStatbutton" Content="Add Station" Grid.Column="1" HorizontalAlignment="Left" Margin="451,14,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="AddStatbutton_Click" Height="20"/>
+        <Grid x:Name="AddStatGrid" Grid.Column="1" HorizontalAlignment="Left" Height="278" Margin="410,39,0,0" Grid.Row="1" VerticalAlignment="Top" Width="116" Visibility="Hidden">
+            <ListView x:Name="lvAddStat" HorizontalAlignment="Left" Height="252" VerticalAlignment="Top" Width="116">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Choose">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="chbStat" Content="{Binding BusStationKeyString}" Checked="chbStat_Checked"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button x:Name="doneStatButton" Content="Done" HorizontalAlignment="Left" Margin="0,258,0,0" VerticalAlignment="Top" Width="75" Click="doneStatButton_Click"/>
+
+        </Grid>
+        <ListView x:Name="lvTimeSpans" Grid.Column="1" HorizontalAlignment="Left" Height="200" Margin="317,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Time to next">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox x:Name="tbTimeSpan" Text="{Binding Mode=OneWay}" KeyDown="tbTimeSpan_KeyDown"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

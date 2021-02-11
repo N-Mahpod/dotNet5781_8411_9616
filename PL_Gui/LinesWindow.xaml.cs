@@ -57,8 +57,11 @@ namespace PL_Gui
             }
 
             gridOneLine.DataContext = l;
-
+            lvTimeSpans.ItemsSource = l.TimeSpanStations;
             RefreshStatObser();
+
+            AddStatGrid.Visibility = Visibility.Hidden;
+            AddStatbutton.IsEnabled = true;
         }
 
         private void RefreshStatObser()
@@ -72,7 +75,7 @@ namespace PL_Gui
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
@@ -83,7 +86,10 @@ namespace PL_Gui
 
         private void AddStatbutton_Click(object sender, RoutedEventArgs e)
         {
-
+            AddStatGrid.Visibility = Visibility.Visible;
+            //lvAddStat.Items.Clear();
+            lvAddStat.ItemsSource = bl.GetAllStations();
+            AddStatbutton.IsEnabled = false;
         }
 
         private void RemoveStatButton_Click(object sender, RoutedEventArgs e)
@@ -92,6 +98,39 @@ namespace PL_Gui
             RefreshStatObser();
             adwin.RefreshLineObser();
 
+        }
+
+        private void doneStatButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddStatGrid.Visibility = Visibility.Hidden;
+            AddStatbutton.IsEnabled = true;
+        }
+
+        private void chbStat_Checked(object sender, RoutedEventArgs e)
+        {
+            if((sender as CheckBox).IsChecked == true)
+            {
+                bl.AddStationToLine(l.Key, ((sender as CheckBox).DataContext as Station).BusStationKey, 0);
+                ObserListOfStations.Add((sender as CheckBox).DataContext as Station);
+            }
+        }
+
+        private void tbTimeSpan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(Keyboard.IsKeyDown(Key.Enter) || Keyboard.IsKeyDown(Key.Tab))
+            {
+                TimeSpan ts = new TimeSpan();
+                bool f = TimeSpan.TryParse((sender as TextBox).Text, out ts);
+                if (!f)
+                {
+                    (sender as TextBox).Text = l.TimeSpanStations[lvTimeSpans.SelectedIndex].ToString();
+                    MessageBox.Show("Wrong:-(");
+                }
+                else
+                {
+                    l.TimeSpanStations[lvTimeSpans.SelectedIndex] = ts;
+                }
+            }
         }
     }
 }

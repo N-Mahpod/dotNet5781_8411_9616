@@ -15,7 +15,9 @@ namespace BLL
     {
         IDal dl = Dal_Factory.GetDL();
         List<BLL_Object.Bus> buses;
-        bool hasSaved = true;
+        bool BusesHasSaved = true;
+        List<BLL_Object.BusLine> busLines;
+        bool BusLinesHasSaved = true;
 
         #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
@@ -67,7 +69,7 @@ namespace BLL
 
             BLL_Object.Bus b = GetBus(licenseNum);
             b.Drive(km);
-            hasSaved = false;
+            BusesHasSaved = false;
         }
         public void UpdateBus(BLL_Object.Bus b)
         {
@@ -88,6 +90,7 @@ namespace BLL
             {
                 UpdateBus(b);
             });
+            BusesHasSaved = true;
         }        
         #endregion
 
@@ -168,37 +171,55 @@ namespace BLL
         #region Bus Line
         public BLL_Object.BusLine GetBusLine(int key)
         {
-            Dal_Api.DO.BusLine dbl;
-            try
+            if (busLines != null)
             {
-                dbl = dl.GetBusLine(key);
+                BLL_Object.BusLine l = busLines.Find((_l) =>
+                {
+                    return _l.Key == key;
+                });
+                if (l != null)
+                    return l;
+                else
+                    throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
             }
-            catch(Dal_Api.DO.KeyNotExistExeption)
+            else
             {
-                throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
-            }
-            BLL_Object.BusLine bl = new BLL_Object.BusLine(key, dbl.area.ToBLArea());
-            foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
-            {
-                bl.AddStat(dbls.stationID, dbls.minutesToNext);
-            }
+                Dal_Api.DO.BusLine dbl;
+                try
+                {
+                    dbl = dl.GetBusLine(key);
+                }
+                catch (Dal_Api.DO.KeyNotExistExeption)
+                {
+                    throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
+                }
+                BLL_Object.BusLine bl = new BLL_Object.BusLine(key, dbl.area.ToBLArea());
+                foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
+                {
+                    bl.AddStat(dbls.stationID, dbls.minutesToNext);
+                }
 
-            return bl;
+                return bl;
+            }
         }
         public IEnumerable<BLL_Object.BusLine> GetAllBusLines()
         {
-            return from item in dl.GetBusLinesKeys((key) => { return GetBusLine(key); })
-                   let l = item as BLL_Object.BusLine
-                   orderby l.Key
-                   select l;
+            if (busLines != null)
+                return busLines;
+
+            IEnumerable<BLL_Object.BusLine> lb = from item in dl.GetBusLinesKeys((key) => { return GetBusLine(key); })
+                                                 let l = item as BLL_Object.BusLine
+                                                 orderby l.Key
+                                                 select l;
+            busLines = lb.ToList();
+            return busLines;
         }
         public bool RemoveStationFromLine(int lineNum, int stationKey)
         {
             BLL_Object.BusLine l = this.GetBusLine(lineNum);
             bool s = l.RemoveStat(stationKey);
 
-            UpdateBusLine(l);
-
+            BusLinesHasSaved = false;
             return s;
         }
         public void UpdateBusLine(BLL_Object.BusLine l)
@@ -221,9 +242,38 @@ namespace BLL
                  }
              });
         }
+        public void SaveBusLinesChanges()
+        {
+            if (BusLinesHasSaved)
+                return;
+
+            dl.ClearBusLines();
+            busLines.ForEach((b) =>
+            {
+                Dal_Api.DO.BusLine dbl = new Dal_Api.DO.BusLine()
+                {
+                    key = b.Key,
+                    stations = new List<BusLineStation>()
+                };
+                dl.AddBusLine(dbl);
+                UpdateBusLine(b);
+            });
+            BusLinesHasSaved = true;
+        }
+        public void AddStationToLine(int lineNum, int stationKey, double minutesToNext)
+        {
+            BLL_Object.BusLine l = this.GetBusLine(lineNum);
+            l.AddStat(stationKey, minutesToNext);
+
+            BusLinesHasSaved = false;
+        }
         public void RemoveBusLine(int key)
         {
-            dl.DeleteBusLine(key);
+            busLines.RemoveAll((l) =>
+            {
+                return l.Key == key;
+            });
+            BusLinesHasSaved = false;
         }
         #endregion
 

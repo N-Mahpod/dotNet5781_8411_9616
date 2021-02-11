@@ -208,6 +208,16 @@ namespace Dal
             });
             DataSource.ListLines.Remove(l);
         }
+
+        public void ClearBusLines()
+        {
+            DataSource.ListLines.Clear();
+        }
+
+        public void AddBusLine(BusLine b)
+        {
+            DataSource.ListLines.Add(b);
+        }
         #endregion
     }
 }

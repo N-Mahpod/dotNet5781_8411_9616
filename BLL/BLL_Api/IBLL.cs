@@ -30,6 +30,7 @@ namespace BLL.BLL_Api
         BLL_Object.BusLine GetBusLine(int key);
         IEnumerable<BLL_Object.BusLine> GetAllBusLines();
         bool RemoveStationFromLine(int lineNum, int stationKey);
+        void AddStationToLine(int lineNum, int stationKey, double minutesToNext);
         void RemoveBusLine(int key);
         #endregion
     }
