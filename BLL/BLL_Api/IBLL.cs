@@ -14,6 +14,7 @@ namespace BLL.BLL_Api
         BLL_Object.Bus GetBus(int licenseNum);
         IEnumerable<BLL_Object.Bus> GetAllBuses();
         void DriveBus(int licenseNum, double km);
+        void SaveBusesChanges();
         #endregion
 
         #region Station
@@ -25,7 +26,11 @@ namespace BLL.BLL_Api
         IEnumerable<BLL_Object.BusLine> GetLinesInStation(int stationKey);
         #endregion
 
+        #region Bus Line
         BLL_Object.BusLine GetBusLine(int key);
         IEnumerable<BLL_Object.BusLine> GetAllBusLines();
+        bool RemoveStationFromLine(int lineNum, int stationKey);
+        void RemoveBusLine(int key);
+        #endregion
     }
 }

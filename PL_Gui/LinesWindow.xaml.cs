@@ -26,12 +26,14 @@ namespace PL_Gui
         ObservableCollection<BusLine> ObserListOfLines;
         ObservableCollection<Station> ObserListOfStations;
         BusLine l;
+        AdminWindow adwin;
 
-        public LinesWindow(IBLL _bl, ObservableCollection<BusLine> _ObserListOfLines, BusLine _l)
+        public LinesWindow(IBLL _bl, ObservableCollection<BusLine> _ObserListOfLines, BusLine _l, AdminWindow _adwin)
         {
             InitializeComponent();
 
             bl = _bl;
+            adwin = _adwin;
             ObserListOfLines = _ObserListOfLines;
             ObserListOfStations = new ObservableCollection<Station>();
 
@@ -47,8 +49,20 @@ namespace PL_Gui
         private void cbLines_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             l = cbLines.SelectedItem as BusLine;
+            
+            if (l == null)
+            {
+                cbLines.SelectedIndex = 0;
+                return;
+            }
+
             gridOneLine.DataContext = l;
 
+            RefreshStatObser();
+        }
+
+        private void RefreshStatObser()
+        {
             ObserListOfStations.Clear();
             foreach(var s in l.Stations)
             {
@@ -63,7 +77,8 @@ namespace PL_Gui
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            bl.RemoveBusLine(l.Key);
+            ObserListOfLines.Remove(l);
         }
 
         private void AddStatbutton_Click(object sender, RoutedEventArgs e)
@@ -73,6 +88,9 @@ namespace PL_Gui
 
         private void RemoveStatButton_Click(object sender, RoutedEventArgs e)
         {
+            bl.RemoveStationFromLine(l.Key, ((sender as Button).DataContext as Station).BusStationKey);
+            RefreshStatObser();
+            adwin.RefreshLineObser();
 
         }
     }

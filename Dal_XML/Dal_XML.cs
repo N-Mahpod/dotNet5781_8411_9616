@@ -153,6 +153,10 @@ namespace Dal
         {
             throw new NotImplementedException();
         }
+        public void DeleteBusLine(int key)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

@@ -101,11 +101,7 @@ namespace PL_Gui
             StationsWindow sw = new StationsWindow(bl, ObserListOfStations, lvStations.SelectedItem as Station);
             sw.ShowDialog();
 
-            ObserListOfLines.Clear();
-            foreach (var item in bl.GetAllBusLines())
-            {
-                ObserListOfLines.Add(item);
-            }
+            RefreshLineObser();
             lvLines.ItemsSource = ObserListOfLines;
             lvLines.SelectedIndex = 0;
 
@@ -114,12 +110,28 @@ namespace PL_Gui
 
         private void lvLines_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            LinesWindow sw = new LinesWindow(bl, ObserListOfLines, lvLines.SelectedItem as BusLine);
+            LinesWindow sw = new LinesWindow(bl, ObserListOfLines, lvLines.SelectedItem as BusLine, this);
             sw.ShowDialog();
 
-            lvLines.Items.Refresh();
+            RefreshLineObser();
+            lvLines.ItemsSource = ObserListOfLines;
+            lvLines.SelectedIndex = 0;
 
             lvStations.Items.Refresh();
+        }
+
+        public void RefreshLineObser()
+        {
+            ObserListOfLines.Clear();
+            foreach (var item in bl.GetAllBusLines())
+            {
+                ObserListOfLines.Add(item);
+            }
+        }
+
+        private void saveChanges_button_Click(object sender, RoutedEventArgs e)
+        {
+            bl.SaveBusesChanges();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace BLL.BLL_Object
         public static DateTime NowSimulation;
         private static bool first = true;
         private static int minutesInSecond;
-        private bool simulation;
+        private static bool simulation;
 
         System.Timers.Timer th;
         Thread hlpT;
@@ -180,6 +180,18 @@ namespace BLL.BLL_Object
         #region Getters
         public double Timer { get => timer; set => timer = value; }
         public double TimeTarget { get => timeTarget; set => timeTarget = value; }
+        public static int MinutesInSecond
+        { 
+            get => minutesInSecond;
+            set
+            {
+                minutesInSecond = value;
+                simulation = true;
+                if (NowSimulation == null)
+                    NowSimulation = DateTime.Now;
+                first = false;
+            }
+        }
         public string BackgroundColor
         {
             get

@@ -200,6 +200,14 @@ namespace Dal
             return from l in DataSource.ListLines
                    select generate(l.key);
         }
+        public void DeleteBusLine(int key)
+        {
+            BusLine l = DataSource.ListLines.Find((BusLine _l) =>
+            {
+                return _l.key == key;
+            });
+            DataSource.ListLines.Remove(l);
+        }
         #endregion
     }
 }
