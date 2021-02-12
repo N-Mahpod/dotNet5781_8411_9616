@@ -39,7 +39,13 @@
             <TextBlock x:Name="tbTotalTime" Grid.Column="1" HorizontalAlignment="Left" Height="24"  Margin="3,4,0,4" Grid.Row="2" Text="{Binding TotalTime, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
         </Grid>
 
-        <ListView x:Name="lvStations" ItemsSource="{Binding}" Margin="10,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="200" Width="307" Grid.Row="1" Grid.Column="1">
+        <ListView x:Name="lvStations" ItemsSource="{Binding}" Margin="10,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="304" Width="307" Grid.Row="1" Grid.Column="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinHeight" Value="1"/>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Station key"  Width="auto"    DisplayMemberBinding="{Binding BusStationKeyString}"/>
@@ -74,7 +80,13 @@
             <Button x:Name="doneStatButton" Content="Done" HorizontalAlignment="Left" Margin="0,258,0,0" VerticalAlignment="Top" Width="75" Click="doneStatButton_Click"/>
 
         </Grid>
-        <ListView x:Name="lvTimeSpans" Grid.Column="1" HorizontalAlignment="Left" Height="200" Margin="317,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88">
+        <ListView x:Name="lvTimeSpans" Grid.Column="1" HorizontalAlignment="Left" Height="304" Margin="317,13,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinHeight" Value="1"/>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Time to next">

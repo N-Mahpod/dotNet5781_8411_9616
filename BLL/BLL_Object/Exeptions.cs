@@ -77,7 +77,27 @@ namespace BLL.BLL_Object
         {
         }
     }
-    
+
+    [Serializable]
+    public class AlreadyExistExeption : Exception
+    {
+        public AlreadyExistExeption()
+        {
+        }
+
+        public AlreadyExistExeption(string message) : base(message)
+        {
+        }
+
+        public AlreadyExistExeption(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected AlreadyExistExeption(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
     [Serializable]
     public class KeyNotExistExeption : Exception
     {

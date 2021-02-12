@@ -34,6 +34,7 @@ namespace BLL.BLL_Api
         bool RemoveStationFromLine(int lineNum, int stationKey);
         void AddStationToLine(int lineNum, int stationKey, double minutesToNext);
         void RemoveBusLine(int key);
+        void CreatBusLine(int key, BLL_Object.Area area);
         #endregion
     }
 }

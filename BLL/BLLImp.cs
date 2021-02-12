@@ -295,6 +295,21 @@ namespace BLL
             });
             BusLinesHasSaved = false;
         }
+
+        public void CreatBusLine(int key, BLL_Object.Area area)
+        {
+            int i = busLines.FindIndex((l) =>
+            {
+                return (l.Area == area && l.Key == key);
+            });
+            if (i>=0)
+            {
+                throw new AlreadyExistExeption("in this area there is a bus line with this number.");
+            }
+
+            BLL_Object.BusLine nl = new BLL_Object.BusLine(key, area);
+            busLines.Add(nl);
+        }
         #endregion
 
         public bool IsAdmin(string name, string password)

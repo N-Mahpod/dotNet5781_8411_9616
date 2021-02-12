@@ -1,0 +1,17 @@
+﻿<Window x:Class="PL_Gui.AddLine_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL_Gui"
+        mc:Ignorable="d"
+        Title="Create Line" Height="210" Width="284">
+    <Grid>
+        <Label x:Name="label" Content="Line Key:" HorizontalAlignment="Left" Margin="40,40,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbKey" HorizontalAlignment="Left" Height="23" Margin="121,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="label1" Content="Area:" HorizontalAlignment="Left" Margin="40,83,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="121,87,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="CreateButton" Content="Create" HorizontalAlignment="Left" Margin="121,130,0,0" VerticalAlignment="Top" Width="75" Click="CreateButton_Click"/>
+
+    </Grid>
+</Window>

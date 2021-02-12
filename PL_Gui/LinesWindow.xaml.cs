@@ -75,7 +75,10 @@ namespace PL_Gui
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            AddLine_Window alw = new AddLine_Window(bl);
+            alw.ShowDialog();
+            adwin.RefreshLineObser();
+            cbLines.SelectedItem = ObserListOfLines[ObserListOfLines.Count - 1];
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
@@ -97,6 +100,7 @@ namespace PL_Gui
             bl.RemoveStationFromLine(l.Key, ((sender as Button).DataContext as Station).BusStationKey);
             RefreshStatObser();
             adwin.RefreshLineObser();
+            lvTimeSpans.Items.Refresh();
 
         }
 
@@ -104,6 +108,8 @@ namespace PL_Gui
         {
             AddStatGrid.Visibility = Visibility.Hidden;
             AddStatbutton.IsEnabled = true;
+            gridOneLine.DataContext = null;
+            gridOneLine.DataContext = l;
         }
 
         private void chbStat_Checked(object sender, RoutedEventArgs e)
@@ -112,6 +118,8 @@ namespace PL_Gui
             {
                 bl.AddStationToLine(l.Key, ((sender as CheckBox).DataContext as Station).BusStationKey, 0);
                 ObserListOfStations.Add((sender as CheckBox).DataContext as Station);
+                lvTimeSpans.Items.Refresh();
+
             }
         }
 
@@ -123,12 +131,14 @@ namespace PL_Gui
                 bool f = TimeSpan.TryParse((sender as TextBox).Text, out ts);
                 if (!f)
                 {
-                    (sender as TextBox).Text = l.TimeSpanStations[lvTimeSpans.SelectedIndex].ToString();
-                    MessageBox.Show("Wrong:-(");
+                    lvTimeSpans.Items.Refresh();
+                    MessageBox.Show("Invalid input:-(");
                 }
                 else
                 {
-                    l.TimeSpanStations[lvTimeSpans.SelectedIndex] = ts;
+                    l.TimeSpanStations[lvTimeSpans.Items.IndexOf((sender as TextBox).DataContext)] = ts;
+                    lvTimeSpans.Items.Refresh();
+                    tbTotalTime.Text = l.TotalTime.ToString();
                 }
             }
         }
