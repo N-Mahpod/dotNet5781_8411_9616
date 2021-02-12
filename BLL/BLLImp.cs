@@ -19,6 +19,8 @@ namespace BLL
         List<BLL_Object.BusLine> busLines;
         bool BusLinesHasSaved = true;
 
+        List<int> busesDriving = new List<int>();//List of buses (ID`s) currently driving.
+
         #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
         {
@@ -47,7 +49,7 @@ namespace BLL
                 BLL_Object.Bus bb = new BLL_Object.Bus(licenseNum, db.StartDate);
                 bb.Restart(licenseNum, db.StartDate, db.ServiceDate, db.KmFromService, db.Mileage_km, db.KmFromRefueling);
                 return bb;
-            }            
+            }
         }
         public IEnumerable<BLL_Object.Bus> GetAllBuses()
         {
@@ -71,6 +73,24 @@ namespace BLL
             b.Drive(km);
             BusesHasSaved = false;
         }
+
+        public int CountBusesDriving()
+        {
+            return busesDriving.Count();
+        }
+        public void updateBusesDriving(int id = -1)
+        {
+            if (id != -1)
+                busesDriving.Add(id);
+            busesDriving.RemoveAll(doneDriving);
+        }
+        //Given a bus`s ID returns if it is done driving or not.
+        public bool doneDriving(int id)
+        {
+            BLL_Object.Bus b = GetBus(id);
+            return b.Timer >= b.TimeTarget;
+        }
+
         public void UpdateBus(BLL_Object.Bus b)
         {
             dl.UpdateBus(b.LicenseInt, (Dal_Api.DO.Bus db) =>

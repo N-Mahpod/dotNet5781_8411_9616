@@ -14,6 +14,8 @@ namespace BLL.BLL_Api
         BLL_Object.Bus GetBus(int licenseNum);
         IEnumerable<BLL_Object.Bus> GetAllBuses();
         void DriveBus(int licenseNum, double km);
+        int CountBusesDriving();//Returns amount of buses driving (i.e. size of list of buses driving).
+        void updateBusesDriving(int id = -1);//Updates the list of buses driving. If given an Id adds it.
         void SaveBusesChanges();
         #endregion
 

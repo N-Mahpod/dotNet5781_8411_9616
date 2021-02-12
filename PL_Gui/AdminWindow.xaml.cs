@@ -76,6 +76,16 @@ namespace PL_Gui
             dw.ShowDialog();
 
             lvBuses.Items.Refresh();
+
+            bl.updateBusesDriving(b.LicenseInt);
+
+            //if (bk.IsBusy)
+            //bk.CancelAsync();
+            //return;
+
+            if (bk.IsBusy)
+                return;
+
             bk.DoWork += (object s, DoWorkEventArgs ev) =>
             {
                 do
@@ -83,9 +93,17 @@ namespace PL_Gui
                     Dispatcher.Invoke(() =>
                     {
                         lvBuses.Items.Refresh();
+                        bl.updateBusesDriving();
                     });
                     Thread.Sleep(1000);
-                } while (b.Timer < b.TimeTarget);
+                //} while (b.Timer < b.TimeTarget);
+                } while (bl.CountBusesDriving() > 0);
+
+                //We refresh another time after the driving to avoid missing the last refresh in between the sleeping period. 
+                Dispatcher.Invoke(() =>
+                {
+                    lvBuses.Items.Refresh();
+                });
             };
             bk.RunWorkerAsync();
         }
