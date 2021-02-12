@@ -55,8 +55,8 @@ namespace PL_Gui
             if (Keyboard.IsKeyDown(Key.Enter))
             {
                 double d = 0;
-                bool sucsses = Double.TryParse(tbKM.Text, out d);
-                if (d < 0 || !sucsses)
+                bool success = Double.TryParse(tbKM.Text, out d);
+                if (!success || d < 0 )
                 {
                     MessageBox.Show("Invalid input. arrg. Try again.");
                     return;
