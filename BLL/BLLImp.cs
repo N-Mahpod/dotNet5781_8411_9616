@@ -14,6 +14,14 @@ namespace BLL
     class BLLImp : IBLL
     {
         IDal dl = Dal_Factory.GetDL();
+
+        #region singelton
+        static readonly BLLImp instance = new BLLImp();
+        static BLLImp() { }// static ctor to ensure instance init is done just before first usage
+        BLLImp() { } // default => private
+        public static BLLImp Instance { get => instance; }// The public Instance property to use
+        #endregion
+
         List<BLL_Object.Bus> buses;
         bool BusesHasSaved = true;
         List<BLL_Object.BusLine> busLines;
@@ -213,7 +221,18 @@ namespace BLL
                 {
                     throw new BLL_Object.KeyNotExistExeption("This Bus-Line Key doesn't exist");
                 }
-                BLL_Object.BusLine bl = new BLL_Object.BusLine(key, dbl.area.ToBLArea());
+
+                LineTrip lt;
+                try
+                {
+                    lt = dl.GetLineTrip(key);
+                }
+                catch (Dal_Api.DO.KeyNotExistExeption)
+                {
+                    throw new BLL_Object.KeyNotExistExeption("For some reason we can't find the lineTrip. hmm. but the line exist:)");
+                }
+
+                BLL_Object.BusLine bl = new BLL_Object.BusLine(key, dbl.area.ToBLArea(), lt.StartAt);
                 foreach (Dal_Api.DO.BusLineStation dbls in dbl.stations)
                 {
                     bl.AddStat(dbls.stationID, dbls.minutesToNext);
@@ -296,18 +315,18 @@ namespace BLL
             BusLinesHasSaved = false;
         }
 
-        public void CreatBusLine(int key, BLL_Object.Area area)
+        public void CreatBusLine(int key, BLL_Object.Area area, TimeSpan startAt)
         {
             int i = busLines.FindIndex((l) =>
             {
-                return (l.Area == area && l.Key == key);
+                return (/*l.Area == area && */l.Key == key);
             });
             if (i>=0)
             {
-                throw new AlreadyExistExeption("in this area there is a bus line with this number.");
+                throw new AlreadyExistExeption("There is a bus line with this number.");
             }
 
-            BLL_Object.BusLine nl = new BLL_Object.BusLine(key, area);
+            BLL_Object.BusLine nl = new BLL_Object.BusLine(key, area, startAt);
             busLines.Add(nl);
         }
         #endregion

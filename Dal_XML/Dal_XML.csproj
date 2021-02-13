@@ -43,11 +43,16 @@
   <ItemGroup>
     <Compile Include="Dal_XML.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dal_Api\Dal_Api.csproj">
       <Project>{9b133c89-64e1-4a7f-ac01-cbc54a35bea6}</Project>
       <Name>Dal_Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DS\DS.csproj">
+      <Project>{608c4460-0bb0-42d6-a2cc-7cf5220f80f4}</Project>
+      <Name>DS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

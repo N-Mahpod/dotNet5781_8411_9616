@@ -150,6 +150,7 @@ namespace PL_Gui
         private void saveChanges_button_Click(object sender, RoutedEventArgs e)
         {
             bl.SaveBusesChanges();
+            bl.SaveBusLinesChanges();
         }
     }
 }

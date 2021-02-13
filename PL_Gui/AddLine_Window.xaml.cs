@@ -35,7 +35,7 @@ namespace PL_Gui
         {
             int nk;
             bool f = int.TryParse(tbKey.Text, out nk);
-            if (!f)
+            if (!f || nk == 0)
             {
                 MessageBox.Show("invalid bus line key");
                 return;
@@ -46,9 +46,26 @@ namespace PL_Gui
                 MessageBox.Show("invalid bus line area");
                 return;
             }
+
+            TimeSpan sa;
+            f = TimeSpan.TryParse(tbStartAt.Text, out sa);
+            if(!f)
+            {
+                MessageBox.Show("Invalid Start driving time");
+                tbStartAt.Text = "00:00:00";
+                return;
+            }
+
+            if(tbStartAt.Text == "00:00:00")
+            {
+                f = MessageBox.Show("Are you sure you want the bus line to drive in this time? you will not able to change it!", "hmm", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+                if (!f)
+                    return;
+            }
+
             try
             {
-                bl.CreatBusLine(nk, na);
+                bl.CreatBusLine(nk, na, sa);
             }
             catch (AlreadyExistExeption er)
             {

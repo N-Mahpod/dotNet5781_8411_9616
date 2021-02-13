@@ -48,6 +48,7 @@
     <Compile Include="DO\BusLineStation.cs" />
     <Compile Include="DO\Enums.cs" />
     <Compile Include="DO\Exeptions.cs" />
+    <Compile Include="DO\LineTrip.cs" />
     <Compile Include="DO\Station.cs" />
     <Compile Include="DO\User.cs" />
     <Compile Include="IDal.cs" />

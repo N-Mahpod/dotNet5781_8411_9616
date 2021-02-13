@@ -50,5 +50,12 @@ namespace Dal_Api
         void ClearBusLines();
         void AddBusLine(BusLine b);
         #endregion
+
+        #region Line Trip
+        LineTrip GetLineTrip(int key);
+        void DeleteLineTrip(int key);
+        void ClearLineTrips();
+        void AddLineTrip(LineTrip lt);
+        #endregion
     }
 }

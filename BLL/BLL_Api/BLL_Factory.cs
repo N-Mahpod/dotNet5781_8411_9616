@@ -14,11 +14,11 @@ namespace BLL.BLL_Api
             switch (type)
             {
                 case "1":
-                    return new BLLImp();
+                    return BLLImp.Instance;
                 case "2":
                 //return new BLImp2();
                 default:
-                    return new BLLImp();
+                    return BLLImp.Instance;
             }
         }
     }

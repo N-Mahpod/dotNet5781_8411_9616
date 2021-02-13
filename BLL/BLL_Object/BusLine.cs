@@ -8,7 +8,9 @@ namespace BLL.BLL_Object
 {
     public class BusLine
     {
-        public int Key { get; set; }//ID of the line.
+        private TimeSpan startAt;
+        private int key;
+
         public List<int> Stations { get; set; }//List of station IDs.
         public List<TimeSpan> TimeSpanStations { get; set; }
         public Area Area { get; set; }
@@ -36,16 +38,19 @@ namespace BLL.BLL_Object
             get
             {
                 TimeSpan ts = new TimeSpan();
-                foreach (TimeSpan t in TimeSpanStations)
-                    ts += t;
+                for (int i = 0; i < TimeSpanStations.Count - 1; ++i)
+                    ts += TimeSpanStations[i];
                 return ts;
             }
         }
+        public TimeSpan StartAt { get => startAt; }
+        public int Key { get => key; }//ID of the line.
 
-        public BusLine(int key, Area area)
+        public BusLine(int _key, Area area, TimeSpan _startAt)
         {
-            Key = key;
+            key = _key;
             Area = area;
+            startAt = _startAt;
             Stations = new List<int>();
             TimeSpanStations = new List<TimeSpan>();
         }

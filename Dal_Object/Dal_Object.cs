@@ -219,5 +219,33 @@ namespace Dal
             DataSource.ListLines.Add(b);
         }
         #endregion
+
+        #region Line Trip
+        public LineTrip GetLineTrip(int key)
+        {
+            Dal_Api.DO.LineTrip lt = DataSource.ListLineTrips.Find(l => l.LineKey == key);
+
+            if (lt != null)
+                return lt.Clone();
+            else
+                throw new Dal_Api.DO.KeyNotExistExeption();
+        }
+        public void DeleteLineTrip(int key)
+        {
+            LineTrip l = DataSource.ListLineTrips.Find((LineTrip _l) =>
+            {
+                return _l.LineKey == key;
+            });
+            DataSource.ListLineTrips.Remove(l);
+        }
+        public void ClearLineTrips()
+        {
+            DataSource.ListLineTrips.Clear();
+        }
+        public void AddLineTrip(LineTrip lt)
+        {
+            DataSource.ListLineTrips.Add(lt);
+        }
+        #endregion
     }
 }

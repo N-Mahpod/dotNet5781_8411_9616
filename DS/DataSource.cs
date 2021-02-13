@@ -13,8 +13,7 @@ namespace DS
         public static List<Bus> ListBuses;
         public static List<Station> ListStations;
         public static List<BusLine> ListLines;
-
-        public static List<List<Tuple<int,double>>> TimeDistanceMatrix;
+        public static List<LineTrip> ListLineTrips;
 
         public static readonly double FULL_FUEL_TANK = 1200;
         public static readonly double KM_ALLOW_FROM_SERVICE = 20000;
@@ -26,7 +25,6 @@ namespace DS
         static DataSource()
         {
             InitAllLists();
-            InitStationMatrix();
         }
         static void InitAllLists()
         {
@@ -75,7 +73,7 @@ namespace DS
                     Longitude = 32.00224,
                     Latitude = 34.7055603
                 },
-                
+
                 new Station
                 {
                     Key = 1,
@@ -83,7 +81,7 @@ namespace DS
                     Longitude = 33.05324,
                     Latitude = 33.6105603
                 },
-                
+
                 new Station
                 {
                     Key = 2,
@@ -93,11 +91,11 @@ namespace DS
                 }
             };
 
-            BusLineStation bls_l1_s1 = new BusLineStation { lineID = 1, stationID = 0, prevStationID = -1, NextStationID = 1,  minutesToNext = 6 };
-            BusLineStation bls_l1_s2 = new BusLineStation { lineID = 1, stationID = 1, prevStationID = 0,  NextStationID = 2,  minutesToNext = 6.5};
-            BusLineStation bls_l1_s3 = new BusLineStation { lineID = 1, stationID = 2, prevStationID = 1,  NextStationID = -1, minutesToNext = 0 };
-            
-            BusLineStation bls_l2_s1 = new BusLineStation { lineID = 2, stationID = 2, prevStationID = -1, NextStationID = 0, minutesToNext = 7.25};
+            BusLineStation bls_l1_s1 = new BusLineStation { lineID = 1, stationID = 0, prevStationID = -1, NextStationID = 1, minutesToNext = 6 };
+            BusLineStation bls_l1_s2 = new BusLineStation { lineID = 1, stationID = 1, prevStationID = 0, NextStationID = 2, minutesToNext = 6.5 };
+            BusLineStation bls_l1_s3 = new BusLineStation { lineID = 1, stationID = 2, prevStationID = 1, NextStationID = -1, minutesToNext = 0 };
+
+            BusLineStation bls_l2_s1 = new BusLineStation { lineID = 2, stationID = 2, prevStationID = -1, NextStationID = 0, minutesToNext = 7.25 };
             BusLineStation bls_l2_s2 = new BusLineStation { lineID = 2, stationID = 0, prevStationID = 2, NextStationID = -1, minutesToNext = 0 };
 
             ListLines = new List<BusLine>
@@ -117,36 +115,19 @@ namespace DS
                 }
             };
 
-        }
-
-        static void InitStationMatrix()
-        {
-            Random rand = new Random();
-            int size = ListStations.Count();
-            TimeDistanceMatrix = new List<List<Tuple<int, double>>>();
-            for (int i = 0; i < size; ++i) 
+            ListLineTrips = new List<LineTrip>
             {
-                TimeDistanceMatrix.Add(new List<Tuple<int, double>>());
-                for (int j = 0; j < size; ++j) 
+                new LineTrip
                 {
-                    if(i == j)//Relative to self.
-                        TimeDistanceMatrix[i].Add(new Tuple<int, double>(0,0));
-                    else if(i > j)//Allready calculated this pair.
-                        TimeDistanceMatrix[i].Add(TimeDistanceMatrix[j][i]);
-                    else//Need to calculate.
-                    {
-                        double x1 = ListStations[i].Latitude;
-                        double y1 = ListStations[i].Longitude;
-
-                        double x2 = ListStations[j].Latitude;
-                        double y2 = ListStations[j].Longitude;
-
-                        double dis = Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-                        int time = rand.Next(1, 10);
-                        TimeDistanceMatrix[i].Add(new Tuple<int, double>(time, dis));
-                    }
+                    LineKey = 1,
+                    StartAt = new TimeSpan(12,40,0)
+                },
+                new LineTrip
+                {
+                    LineKey = 2,
+                    StartAt = new TimeSpan(14,10,0)
                 }
-            }
+            };
         }
     }
 }
