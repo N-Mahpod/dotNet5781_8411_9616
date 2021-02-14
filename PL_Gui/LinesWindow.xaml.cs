@@ -62,6 +62,9 @@ namespace PL_Gui
 
             AddStatGrid.Visibility = Visibility.Hidden;
             AddStatbutton.IsEnabled = true;
+
+            tbStartAt.Text = l.StartAt.ToString();
+            tbTotalTime.Text = l.TotalTime.ToString();
         }
 
         private void RefreshStatObser()

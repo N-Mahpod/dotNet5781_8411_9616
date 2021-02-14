@@ -32,8 +32,16 @@ namespace Dal
         #region User
         public void AddUser(User user)
         {
-            XElement usersRootElem = XMLTools.LoadListFromXMLElement(usersPath);
+            XElement usersRootElem;
 
+            try
+            {
+                usersRootElem = XMLTools.LoadListFromXMLElement(usersPath);
+            }
+            catch(XMLFileLoadCreateException)
+            {
+                usersRootElem = new XElement("UsersList");
+            }
             XElement per1 = (from p in usersRootElem.Elements()
                              where int.Parse(p.Element("ID").Value) == user.ID
                              select p).FirstOrDefault();
@@ -42,10 +50,10 @@ namespace Dal
                 throw new BadUserIdException(user.ID, "Duplicate user ID");
 
             XElement personElem = new XElement("User",
-                new XElement("ID", user.ID),
-                new XElement("UserName", user.UserName),
-                new XElement("Admin", user.Admin),
-                new XElement("Password", user.Password));
+                                      new XElement("ID", user.ID),
+                                      new XElement("UserName", user.UserName),
+                                      new XElement("Admin", user.Admin),
+                                      new XElement("Password", user.Password));
 
             usersRootElem.Add(personElem);
 
@@ -376,11 +384,38 @@ namespace Dal
 
         public void UpdateBusLine(int ln, Action<BusLine> update)
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+
+            BusLine _b = (from b in busLinesRootElem.Elements()
+                          where int.Parse(b.Element("key").Value) == ln
+                          select new BusLine()
+                          {
+                              key = Int32.Parse(b.Element("key").Value),
+                              area = (Area)Enum.Parse(typeof(Area), b.Element("area").Value),
+                              stations = XElementToList_BusLineStation(b.Element("stations"))
+                          }
+                        ).FirstOrDefault();
+
+            if (_b != null)
+            {
+                DeleteBusLine(_b.key);
+                update(_b);
+                AddBusLine(_b);
+            }
+            else
+                throw new LnNotExistExeption($"bad License num: {ln}");
         }
         public void DeleteBusLine(int key)
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+
+            foreach (XElement xe in busLinesRootElem.Elements())
+            {
+                if (key == int.Parse(xe.Element("key").Value))
+                    xe.Remove();
+            }
+
+            XMLTools.SaveListToXMLElement(busLinesRootElem, busLinesPath);
         }
 
         public void ClearBusLines()
@@ -391,8 +426,15 @@ namespace Dal
 
         public void AddBusLine(BusLine b)
         {
-            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
-
+            XElement busLinesRootElem;
+            try
+            {
+                busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+            }
+            catch(XMLFileLoadCreateException)
+            {
+                busLinesRootElem = new XElement("BusLinesList");
+            }
             XElement bus1 = (from p in busLinesRootElem.Elements()
                              where int.Parse(p.Element("key").Value) == b.key
                              select p).FirstOrDefault();

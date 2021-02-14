@@ -28,6 +28,7 @@ namespace PL_Gui
         public MainWindow()
         {
             InitializeComponent();
+            bl.CreateWorld();//for xml
 /*#if DEBUG
             admin = bl.IsAdmin("bob", "123");
             AdminWindow adwin = new AdminWindow(bl);

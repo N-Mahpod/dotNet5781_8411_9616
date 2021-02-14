@@ -119,7 +119,7 @@ namespace BLL
                 UpdateBus(b);
             });
             BusesHasSaved = true;
-        }        
+        }
         #endregion
 
         #region Station
@@ -150,7 +150,7 @@ namespace BLL
 
             foreach (BLL.BLL_Object.BusLine v in GetAllBusLines())
             {
-                if(v.RemoveStat(key))
+                if (v.RemoveStat(key))
                 {
                     dl.UpdateBusLine(v.Key, (Dal_Api.DO.BusLine bl) =>
                      {
@@ -266,8 +266,8 @@ namespace BLL
             dl.UpdateBusLine(l.Key, (Dal_Api.DO.BusLine _l) =>
              {
                  _l.area = l.Area.ToDLArea();
-                //this func isn't very יעילה, but it simple.
-                _l.stations.Clear();
+                 //this func isn't very יעילה, but it simple.
+                 _l.stations.Clear();
                  for (int i = 0; i < l.NumStations; ++i)
                  {
                      _l.stations.Add(new BusLineStation()
@@ -287,6 +287,7 @@ namespace BLL
                 return;
 
             dl.ClearBusLines();
+            dl.ClearLineTrips();
             busLines.ForEach((b) =>
             {
                 Dal_Api.DO.BusLine dbl = new Dal_Api.DO.BusLine()
@@ -296,6 +297,13 @@ namespace BLL
                 };
                 dl.AddBusLine(dbl);
                 UpdateBusLine(b);
+
+                Dal_Api.DO.LineTrip lt = new LineTrip
+                {
+                    LineKey = b.Key,
+                    StartAt = b.StartAt
+                };
+                dl.AddLineTrip(lt);
             });
             BusLinesHasSaved = true;
         }
@@ -321,7 +329,7 @@ namespace BLL
             {
                 return (/*l.Area == area && */l.Key == key);
             });
-            if (i>=0)
+            if (i >= 0)
             {
                 throw new AlreadyExistExeption("There is a bus line with this number.");
             }
@@ -340,6 +348,53 @@ namespace BLL
                     return u.Admin;
             }
             throw new IncorrectSomethingExeption();
+        }
+
+        public void CreateWorld()
+        {
+            try
+            {
+                dl.AddBus(new Dal_Api.DO.Bus
+                {
+                    LicenseNum = 1234567,
+                    Fuel = BLL_Object.Bus.FULL_FUEL_TANK,
+                    KmFromRefueling = 0,
+                    ServiceDate = new DateTime(2020, 12, 12),
+                    StartDate = new DateTime(2000, 1, 1),
+                    BStatus = Dal_Api.DO.Status.Ready,
+                    KmFromService = 100,
+                    Mileage_km = 3000
+                });
+                dl.AddBusLine(new Dal_Api.DO.BusLine
+                {
+                    key = 1,
+                    area = Dal_Api.DO.Area.Jerusalem,
+                    stations = new List<BusLineStation>()
+                });
+                dl.AddLineTrip(new LineTrip
+                {
+                    LineKey = 1,
+                    StartAt = new TimeSpan(13, 20, 0)
+                });
+                dl.AddStation(new Dal_Api.DO.Station
+                {
+                    Adress = "right here",
+                    Key = 1,
+                    Latitude = 32.1111,
+                    Longitude = 31.2222
+                });
+                dl.AddUser(new User
+                {
+                    ID = 1,
+                    Admin = true,
+                    UserName = "bob",
+                    Password = "123"
+                });
+            }
+            catch (Dal_Api.DO.BadBusLicenseNumException)
+            {
+                return;
+            }
         }
     }
 }
