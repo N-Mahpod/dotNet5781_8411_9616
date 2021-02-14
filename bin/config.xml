@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <!--<dl>xml</dl>-->
-  <dl>data</dl>
+  <dl>xml</dl>
+  <!--<dl>data</dl>-->
   <dl-packages>
     <data>Dal_Object</data>
     <xml namespace="Dal" class="Dal_XML">Dal_XML</xml>
