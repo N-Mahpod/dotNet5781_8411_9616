@@ -152,5 +152,16 @@ namespace PL_Gui
             bl.SaveBusesChanges();
             bl.SaveBusLinesChanges();
         }
+
+        private void lvBuses_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("The function doesn't exist yet:( it's just a bonus");
+        }
+
+        private void startSim_button_Click(object sender, RoutedEventArgs e)
+        {
+            StartSim_Window ssw = new StartSim_Window(bl, this);
+            ssw.Show();
+        }
     }
 }

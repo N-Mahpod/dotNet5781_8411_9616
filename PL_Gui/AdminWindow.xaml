@@ -19,10 +19,17 @@
 
         <Grid Grid.ColumnSpan="3"   HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Button x:Name="saveChanges_button" Content="Save Changes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="126" Height="43" Click="saveChanges_button_Click"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="177,10,0,0" TextWrapping="Wrap" FontSize="16" Text="tap double click on the list you want to open.&#x0a;tap 'Save Changes' before closing!" VerticalAlignment="Top" Height="43"/>
+            <Grid x:Name="Simulation_Grid" HorizontalAlignment="Left" Height="63" Margin="845,0,0,0" VerticalAlignment="Top" Width="347">
+                <Button x:Name="startSim_button" Content="Start Simulation" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="107" Height="43" Click="startSim_button_Click"/>
+                <Button x:Name="startSop_button" Content="Start" HorizontalAlignment="Left" Margin="137,10,0,0" VerticalAlignment="Top" Width="60" Height="43" IsEnabled="False"/>
+                <TextBlock x:Name="tbSimClock" HorizontalAlignment="Left" Margin="202,10,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="30" Text="00:00:00" VerticalAlignment="Top" Height="43" Width="135"/>
+
+            </Grid>
         </Grid>
 
         <Grid Grid.Column="0"       HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
-            <ListView x:Name="lvBuses" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">
+            <ListView x:Name="lvBuses" HorizontalAlignment="Stretch" Height="auto" Margin="10" Grid.Row="1" VerticalAlignment="Stretch" Width="auto" MouseDoubleClick="lvBuses_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Bus Number"     Width="75"    DisplayMemberBinding="{Binding LicenseNum}"/>

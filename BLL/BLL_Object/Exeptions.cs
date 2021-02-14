@@ -79,6 +79,26 @@ namespace BLL.BLL_Object
     }
 
     [Serializable]
+    public class SimulationExeption : Exception
+    {
+        public SimulationExeption()
+        {
+        }
+
+        public SimulationExeption(string message) : base(message)
+        {
+        }
+
+        public SimulationExeption(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected SimulationExeption(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
+    [Serializable]
     public class AlreadyExistExeption : Exception
     {
         public AlreadyExistExeption()
