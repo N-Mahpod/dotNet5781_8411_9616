@@ -21,12 +21,11 @@ namespace Dal
 
         #region DS XML Files
         string usersPath = @"UsersXml.xml"; //XElement
-        
+        string busLinesPath = @"BusLinesXml.xml"; //XElement
+
         string busesPath = @"BusesXml.xml"; //XMLSerializer
-        string coursesPath = @"CoursesXml.xml"; //XMLSerializer
-        string lecturersPath = @"LecturersXml.xml"; //XMLSerializer
-        string lectInCoursesPath = @"LecturerInCourseXml.xml"; //XMLSerializer
-        string studInCoursesPath = @"StudentInCoureseXml.xml"; //XMLSerializer
+        string stationsPath = @"StationsXml.xml"; //XMLSerializer
+        string lineTripsPath = @"LineTripsXml.xml"; //XMLSerializer
         #endregion
 
         // XElement
@@ -40,9 +39,9 @@ namespace Dal
                              select p).FirstOrDefault();
 
             if (per1 != null)
-                throw new BadUserIdException(user.ID, "Duplicate person ID");
+                throw new BadUserIdException(user.ID, "Duplicate user ID");
 
-            XElement personElem = new XElement("Person",
+            XElement personElem = new XElement("User",
                 new XElement("ID", user.ID),
                 new XElement("UserName", user.UserName),
                 new XElement("Admin", user.Admin),
@@ -122,6 +121,7 @@ namespace Dal
         }
         #endregion
 
+        //XMLSerializer
         #region Bus
         public void AddBus(Bus bus)
         {
@@ -201,19 +201,42 @@ namespace Dal
 
         public void UpdateBus(int id, Action<Bus> update)
         {
-            throw new NotImplementedException();
+            List<Bus> ListBuses = XMLTools.LoadListFromXMLSerializer<Bus>(busesPath);
+
+            Bus b = ListBuses.Find(p => p.LicenseNum == id);
+            if (b != null)
+            {
+                ListBuses.Remove(b);
+                update(b);
+                ListBuses.Add(b); //no nee to Clone()
+            }
+            else
+                throw new LnNotExistExeption($"bad License Num: {id}");
+
+            XMLTools.SaveListToXMLSerializer(ListBuses, busesPath);
         }
         #endregion
 
+        //XMLSerializer
         #region Station
         public void AddStation(Station station)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            if (ListStats.FirstOrDefault(s => s.Key == station.Key) != null)
+                throw new BadBusLicenseNumException("Duplicate Station Key");
+
+            ListStats.Add(station); //no need to Clone()
+
+            XMLTools.SaveListToXMLSerializer(ListStats, stationsPath);
         }
 
         public IEnumerable<Station> GetAllStations()
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            return from s in ListStats
+                   select s;
         }
 
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
@@ -223,38 +246,132 @@ namespace Dal
 
         public IEnumerable<object> GetStationsKeys(Func<int, object> generate)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            return from s in ListStats
+                   select generate(s.Key);
         }
 
         public Station GetStation(int key)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            Station s = ListStats.Find(p => p.Key == key);
+            if (s != null)
+                return s; //no need to Clone()
+            else
+                throw new KeyNotExistExeption($"bad Station key: {key}");
         }
 
         public void UpdateStation(Station station)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            Station s = ListStats.Find(p => p.Key == station.Key);
+            if (s != null)
+            {
+                ListStats.Remove(s);
+                ListStats.Add(station); //no nee to Clone()
+            }
+            else
+                throw new KeyNotExistExeption($"bad stationKey: {station.Key}");
+
+            XMLTools.SaveListToXMLSerializer(ListStats, stationsPath);
         }
 
         public void UpdateStation(int key, Action<Station> update)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            Station s = ListStats.Find(p => p.Key == key);
+            if (s != null)
+            {
+                ListStats.Remove(s);
+                update(s);
+                ListStats.Add(s); //no nee to Clone()
+            }
+            else
+                throw new KeyNotExistExeption($"bad stationKey: {key}");
+
+            XMLTools.SaveListToXMLSerializer(ListStats, stationsPath);
         }
 
         public void DeleteStation(int key)
         {
-            throw new NotImplementedException();
+            List<Station> ListStats = XMLTools.LoadListFromXMLSerializer<Station>(stationsPath);
+
+            Station s = ListStats.Find(p => p.Key == key);
+
+            if (s != null)
+            {
+                ListStats.Remove(s);
+            }
+            else
+                throw new KeyNotExistExeption($"bad Station key: {key}");
+
+            XMLTools.SaveListToXMLSerializer(ListStats, stationsPath);
         }
         #endregion
 
+        //XElement
         #region Bus Line
+        private List<BusLineStation> XElementToList_BusLineStation(XElement xe)
+        {
+            List<BusLineStation> lbs = new List<BusLineStation>();
+            foreach(XElement x in xe.Elements("BusLineStation"))
+            {
+                lbs.Add(new BusLineStation
+                {
+                    lineID = int.Parse(x.Element("lineID").Value),
+                    minutesToNext = double.Parse(x.Element("minutesToNext").Value),
+                    NextStationID = int.Parse(x.Element("NextStationID").Value),
+                    prevStationID = int.Parse(x.Element("prevStationID").Value),
+                    stationID = int.Parse(x.Element("stationID").Value)
+                });
+            }
+            return lbs;
+        }
+        private XElement ListToXElement_BusLineStation(List<BusLineStation> lbs)
+        {
+            XElement xe = new XElement("stations");
+            foreach (BusLineStation s in lbs)
+            {
+                xe.Add(new XElement("BusLineStation",
+                    new XElement("lineID", s.lineID),
+                    new XElement("minutesToNext", s.minutesToNext),
+                    new XElement("NextStationID", s.NextStationID),
+                    new XElement("prevStationID", s.prevStationID),
+                    new XElement("stationID", s.stationID)));
+            }
+            return xe;
+        }
+        
         public BusLine GetBusLine(int key)
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+
+            BusLine _b = (from b in busLinesRootElem.Elements()
+                          where int.Parse(b.Element("key").Value) == key
+                          select new BusLine()
+                          {
+                              key = Int32.Parse(b.Element("key").Value),
+                              area = (Area)Enum.Parse(typeof(Area), b.Element("area").Value),
+                              stations = XElementToList_BusLineStation(b.Element("stations"))
+                          }
+                        ).FirstOrDefault();
+
+            if (_b == null)
+                throw new KeyNotExistExeption();
+
+            return _b;
         }
+
         public IEnumerable<object> GetBusLinesKeys(Func<int, object> generate)
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+
+            return from l in busLinesRootElem.Elements()
+                   select generate(Int32.Parse(l.Element("key").Value));
         }
 
         public void UpdateBusLine(int ln, Action<BusLine> update)
@@ -268,34 +385,77 @@ namespace Dal
 
         public void ClearBusLines()
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = new XElement("BusLines");
+            XMLTools.SaveListToXMLElement(busLinesRootElem, busLinesPath);
         }
 
         public void AddBusLine(BusLine b)
         {
-            throw new NotImplementedException();
+            XElement busLinesRootElem = XMLTools.LoadListFromXMLElement(busLinesPath);
+
+            XElement bus1 = (from p in busLinesRootElem.Elements()
+                             where int.Parse(p.Element("key").Value) == b.key
+                             select p).FirstOrDefault();
+
+            if (bus1 != null)
+                throw new BadUserIdException(b.key, "Duplicate bus key");
+
+            XElement busLineElem = new XElement("BusLine",
+                new XElement("key", b.key),
+                new XElement("area", b.area),
+                ListToXElement_BusLineStation(b.stations));
+
+            busLinesRootElem.Add(busLineElem);
+
+            XMLTools.SaveListToXMLElement(busLinesRootElem, busLinesPath);
         }
         #endregion
 
+        //XMLSerializer
         #region Line Trip
         public LineTrip GetLineTrip(int key)
         {
-            throw new NotImplementedException();
+            List<LineTrip> ListTrips = XMLTools.LoadListFromXMLSerializer<LineTrip>(lineTripsPath);
+
+            LineTrip t = ListTrips.Find(p => p.LineKey == key);
+            if (t != null)
+                return t; //no need to Clone()
+            else
+                throw new KeyNotExistExeption($"bad BusLine key: {key}");
         }
 
         public void DeleteLineTrip(int key)
         {
-            throw new NotImplementedException();
+            List<LineTrip> ListTrips = XMLTools.LoadListFromXMLSerializer<LineTrip>(lineTripsPath);
+
+            LineTrip t = ListTrips.Find(p => p.LineKey == key);
+
+            if (t != null)
+            {
+                ListTrips.Remove(t);
+            }
+            else
+                throw new KeyNotExistExeption($"bad BusLine key: {key}");
+
+            XMLTools.SaveListToXMLSerializer(ListTrips, lineTripsPath);
         }
 
         public void ClearLineTrips()
         {
-            throw new NotImplementedException();
+            List<LineTrip> ListTrips = new List<LineTrip>();
+            XMLTools.SaveListToXMLSerializer(ListTrips, lineTripsPath);
         }
 
         public void AddLineTrip(LineTrip lt)
         {
-            throw new NotImplementedException();
+            List<LineTrip> ListTrips = XMLTools.LoadListFromXMLSerializer<LineTrip>(lineTripsPath);
+
+            if (ListTrips.FirstOrDefault(p => p.LineKey == lt.LineKey) != null)
+                throw new BadBusLicenseNumException("Duplicate LineTrip Key");
+
+            ListTrips.Add(lt); //no need to Clone()
+
+            XMLTools.SaveListToXMLSerializer(ListTrips, lineTripsPath);
         }
         #endregion
     }
