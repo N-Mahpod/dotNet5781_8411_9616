@@ -73,7 +73,7 @@
                         <GridViewColumn Header="Choose">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="chbStat" Content="{Binding BusStationKeyString}" Checked="chbStat_Checked"/>
+                                    <CheckBox x:Name="chbStat" Content="{Binding BusStationKeyString}" Checked="chbStat_Checked" Unchecked="chbStat_Unchecked"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

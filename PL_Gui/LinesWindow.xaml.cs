@@ -49,7 +49,7 @@ namespace PL_Gui
         private void cbLines_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             l = cbLines.SelectedItem as BusLine;
-            
+
             if (l == null)
             {
                 cbLines.SelectedIndex = 0;
@@ -70,7 +70,7 @@ namespace PL_Gui
         private void RefreshStatObser()
         {
             ObserListOfStations.Clear();
-            foreach(var s in l.Stations)
+            foreach (var s in l.Stations)
             {
                 ObserListOfStations.Add(bl.GetStation(s));
             }
@@ -113,22 +113,23 @@ namespace PL_Gui
             AddStatbutton.IsEnabled = true;
             gridOneLine.DataContext = null;
             gridOneLine.DataContext = l;
+
+            MessageBox.Show("if you added something write the times now!", "hi!", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void chbStat_Checked(object sender, RoutedEventArgs e)
         {
-            if((sender as CheckBox).IsChecked == true)
-            {
-                bl.AddStationToLine(l.Key, ((sender as CheckBox).DataContext as Station).BusStationKey, 0);
-                ObserListOfStations.Add((sender as CheckBox).DataContext as Station);
-                lvTimeSpans.Items.Refresh();
+            if (l.Stations.Contains(((sender as CheckBox).DataContext as Station).BusStationKey))
+                return;
 
-            }
+            bl.AddStationToLine(l.Key, ((sender as CheckBox).DataContext as Station).BusStationKey, 0);
+            ObserListOfStations.Add((sender as CheckBox).DataContext as Station);
+            lvTimeSpans.Items.Refresh();
         }
 
         private void tbTimeSpan_KeyDown(object sender, KeyEventArgs e)
         {
-            if(Keyboard.IsKeyDown(Key.Enter) || Keyboard.IsKeyDown(Key.Tab))
+            if (Keyboard.IsKeyDown(Key.Enter) || Keyboard.IsKeyDown(Key.Tab))
             {
                 TimeSpan ts = new TimeSpan();
                 bool f = TimeSpan.TryParse((sender as TextBox).Text, out ts);
@@ -144,6 +145,12 @@ namespace PL_Gui
                     tbTotalTime.Text = l.TotalTime.ToString();
                 }
             }
+        }
+
+        private void chbStat_Unchecked(object sender, RoutedEventArgs e)
+        {
+            (sender as CheckBox).IsChecked = true;
+            MessageBox.Show("you can't remove station from here. if you alredy removed press 'done' and try again");
         }
     }
 }
