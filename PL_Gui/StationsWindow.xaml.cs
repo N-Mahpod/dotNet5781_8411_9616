@@ -25,6 +25,8 @@ namespace PL_Gui
         IBLL bl;
         ObservableCollection<BLL.BLL_Object.Station> ObserListOfStations = new ObservableCollection<BLL.BLL_Object.Station>();
         ObservableCollection<BLL.BLL_Object.BusLine> ObserListOfBusLines = new ObservableCollection<BLL.BLL_Object.BusLine>();
+        SimulationClock simClk;
+        
 
         public StationsWindow(IBLL _bl,ObservableCollection<BLL.BLL_Object.Station> StatList, Station stat = null)
         {
@@ -45,6 +47,9 @@ namespace PL_Gui
             dgLinesStation.ItemsSource = ObserListOfBusLines;
 
             gridOneStation.DataContext = stat;
+
+            simClk = SimulationClock.Instance;
+            Sim_button.DataContext = simClk;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -82,6 +87,11 @@ namespace PL_Gui
             {
                 ObserListOfBusLines.Add(item);
             }
+        }
+
+        private void Sim_button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         //unnesesery

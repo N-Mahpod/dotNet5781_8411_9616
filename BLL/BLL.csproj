@@ -48,8 +48,10 @@
     <Compile Include="BLL_Object\BusLine.cs" />
     <Compile Include="BLL_Object\Enums.cs" />
     <Compile Include="BLL_Object\Exeptions.cs" />
+    <Compile Include="BLL_Object\LineTiming.cs" />
     <Compile Include="BLL_Object\SimulationClock.cs" />
     <Compile Include="BLL_Object\Station.cs" />
+    <Compile Include="BLL_Object\StationPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

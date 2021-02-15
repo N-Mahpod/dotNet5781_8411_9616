@@ -27,7 +27,14 @@ namespace BLL.BLL_Object
             set
             {
                 if (!Working)
-                    rate = value;
+                {
+                    if (value > 3600)
+                        rate = 3600;
+                    else if (value < 1)
+                        rate = 1;
+                    else
+                        rate = value;
+                }
                 else
                     throw new SimulationExeption("you can't change Rate while Working!");
             }
@@ -45,12 +52,87 @@ namespace BLL.BLL_Object
                     throw new SimulationExeption("you can't change NowSimulation while Working!");
             }
         }
-        
+
+        public int Hours
+        {
+            get => nowSim.Hours;
+            set
+            {
+                if(Working)
+                    throw new SimulationExeption("you can't change NowSimulation while Working!");
+
+                TimeSpan nts;
+                try
+                {
+                    nts = new TimeSpan(value, nowSim.Minutes, nowSim.Seconds);
+                }
+                catch(Exception)
+                {
+                    throw new ArgumentException("nope. try somthing else;");
+                }
+                nowSim = nts;
+            }
+        }
+        public int Minutes
+        {
+            get => nowSim.Minutes;
+            set
+            {
+                if (Working)
+                    throw new SimulationExeption("you can't change NowSimulation while Working!");
+
+
+                TimeSpan nts;
+                try
+                {
+                    nts = new TimeSpan(nowSim.Hours, value, nowSim.Seconds);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException("nope. try somthing else;");
+                }
+
+                nowSim = nts;
+            }
+        }
+        public int Seconds
+        {
+            get => nowSim.Seconds;
+            set
+            {
+                if (Working)
+                    throw new SimulationExeption("you can't change NowSimulation while Working!");
+
+                
+                TimeSpan nts;
+                try
+                {
+                    nts = new TimeSpan(nowSim.Hours, nowSim.Minutes, value);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException("nope. try somthing else;");
+                }
+
+                nowSim = nts;
+            }
+        }
+
         private Action<TimeSpan> UpdateTime;
         private Timer timer;
 
+        public void Restart()
+        {
+            nowSim = new TimeSpan(0, 0, 0);
+            rate = 1;
+            Stop();
+            timer = new Timer(1000);
+        }
+
         public void Start(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
+            if (working) return;
+
             NowSimulation = startTime;
             Rate = rate;
             UpdateTime = updateTime;
@@ -64,6 +146,7 @@ namespace BLL.BLL_Object
 
         public void Stop()
         {
+            if (!working) return;
             timer.Stop();
             working = false;
         }
@@ -71,7 +154,7 @@ namespace BLL.BLL_Object
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             UpdateTime(NowSimulation);
-            NowSimulation.Add(TimeSpan.FromSeconds(Rate));
+            nowSim = nowSim.Add(TimeSpan.FromSeconds(Rate));
         }
     }
 }

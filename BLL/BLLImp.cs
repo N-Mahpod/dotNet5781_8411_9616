@@ -28,6 +28,7 @@ namespace BLL
         bool BusLinesHasSaved = true;
 
         List<int> busesDriving = new List<int>();//List of buses (ID`s) currently driving.
+        StationPanel stationPanel = StationPanel.Instance;
 
         #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
@@ -193,6 +194,22 @@ namespace BLL
             return from l in GetAllBusLines()
                    where l.IncludeStat(stationKey)
                    select l;
+        }
+
+        public IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey)
+        {
+            foreach (BLL_Object.BusLine l in GetLinesInStation(stationKey))
+            {
+                stationPanel.LineTimings.Add(new LineTiming
+                {
+                    LineKey = l.Key,
+                    StartAt = l.StartAt,
+                    LastStation = GetStation(l.Stations[l.NumStations - 1]).Name,
+                    ArriveAt = l.ArriveAt(stationKey)
+                });
+            }
+            stationPanel.Sort();
+            return stationPanel.LineTimings;
         }
         #endregion
 

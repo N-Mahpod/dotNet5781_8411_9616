@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="Start Simulation Window" Height="283.2" Width="335.6">
+        Title="Start Simulation Window" Height="283.2" Width="335.6"
+        Closing="Window_Closing">
     <Grid>
         <Label x:Name="label" Content="Clock" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" FontWeight="Bold" FontSize="15" Height="31"/>
         <Grid x:Name="gClock" HorizontalAlignment="Left" Height="82" Margin="10,41,0,0" VerticalAlignment="Top" Width="308">
@@ -14,15 +15,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="tbHours"   HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="83" Grid.Column="0" TextAlignment="Center" FontSize="45"/>
-            <TextBox x:Name="tbMinutes" HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="83" Grid.Column="1" TextAlignment="Center" FontSize="45"/>
-            <TextBox x:Name="tbSeconds" HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="82" Grid.Column="2" TextAlignment="Center" FontSize="45"/>
+            <TextBox x:Name="tbHours"   HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Hours, Mode=TwoWay}"    VerticalAlignment="Top" Width="83" Grid.Column="0" TextAlignment="Center" FontSize="45"/>
+            <TextBox x:Name="tbMinutes" HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Minutes, Mode=TwoWay}"  VerticalAlignment="Top" Width="83" Grid.Column="1" TextAlignment="Center" FontSize="45"/>
+            <TextBox x:Name="tbSeconds" HorizontalAlignment="Left" Height="62" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Seconds, Mode=TwoWay}"  VerticalAlignment="Top" Width="82" Grid.Column="2" TextAlignment="Center" FontSize="45"/>
         </Grid>
 
         <Label x:Name="label1" Content="Seconds Per Second:    X" HorizontalAlignment="Left" Margin="10,128,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbSpS" HorizontalAlignment="Left" Height="26" Margin="149,128,0,0" TextWrapping="Wrap" FontSize="17" Text="{Binding Rate}" VerticalAlignment="Top" Width="120" IsEnabled="{Binding !Working}"/>
-        <Slider x:Name="sliderSpS" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Width="308" Minimum="1" Maximum="3600" Value="{Binding Rate}" IsEnabled="{Binding !Working}"/>
-        <Button x:Name="Start_button" Content="Start" HorizontalAlignment="Left" Margin="219,218,0,0" VerticalAlignment="Top" Width="99" Height="24"/>
+        <Slider x:Name="sliderSpS" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Width="308" Minimum="1" Maximum="3600" Value="{Binding Rate}"/>
+        <Button x:Name="Start_button" Content="Start" HorizontalAlignment="Left" Margin="207,206,0,0" VerticalAlignment="Top" Width="111" Height="36" Click="Start_button_Click"/>
 
     </Grid>
 </Window>

@@ -48,5 +48,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="Sim_button" Content="Open Pannel" HorizontalAlignment="Left" Height="23" Margin="10,0,0,10" Grid.Row="1" VerticalAlignment="Bottom" Width="72" IsEnabled="{Binding Working}" Click="Sim_button_Click"/>
     </Grid>
 </Window>

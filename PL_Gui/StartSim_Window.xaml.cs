@@ -32,9 +32,72 @@ namespace PL_Gui
             adw = _adw;
 
             simClk = SimulationClock.Instance;
+            simClk.Restart();
 
             sliderSpS.DataContext = simClk;
             tbSpS.DataContext = simClk;
+            gClock.DataContext = simClk;
+
+            adw.startStop_button.IsEnabled = true;
+            adw.startStop_button.Click += Start_button_Click;
+            adw.startSim_button.IsEnabled = false;
+
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (simClk.Working)
+            {
+                bool f = MessageBox.Show("Are you sure you want to close the Timer?", "hmm", MessageBoxButton.OKCancel) == MessageBoxResult.OK;
+                if (!f)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            e.Cancel = false;
+            simClk.Stop();
+            adw.startStop_button.Content = "Start";
+            adw.startStop_button.IsEnabled = false;
+            adw.tbSimClock.Text = "00:00:00";
+            adw.startSim_button.IsEnabled = true;
+        }
+
+        public void Start_button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!simClk.Working)
+            {
+                Start_button.Content = "Stop";
+                adw.startStop_button.Content = "Stop";
+
+                gClock.IsEnabled = false;
+                sliderSpS.IsEnabled = false;
+                tbSpS.IsEnabled = false;
+
+                simClk.Start(simClk.NowSimulation, simClk.Rate, (ts)=>
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        tbHours.Text = ts.Hours.ToString();
+                        tbMinutes.Text = ts.Minutes.ToString();
+                        tbSeconds.Text = ts.Seconds.ToString();
+
+                        adw.tbSimClock.Text = ts.ToString();
+                    });
+                });
+            }
+            else
+            {
+                Start_button.Content = "Start";
+                adw.startStop_button.Content = "Start";
+
+                gClock.IsEnabled = true;
+                sliderSpS.IsEnabled = true;
+                tbSpS.IsEnabled = true;
+
+                simClk.Stop();
+            }
         }
     }
 }

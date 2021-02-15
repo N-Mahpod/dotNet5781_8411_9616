@@ -67,6 +67,9 @@
     <Compile Include="StartSim_Window.xaml.cs">
       <DependentUpon>StartSim_Window.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StationPannel_Window.xaml.cs">
+      <DependentUpon>StationPannel_Window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StationsWindow.xaml.cs">
       <DependentUpon>StationsWindow.xaml</DependentUpon>
     </Compile>
@@ -102,6 +105,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="StartSim_Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StationPannel_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -69,6 +69,7 @@ namespace BLL.BLL_Object
             TimeSpanStations.RemoveAt(i);
             return true;
         }
+
         public void AddStat(int stationKey, double minutesToNext = 0, int i = -1)
         {
             if (i == -1)
@@ -83,6 +84,23 @@ namespace BLL.BLL_Object
             }
             else
                 throw new IndexOutOfRangeException();
+        }
+
+        public TimeSpan ArriveAt(int stationKey)
+        {
+            TimeSpan ts = new TimeSpan(startAt.Hours, startAt.Minutes, startAt.Seconds);
+            return ts.Add(TimeTo(stationKey));
+        }
+        public TimeSpan TimeTo(int stationKey)
+        {
+            TimeSpan ts = new TimeSpan();
+            for (int i = 0; i < NumStations - 1; ++i)
+            {
+                ts = ts.Add(TimeSpanStations[i]);
+                if (Stations[i + 1] == stationKey)
+                    return ts;
+            }
+            throw new KeyNotExistExeption();
         }
     }
 }

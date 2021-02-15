@@ -22,7 +22,7 @@
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="177,10,0,0" TextWrapping="Wrap" FontSize="16" Text="tap double click on the list you want to open.&#x0a;tap 'Save Changes' before closing!" VerticalAlignment="Top" Height="43"/>
             <Grid x:Name="Simulation_Grid" HorizontalAlignment="Left" Height="63" Margin="845,0,0,0" VerticalAlignment="Top" Width="347">
                 <Button x:Name="startSim_button" Content="Start Simulation" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="107" Height="43" Click="startSim_button_Click"/>
-                <Button x:Name="startSop_button" Content="Start" HorizontalAlignment="Left" Margin="137,10,0,0" VerticalAlignment="Top" Width="60" Height="43" IsEnabled="False"/>
+                <Button x:Name="startStop_button" Content="Start" HorizontalAlignment="Left" Margin="137,10,0,0" VerticalAlignment="Top" Width="60" Height="43" IsEnabled="False"/>
                 <TextBlock x:Name="tbSimClock" HorizontalAlignment="Left" Margin="202,10,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="30" Text="00:00:00" VerticalAlignment="Top" Height="43" Width="135"/>
 
             </Grid>

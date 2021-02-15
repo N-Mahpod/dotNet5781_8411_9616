@@ -109,6 +109,15 @@ namespace BLL.BLL_Object
         {
             return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
         }
+        public string Name
+        {
+            get
+            {
+                if (stationAdress != "")
+                    return stationAdress;
+                else return BusStationKeyString;
+            }
+        }
         #endregion
         //public override string ToString()
         //{

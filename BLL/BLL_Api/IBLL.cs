@@ -28,6 +28,8 @@ namespace BLL.BLL_Api
         BLL_Object.Station AddStation();
         void UpdateStation(int key, string newadd, double newlong, double newlat);
         IEnumerable<BLL_Object.BusLine> GetLinesInStation(int stationKey);
+
+        IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey);
         #endregion
 
         #region Bus Line
