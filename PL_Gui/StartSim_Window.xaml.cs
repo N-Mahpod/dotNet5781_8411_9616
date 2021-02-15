@@ -57,7 +57,7 @@ namespace PL_Gui
                 }
             }
             e.Cancel = false;
-            simClk.Stop();
+            bl.StopSimulator();
             adw.startStop_button.Content = "Start";
             adw.startStop_button.IsEnabled = false;
             adw.tbSimClock.Text = "00:00:00";
@@ -75,7 +75,7 @@ namespace PL_Gui
                 sliderSpS.IsEnabled = false;
                 tbSpS.IsEnabled = false;
 
-                simClk.Start(simClk.NowSimulation, simClk.Rate, (ts)=>
+                bl.StartSimulator(simClk.NowSimulation, simClk.Rate, (ts)=>
                 {
                     Dispatcher.Invoke(() =>
                     {
@@ -96,7 +96,7 @@ namespace PL_Gui
                 sliderSpS.IsEnabled = true;
                 tbSpS.IsEnabled = true;
 
-                simClk.Stop();
+                bl.StopSimulator();
             }
         }
     }

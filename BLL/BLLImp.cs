@@ -29,6 +29,7 @@ namespace BLL
 
         List<int> busesDriving = new List<int>();//List of buses (ID`s) currently driving.
         StationPanel stationPanel = StationPanel.Instance;
+        SimulationClock simClk = SimulationClock.Instance;
 
         #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
@@ -196,21 +197,6 @@ namespace BLL
                    select l;
         }
 
-        public IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey)
-        {
-            foreach (BLL_Object.BusLine l in GetLinesInStation(stationKey))
-            {
-                stationPanel.LineTimings.Add(new LineTiming
-                {
-                    LineKey = l.Key,
-                    StartAt = l.StartAt,
-                    LastStation = GetStation(l.Stations[l.NumStations - 1]).Name,
-                    ArriveAt = l.ArriveAt(stationKey)
-                });
-            }
-            stationPanel.Sort();
-            return stationPanel.LineTimings;
-        }
         #endregion
 
         #region Bus Line
@@ -353,6 +339,51 @@ namespace BLL
 
             BLL_Object.BusLine nl = new BLL_Object.BusLine(key, area, startAt);
             busLines.Add(nl);
+        }
+        #endregion
+
+        #region Simulator
+        public void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime)
+        {
+            simClk.Restart();
+            simClk.Start(startTime, Rate, updateTime);
+        }
+        public void StopSimulator()
+        {
+            simClk.Stop();
+        }
+
+        public void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus)
+        {
+            if (stationPanel.StationKey != station)
+                CreateLineTimings(station);
+
+            
+        }
+
+        public void CreateLineTimings(int stationKey)
+        {
+            stationPanel.LineTimings = new List<LineTiming>();
+            stationPanel.StationKey = stationKey;
+            foreach (BLL_Object.BusLine l in GetLinesInStation(stationKey))
+            {
+                stationPanel.LineTimings.Add(new LineTiming
+                {
+                    LineKey = l.Key,
+                    StartAt = l.StartAt,
+                    LastStation = GetStation(l.Stations[l.NumStations - 1]).Name,
+                    ArriveAt = l.ArriveAt(stationKey)
+                });
+            }
+            stationPanel.Sort();
+        }
+
+        public IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey)
+        {
+            if (stationPanel.StationKey != stationKey)
+                CreateLineTimings(stationKey);
+
+            return stationPanel.LineTimings;
         }
         #endregion
 

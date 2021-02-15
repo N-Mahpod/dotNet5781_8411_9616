@@ -41,5 +41,11 @@ namespace BLL.BLL_Api
         void CreatBusLine(int key, BLL_Object.Area area, TimeSpan startAt);
         void SaveBusLinesChanges();
         #endregion
+
+        #region Simulator
+        void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
+        void StopSimulator();
+        void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus);
+        #endregion
     }
 }

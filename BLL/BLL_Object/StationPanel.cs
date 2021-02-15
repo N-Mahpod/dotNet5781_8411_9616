@@ -22,5 +22,17 @@ namespace BLL.BLL_Object
         {
             LineTimings.Sort();
         }
+
+        public void CleanTillNow(TimeSpan now)
+        {
+            for (int i = 0; i< LineTimings.Count;++i)
+            {
+                if (now > LineTimings[i].ArriveAt)
+                {
+                    LineTimings.RemoveAt(i);
+                    --i;
+                }
+            }
+        }
     }
 }
