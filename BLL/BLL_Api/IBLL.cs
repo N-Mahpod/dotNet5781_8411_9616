@@ -45,7 +45,11 @@ namespace BLL.BLL_Api
         #region Simulator
         void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
         void StopSimulator();
-        void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus);
+        //void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus);
+        /// I dont understand the intended usage of this function.
+
+        void SetStationPanel(int id);
+
         #endregion
     }
 }

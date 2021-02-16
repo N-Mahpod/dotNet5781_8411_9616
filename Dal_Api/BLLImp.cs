@@ -15,8 +15,6 @@ namespace BLL
     {
         IDal dl = Dal_Factory.GetDL();
 
-        string SuperDuperSecretPassword = "ADMIN(-;";
-
         #region singelton
         static readonly BLLImp instance = new BLLImp();
         static BLLImp() { }// static ctor to ensure instance init is done just before first usage
@@ -30,8 +28,6 @@ namespace BLL
         bool BusLinesHasSaved = true;
 
         List<int> busesDriving = new List<int>();//List of buses (ID`s) currently driving.
-        StationPanel stationPanel = StationPanel.Instance;
-        SimulationClock simClk = SimulationClock.Instance;
 
         #region Bus
         public BLL_Object.Bus GetBus(int licenseNum)
@@ -123,7 +119,7 @@ namespace BLL
                 UpdateBus(b);
             });
             BusesHasSaved = true;
-        }
+        }        
         #endregion
 
         #region Station
@@ -154,7 +150,7 @@ namespace BLL
 
             foreach (BLL.BLL_Object.BusLine v in GetAllBusLines())
             {
-                if (v.RemoveStat(key))
+                if(v.RemoveStat(key))
                 {
                     dl.UpdateBusLine(v.Key, (Dal_Api.DO.BusLine bl) =>
                      {
@@ -198,7 +194,6 @@ namespace BLL
                    where l.IncludeStat(stationKey)
                    select l;
         }
-
         #endregion
 
         #region Bus Line
@@ -271,8 +266,8 @@ namespace BLL
             dl.UpdateBusLine(l.Key, (Dal_Api.DO.BusLine _l) =>
              {
                  _l.area = l.Area.ToDLArea();
-                 //this func isn't very יעילה, but it simple.
-                 _l.stations.Clear();
+                //this func isn't very יעילה, but it simple.
+                _l.stations.Clear();
                  for (int i = 0; i < l.NumStations; ++i)
                  {
                      _l.stations.Add(new BusLineStation()
@@ -292,7 +287,6 @@ namespace BLL
                 return;
 
             dl.ClearBusLines();
-            dl.ClearLineTrips();
             busLines.ForEach((b) =>
             {
                 Dal_Api.DO.BusLine dbl = new Dal_Api.DO.BusLine()
@@ -302,13 +296,6 @@ namespace BLL
                 };
                 dl.AddBusLine(dbl);
                 UpdateBusLine(b);
-
-                Dal_Api.DO.LineTrip lt = new LineTrip
-                {
-                    LineKey = b.Key,
-                    StartAt = b.StartAt
-                };
-                dl.AddLineTrip(lt);
             });
             BusLinesHasSaved = true;
         }
@@ -334,7 +321,7 @@ namespace BLL
             {
                 return (/*l.Area == area && */l.Key == key);
             });
-            if (i >= 0)
+            if (i>=0)
             {
                 throw new AlreadyExistExeption("There is a bus line with this number.");
             }
@@ -344,153 +331,15 @@ namespace BLL
         }
         #endregion
 
-        #region Simulator
-        public void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime)
-        {
-            simClk.Restart();
-            simClk.Start(startTime, Rate, updateTime);
-        }
-        public void StopSimulator()
-        {
-            simClk.Stop();
-        }
-
-        /*public void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus)
-        {
-            if (stationPanel.StationKey != station)
-                CreateLineTimings(station);
-
-            
-        }*/
-        public void SetStationPanel(int station)
-        {
-            stationPanel.remake(station, busLines, simClk.NowSimulation);
-        }
-
-        public void CreateLineTimings(int stationKey)
-        {
-            stationPanel.LineTimings = new List<LineTiming>();
-            stationPanel.StationKey = stationKey;
-            foreach (BLL_Object.BusLine l in GetLinesInStation(stationKey))
-            {
-                stationPanel.LineTimings.Add(new LineTiming
-                {
-                    LineKey = l.Key,
-                    StartAt = l.StartAt,
-                    LastStation = GetStation(l.Stations[l.NumStations - 1]).Name,
-                    ArriveAt = l.ArriveAt(stationKey)
-                });
-            }
-            stationPanel.Sort();
-        }
-
-        public IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey)
-        {
-            if (stationPanel.StationKey != stationKey)
-                CreateLineTimings(stationKey);
-
-            return stationPanel.LineTimings;
-        }
-        #endregion
-
         public bool IsAdmin(string name, string password)
         {
             IEnumerable<User> usersList = dl.GetAllUsers();
-            bool ex = false, admin = false;
-
             foreach (User u in usersList)
             {
                 if (u.UserName == name && u.Password == password)
-                {
-                    ex = true;
-                    admin = u.Admin;
-                }
+                    return u.Admin;
             }
-            if (ex)
-                return admin;
             throw new IncorrectSomethingExeption();
-        }
-        public void SignUp(string name, string password, string SDSP)
-        {
-
-            foreach (User u in dl.GetAllUsers())
-            {
-                if (u.UserName == name)
-                    throw new AlreadyExistExeption("this name is already exist");
-            }
-                    
-
-            if (SDSP == "")
-            {
-                dl.AddUser(new User
-                {
-                    Admin = false,
-                    Password = password,
-                    UserName = name,
-                    ID = 1 + dl.GetAllUsers().Count()
-                });
-            }
-            else if (SDSP == SuperDuperSecretPassword)
-            {
-                dl.AddUser(new User
-                {
-                    Admin = true,
-                    Password = password,
-                    UserName = name,
-                    ID = 1 + dl.GetAllUsers().Count()
-                });
-            }
-            else
-            {
-                throw new IncorrectSomethingExeption("you don't know the secret password");
-            }
-        }
-
-        public void CreateWorld()
-        {
-            try
-            {
-                dl.AddBus(new Dal_Api.DO.Bus
-                {
-                    LicenseNum = 1234567,
-                    Fuel = BLL_Object.Bus.FULL_FUEL_TANK,
-                    KmFromRefueling = 0,
-                    ServiceDate = new DateTime(2020, 12, 12),
-                    StartDate = new DateTime(2000, 1, 1),
-                    BStatus = Dal_Api.DO.Status.Ready,
-                    KmFromService = 100,
-                    Mileage_km = 3000
-                });
-                dl.AddBusLine(new Dal_Api.DO.BusLine
-                {
-                    key = 1,
-                    area = Dal_Api.DO.Area.Jerusalem,
-                    stations = new List<BusLineStation>()
-                });
-                dl.AddLineTrip(new LineTrip
-                {
-                    LineKey = 1,
-                    StartAt = new TimeSpan(13, 20, 0)
-                });
-                dl.AddStation(new Dal_Api.DO.Station
-                {
-                    Adress = "right here",
-                    Key = 1,
-                    Latitude = 32.1111,
-                    Longitude = 31.2222
-                });
-                dl.AddUser(new User
-                {
-                    ID = 1,
-                    Admin = true,
-                    UserName = "bob",
-                    Password = "123"
-                });
-            }
-            catch (Dal_Api.DO.BadBusLicenseNumException)
-            {
-                return;
-            }
         }
     }
 }

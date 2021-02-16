@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BLL.BLL_Api;
 using BLL.BLL_Object;
+using System.ComponentModel;
 
 namespace PL_Gui
 {
@@ -22,12 +23,14 @@ namespace PL_Gui
     public partial class StationPannel_Window : Window
     {
         IBLL bl;
-        
-        
-        public StationPannel_Window(IBLL _bl)
+        BackgroundWorker bk;
+        public StationPannel_Window(IBLL _bl, int id)//Stationd`s id.
         {
             InitializeComponent();
             bl = _bl;
+
+            bl.SetStationPanel(id);
+            
         }
     }
 }
