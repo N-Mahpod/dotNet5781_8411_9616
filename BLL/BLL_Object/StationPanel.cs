@@ -18,6 +18,15 @@ namespace BLL.BLL_Object
         public int StationKey { get; set; }
         public List<LineTiming> LineTimings { get; set; }
 
+        public void remake(int id, List<BusLine> lines)//Recreates the panel given the station id.
+        {
+            for(BusLine l in lines)
+            {
+                if (l.IncludeStat(id) == false)
+                    continue;
+                LineTimings
+            }
+        }
         public void Sort()
         {
             LineTimings.Sort();
