@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Pumbuses - log in" Height="300" Width="400">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FF3DCD07"/>
+                <GradientStop Color="#FF81CB01" Offset="1"/>
+                <GradientStop Color="#FFE8FF00" Offset="0.508"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -15,12 +22,16 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Right" Margin="0,0,0,10" TextWrapping="Wrap" Text="User Name:" VerticalAlignment="Bottom" Height="32" Width="85"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Height="32" Width="85" Grid.Row="1"/>
-        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1"/>
-        <PasswordBox x:Name="tbPassword" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="142" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="btnLogin" Content="כניסה" HorizontalAlignment="Left" Margin="10,47,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="btnLogin_Click"/>
-        <Button x:Name="btnSignup" Content="הרשמה" HorizontalAlignment="Right" Margin="0,47,10,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click ="btnSignup_Click"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,0,0,10" TextWrapping="Wrap" Text="User Name:" VerticalAlignment="Bottom" Height="23" Width="110" FontSize="18" FontFamily="Algerian"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" Height="32" Width="110" Grid.Row="1" FontFamily="Algerian" FontSize="18"/>
+        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1" FontFamily="Forte" Text="user name" FontSize="24"/>
+        <PasswordBox x:Name="tbPassword" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="142" Grid.Row="1" Grid.Column="1" FontSize="20"/>
+        <Button x:Name="btnLogin" Content="כניסה" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="btnLogin_Click"/>
+        <Button x:Name="btnSignup" Content="הרשמה" HorizontalAlignment="Right" Margin="0,90,10,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click ="btnSignup_Click"/>
+        <Grid x:Name="gSecretPass" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="38" Margin="10,47,0,0" Grid.Row="1" VerticalAlignment="Top" Width="372">
+            <Label Content="Super Duper secret admin password:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="38" Width="225" FontFamily="Algerian" FontSize="11"/>
+            <PasswordBox x:Name="pbSecretPass" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Width="142" Height="38" FontSize="20"/>
+        </Grid>
 
     </Grid>
 </Window>

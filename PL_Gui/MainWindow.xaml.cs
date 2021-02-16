@@ -24,17 +24,14 @@ namespace PL_Gui
     {
         IBLL bl = BLL_Factory.GetBL();
         bool admin;
+        bool login = true;
 
         public MainWindow()
         {
             InitializeComponent();
             bl.CreateWorld();//for xml
-/*#if DEBUG
-            admin = bl.IsAdmin("bob", "123");
-            AdminWindow adwin = new AdminWindow(bl);
-            adwin.Show();
-            this.Close();
-#endif*/
+            gSecretPass.Visibility = Visibility.Hidden;
+            this.Title = "Pumbuses - Log in";
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -45,7 +42,7 @@ namespace PL_Gui
             }
             catch (IncorrectSomethingExeption)
             {
-                MessageBox.Show("user name = bob, password = 123");
+                MessageBox.Show("user name = bob, password = 123. or sign up.");
                 return;
             }
             if (admin)
@@ -54,11 +51,44 @@ namespace PL_Gui
                 adwin.Show();
                 this.Close();
             }
+            else
+            {
+                MessageBox.Show("you are not an admin!");
+            }
         }
 
         private void btnSignup_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("The function doesn't exist yet:(");
+            if (login)
+            {
+                login = false;
+                this.Title = "Pumbuses - Sign up";
+
+                gSecretPass.Visibility = Visibility.Visible;
+                btnLogin.Visibility = Visibility.Hidden;
+                tbPassword.Clear();
+                tbUserName.Clear();
+            }
+            else
+            {
+                login = true;
+                this.Title = "Pumbuses - Log in";
+
+                gSecretPass.Visibility = Visibility.Hidden;
+                btnLogin.Visibility = Visibility.Visible;
+                
+                try
+                {
+                    bl.SignUp(tbUserName.Text, tbPassword.Password, pbSecretPass.Password);
+                } 
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("the secret password is 'ADMIN(-;'");
+                    tbPassword.Clear();
+                    tbUserName.Clear();
+                }
+            }
         }
     }
 }

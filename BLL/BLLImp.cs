@@ -15,6 +15,8 @@ namespace BLL
     {
         IDal dl = Dal_Factory.GetDL();
 
+        string SuperDuperSecretPassword = "ADMIN(-;";
+
         #region singelton
         static readonly BLLImp instance = new BLLImp();
         static BLLImp() { }// static ctor to ensure instance init is done just before first usage
@@ -390,12 +392,54 @@ namespace BLL
         public bool IsAdmin(string name, string password)
         {
             IEnumerable<User> usersList = dl.GetAllUsers();
+            bool ex = false, admin = false;
+
             foreach (User u in usersList)
             {
                 if (u.UserName == name && u.Password == password)
-                    return u.Admin;
+                {
+                    ex = true;
+                    admin = u.Admin;
+                }
             }
+            if (ex)
+                return admin;
             throw new IncorrectSomethingExeption();
+        }
+        public void SignUp(string name, string password, string SDSP)
+        {
+
+            foreach (User u in dl.GetAllUsers())
+            {
+                if (u.UserName == name)
+                    throw new AlreadyExistExeption("this name is already exist");
+            }
+                    
+
+            if (SDSP == "")
+            {
+                dl.AddUser(new User
+                {
+                    Admin = false,
+                    Password = password,
+                    UserName = name,
+                    ID = 1 + dl.GetAllUsers().Count()
+                });
+            }
+            else if (SDSP == SuperDuperSecretPassword)
+            {
+                dl.AddUser(new User
+                {
+                    Admin = true,
+                    Password = password,
+                    UserName = name,
+                    ID = 1 + dl.GetAllUsers().Count()
+                });
+            }
+            else
+            {
+                throw new IncorrectSomethingExeption("you don't know the secret password");
+            }
         }
 
         public void CreateWorld()
