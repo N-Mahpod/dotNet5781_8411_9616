@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BLL.BLL_Api;
 using BLL.BLL_Object;
+using System.Threading;
 
 namespace PL_Gui
 {
@@ -47,6 +48,7 @@ namespace PL_Gui
             }
             if (admin)
             {
+                Thread.Sleep(TimeSpan.FromSeconds(0.5));
                 AdminWindow adwin = new AdminWindow(bl);
                 adwin.Show();
                 this.Close();

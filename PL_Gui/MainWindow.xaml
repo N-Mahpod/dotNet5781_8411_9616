@@ -5,13 +5,149 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL_Gui"
         mc:Ignorable="d"
-        Title="Pumbuses - log in" Height="300" Width="400">
+        Title="Pumbuses - log in" Height="307.292" Width="400">
+    <Window.Resources>
+        <GradientStopCollection x:Key="MyGlassGradientStopsResource">
+            <GradientStop Color="WhiteSmoke" Offset="0.2" />
+            <GradientStop Color="Transparent" Offset="0.4" />
+            <GradientStop Color="WhiteSmoke" Offset="0.5" />
+            <GradientStop Color="Transparent" Offset="0.75" />
+            <GradientStop Color="WhiteSmoke" Offset="0.9" />
+            <GradientStop Color="Transparent" Offset="1" />
+        </GradientStopCollection>
+        <LinearGradientBrush x:Key="MyGlassBrushResource"
+                             StartPoint="0,0" EndPoint="1,1" Opacity="0.75"
+                             GradientStops="{StaticResource MyGlassGradientStopsResource}" />
+        <LinearGradientBrush x:Key="GrayBlueGradientBrush"
+                             StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF7A7A7A" Offset="0" />
+            <GradientStop Color="#CCCCFF" Offset="0.5" />
+            <GradientStop Color="#FF7A7A7A" Offset="1" />
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                              ClipToBounds="True">
+
+                            <!-- Outer Rectangle with rounded corners. -->
+                            <Rectangle x:Name="outerRectangle" HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch" Stroke="{TemplateBinding Background}"
+                                       RadiusX="20" RadiusY="20" StrokeThickness="5" Fill="Transparent" />
+
+                            <!-- Inner Rectangle with rounded corners. -->
+                            <Rectangle x:Name="innerRectangle" HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch" Stroke="Transparent" StrokeThickness="20"
+                                       Fill="{TemplateBinding Background}" RadiusX="20" RadiusY="20" />
+
+                            <!-- Glass Rectangle -->
+                            <Rectangle x:Name="glassCube" HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch" 
+                                       StrokeThickness="2" RadiusX="20" RadiusY="20" Opacity="1"
+                                       Fill="{StaticResource MyGlassBrushResource}"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <Rectangle.Stroke>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0.0" Color="LightGreen" />
+                                            <GradientStop Offset="1.0" Color="Gray" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Rectangle.Stroke>
+                                <!-- These transforms have no effect as they are declared here.
+                                The reason the transforms are included is to be targets for animation -->
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <RotateTransform />
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                                <!-- A BevelBitmapEffect is applied to give the button a "Beveled" look. -->
+                                <Rectangle.BitmapEffect>
+                                    <BevelBitmapEffect />
+                                </Rectangle.BitmapEffect>
+                            </Rectangle>
+
+                            <!-- Present Text of the button. -->
+                            <DockPanel Name="myContentPresenterDockPanel">
+                                <ContentPresenter x:Name="myContentPresenter" Margin="20,20,20,10"
+                                                  Content="{TemplateBinding  Content}" TextBlock.Foreground="Black" Opacity="0.9"/>
+                            </DockPanel>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Set properties when mouse pointer is over the button. -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!-- Below are three property settings that occur when the condition is met (user mouses over button).  -->
+                                <!-- Change the color of the outer rectangle when user mouses over it. -->
+                                <Setter Property ="Rectangle.Stroke" TargetName="outerRectangle" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                <!-- Sets the glass opacity to 1, therefore, the glass "appears" when user mouses over it. -->
+                                <Setter Property="Rectangle.Opacity" Value="1" TargetName="glassCube" />
+                                <!-- Makes the text slightly blurry as though you were looking at it through blurry glass. -->
+                                <Setter Property="ContentPresenter.BitmapEffect" TargetName="myContentPresenter">
+                                    <Setter.Value>
+                                        <BlurBitmapEffect Radius="2" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                            <!-- Animations that start when mouse enters and leaves button. -->
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard Name="mouseEnterBeginStoryboard">
+                                        <Storyboard>
+                                            <!-- This animation makes the glass rectangle shrink in the X direction. -->
+                                            <DoubleAnimation Storyboard.TargetName="glassCube"
+                                                             Storyboard.TargetProperty=
+                                                             "(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                             By="-0.2" Duration="0:0:0.5" />
+                                            <!-- This animation makes the glass rectangle shrink in the Y direction. -->
+                                            <DoubleAnimation Storyboard.TargetName="glassCube"
+                                                Storyboard.TargetProperty=
+                                                "(Rectangle.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                                                By="-0.2" Duration="0:0:0.5" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <EventTrigger.Actions>
+                                    <!-- Stopping the storyboard sets all animated properties back to default. -->
+                                    <StopStoryboard BeginStoryboardName="mouseEnterBeginStoryboard" />
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+
+
+                            <!-- Animation fires when button is clicked, causing glass to spin.  -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glassCube"
+                                                             Storyboard.TargetProperty=
+                                                             "(Rectangle.RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)"
+                                                             By="360" Duration="0:0:0.5" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                 <GradientStop Color="#FF3DCD07"/>
-                <GradientStop Color="#FF81CB01" Offset="1"/>
-                <GradientStop Color="#FFE8FF00" Offset="0.508"/>
+                <GradientStop Color="#FFE8FF00" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
@@ -24,14 +160,24 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,0,10" TextWrapping="Wrap" Text="User Name:" VerticalAlignment="Bottom" Height="23" Width="110" FontSize="18" FontFamily="Algerian"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" Height="32" Width="110" Grid.Row="1" FontFamily="Algerian" FontSize="18"/>
-        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1" FontFamily="Forte" Text="user name" FontSize="24"/>
+        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1" FontFamily="Comic Sans MS" Text="user name" FontSize="24"/>
         <PasswordBox x:Name="tbPassword" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="142" Grid.Row="1" Grid.Column="1" FontSize="20"/>
-        <Button x:Name="btnLogin" Content="כניסה" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="btnLogin_Click"/>
-        <Button x:Name="btnSignup" Content="הרשמה" HorizontalAlignment="Right" Margin="0,90,10,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click ="btnSignup_Click"/>
+        <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Margin="106,76,0,0" Grid.Row="1" VerticalAlignment="Top" Width="80" Click="btnLogin_Click" FontFamily="Comic Sans MS" FontWeight="Bold" FontSize="13" Height="58"/>
+        <Button x:Name="btnSignup" Content="Sign up" HorizontalAlignment="Right" Margin="0,76,102,0" Grid.Row="1" VerticalAlignment="Top" Width="84" Click ="btnSignup_Click" Height="58" FontFamily="Comic Sans MS" FontWeight="Bold"/>
         <Grid x:Name="gSecretPass" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="38" Margin="10,47,0,0" Grid.Row="1" VerticalAlignment="Top" Width="372">
             <Label Content="Super Duper secret admin password:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="38" Width="225" FontFamily="Algerian" FontSize="11"/>
-            <PasswordBox x:Name="pbSecretPass" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Width="142" Height="38" FontSize="20"/>
+            <PasswordBox x:Name="pbSecretPass" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Width="142" Height="28" FontSize="20"/>
         </Grid>
 
+        <Image Source="/Resources/PumbaIcon.png" Margin="59,2,1,42" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
     </Grid>
 </Window>
