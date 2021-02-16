@@ -9,7 +9,7 @@ namespace BLL.BLL_Api
     public interface IBLL
     {
         bool IsAdmin(string name, string password);
-
+        void SignUp(string name, string password, string SDSP);
         void CreateWorld();
 
         #region Bus
