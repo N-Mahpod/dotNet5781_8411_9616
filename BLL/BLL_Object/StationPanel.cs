@@ -17,31 +17,55 @@ namespace BLL.BLL_Object
 
         public int StationKey { get; set; }
         public List<LineTiming> LineTimings { get; set; }
-
-        public void remake(int id, List<BusLine> lines)//Recreates the panel given the station id.
+        private int timingIdx; //Where in the list are we atm.
+        public void remake(int id, List<BusLine> lines, TimeSpan now)//Recreates the panel given the station id.
         {
-            for(BusLine l in lines)
+            timingIdx = 0;
+            LineTimings.Clear();
+            foreach(BusLine l in lines)
             {
                 if (l.IncludeStat(id) == false)
                     continue;
-                LineTimings
+                LineTimings.Add(new LineTiming { LineKey = l.Key, StartAt = l.StartAt, ArriveAt = l.ArriveAt(id), LastStation = l.LastStation });
             }
+            Sort();
+            updateIdx(now);
         }
         public void Sort()
         {
             LineTimings.Sort();
         }
 
-        public void CleanTillNow(TimeSpan now)
+        public bool updateIdx(TimeSpan now)//Updates current idx, assumes list is sorted. Returns whether idx changed.
         {
-            for (int i = 0; i< LineTimings.Count;++i)
+            bool changed = false;
+            while(timingIdx < LineTimings.Count())
             {
-                if (now > LineTimings[i].ArriveAt)
+                if (now > LineTimings[timingIdx].ArriveAt)//Passed this.
                 {
-                    LineTimings.RemoveAt(i);
-                    --i;
+                    changed = true;
+                    timingIdx++;
                 }
+                else
+                    break;
             }
+            return changed;
+        }
+
+        public List<LineTiming> GetNextLines()
+        {
+            List<LineTiming> res = new List<LineTiming>();
+            for (int i = timingIdx; i < Math.Min(timingIdx + 5, LineTimings.Count()); ++i)
+                res.Add(LineTimings[i]);
+
+            return res;
+        }
+
+        public int prevLine()//Returns the id of the line previously here.
+        {
+            if (timingIdx == 0 || LineTimings.Count() == 0)
+                return -1;
+            return LineTimings[timingIdx - 1].LineKey;
         }
     }
 }

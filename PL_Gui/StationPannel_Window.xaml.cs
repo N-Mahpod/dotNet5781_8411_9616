@@ -24,15 +24,13 @@ namespace PL_Gui
     {
         IBLL bl;
         BackgroundWorker bk;
-
-        public StationPannel_Window(IBLL _bl)
+        public StationPannel_Window(IBLL _bl, int id)//Stationd`s id.
         {
             InitializeComponent();
             bl = _bl;
 
-            bk.
-
-
+            bl.SetStationPanel(id);
+            
         }
     }
 }

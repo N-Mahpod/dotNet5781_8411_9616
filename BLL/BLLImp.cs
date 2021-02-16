@@ -355,12 +355,16 @@ namespace BLL
             simClk.Stop();
         }
 
-        public void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus)
+        /*public void SetStationPanel(int station, Action<BLL_Object.LineTiming> updateBus)
         {
             if (stationPanel.StationKey != station)
                 CreateLineTimings(station);
 
             
+        }*/
+        public void SetStationPanel(int station)
+        {
+            stationPanel.remake(station, busLines, simClk.NowSimulation);
         }
 
         public void CreateLineTimings(int stationKey)
