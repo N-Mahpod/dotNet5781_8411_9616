@@ -91,7 +91,9 @@ namespace PL_Gui
 
         private void Sim_button_Click(object sender, RoutedEventArgs e)
         {
-
+            int currStationId = ObserListOfStations[cbStations.SelectedIndex].BusStationKey;
+            StationPannel_Window spw = new StationPannel_Window(bl, currStationId);
+            spw.Show();
         }
 
         //unnesesery

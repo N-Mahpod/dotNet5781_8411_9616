@@ -8,13 +8,27 @@
         Title="Station Pannel" Height="450" Width="800">
     <Grid>
         <Label x:Name="Slabel" Content="Station" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="40" Width="130" FontSize="25" FontWeight="Bold"/>
-        <ListView x:Name="lvPannel" HorizontalAlignment="Left" Height="186" Margin="201,75,0,0" VerticalAlignment="Top" Width="400">
+        <Label x:Name="PlasticLabel" Content="Plastic Panel" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="44,78,0,318" Width="130" Height="23"/>
+        <ListView x:Name="lvPannelElectronic" HorizontalAlignment="Left" Height="186" Margin="349,106,0,0" VerticalAlignment="Top" Width="360">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="Line ID"     Width="120"    DisplayMemberBinding="{Binding LineKey}"/>
+                    <GridViewColumn Header="Time until arrival"         Width="120"    DisplayMemberBinding="{Binding ArriveAt}"/>
+                    <GridViewColumn Header="Final station" Width="120"    DisplayMemberBinding="{Binding LastStation}"/>
+
                 </GridView>
             </ListView.View>
         </ListView>
+        <ListView x:Name="lvPannelPlastic" HorizontalAlignment="Left" Height="186" Margin="44,106,0,0" VerticalAlignment="Top" Width="240">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Line ID"     Width="120"    DisplayMemberBinding="{Binding Key}"/>
+                    <GridViewColumn Header="Final station" Width="120"    DisplayMemberBinding="{Binding LastStation}"/>
 
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label x:Name="PlasticLabel_Copy" Content="Electronic Panel" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="349,78,0,318" Width="130" Height="23"/>
+        <TextBlock x:Name="tbPrevLine" Text ="No lines passed here yet!" HorizontalAlignment="Left" Margin="349,0,0,50" VerticalAlignment="Bottom" Height="30" Width="250" FontSize="16"/>
     </Grid>
 </Window>

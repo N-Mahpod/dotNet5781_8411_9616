@@ -21,7 +21,7 @@ namespace BLL.BLL_Object
         public void remake(int id, List<BusLine> lines, TimeSpan now)//Recreates the panel given the station id.
         {
             timingIdx = 0;
-            LineTimings.Clear();
+            LineTimings = new List<LineTiming>();
             foreach(BusLine l in lines)
             {
                 if (l.IncludeStat(id) == false)
@@ -56,7 +56,11 @@ namespace BLL.BLL_Object
         {
             List<LineTiming> res = new List<LineTiming>();
             for (int i = timingIdx; i < Math.Min(timingIdx + 5, LineTimings.Count()); ++i)
-                res.Add(LineTimings[i]);
+            {
+                LineTiming curr = LineTimings[i];
+                curr.ArriveAt -= SimulationClock.Instance.NowSimulation;
+                res.Add(curr);
+            }
 
             return res;
         }

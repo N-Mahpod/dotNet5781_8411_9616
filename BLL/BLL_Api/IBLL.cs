@@ -29,7 +29,7 @@ namespace BLL.BLL_Api
         void UpdateStation(int key, string newadd, double newlong, double newlat);
         IEnumerable<BLL_Object.BusLine> GetLinesInStation(int stationKey);
 
-        IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey);
+        //IEnumerable<BLL_Object.LineTiming> GetLineTimings(int stationKey);
         #endregion
 
         #region Bus Line
@@ -49,6 +49,12 @@ namespace BLL.BLL_Api
         /// I dont understand the intended usage of this function.
 
         void SetStationPanel(int id);
+
+        bool UpdatePanel();
+
+        List<BLL_Object.LineTiming> GetNextLines();
+
+        int GetPrevLine();
 
         #endregion
     }

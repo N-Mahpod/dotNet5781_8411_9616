@@ -367,7 +367,23 @@ namespace BLL
             stationPanel.remake(station, busLines, simClk.NowSimulation);
         }
 
-        public void CreateLineTimings(int stationKey)
+        public bool UpdatePanel()
+        {
+            return stationPanel.updateIdx(simClk.NowSimulation);
+        }
+
+        public List<LineTiming> GetNextLines()
+        {
+            return stationPanel.GetNextLines();
+        }
+
+        public int GetPrevLine()
+        {
+            return stationPanel.prevLine();
+        }
+
+        ///turns out both of us wrote the same function haha. This one seems less elegantly placed in the code.
+        /*public void CreateLineTimings(int stationKey)
         {
             stationPanel.LineTimings = new List<LineTiming>();
             stationPanel.StationKey = stationKey;
@@ -390,7 +406,7 @@ namespace BLL
                 CreateLineTimings(stationKey);
 
             return stationPanel.LineTimings;
-        }
+        }*/
         #endregion
 
         public bool IsAdmin(string name, string password)

@@ -94,10 +94,16 @@ namespace BLL.BLL_Object
         public TimeSpan TimeTo(int stationKey)
         {
             TimeSpan ts = new TimeSpan();
-            for (int i = 0; i < NumStations - 1; ++i)
+            /*for (int i = 0; i < NumStations - 1; ++i)
             {
                 ts = ts.Add(TimeSpanStations[i]);
                 if (Stations[i + 1] == stationKey)
+                    return ts;
+            }*/
+            for (int i = 0; i < NumStations; ++i)
+            {
+                ts = ts.Add(TimeSpanStations[i]);
+                if (Stations[i] == stationKey)
                     return ts;
             }
             throw new KeyNotExistExeption();
