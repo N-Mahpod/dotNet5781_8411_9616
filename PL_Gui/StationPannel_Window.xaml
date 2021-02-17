@@ -12,9 +12,10 @@
         <ListView x:Name="lvPannelElectronic" HorizontalAlignment="Left" Height="186" Margin="349,106,0,0" VerticalAlignment="Top" Width="360">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Line ID"     Width="120"    DisplayMemberBinding="{Binding LineKey}"/>
-                    <GridViewColumn Header="Time until arrival"         Width="120"    DisplayMemberBinding="{Binding ArriveAt}"/>
-                    <GridViewColumn Header="Final station" Width="120"    DisplayMemberBinding="{Binding LastStation}"/>
+                    <GridViewColumn Header="Line ID"            Width="90"    DisplayMemberBinding="{Binding LineKey}"/>
+                    <GridViewColumn Header="Time until arrival" Width="90"    DisplayMemberBinding="{Binding Timing}"/>
+                    <GridViewColumn Header="Final station"      Width="90"    DisplayMemberBinding="{Binding LastStation}"/>
+                    <GridViewColumn Header="Arrive At"          Width="90"    DisplayMemberBinding="{Binding ArriveAt}"/>
 
                 </GridView>
             </ListView.View>

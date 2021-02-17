@@ -12,7 +12,7 @@ namespace BLL.BLL_Object
         public TimeSpan StartAt { get; set; }
         public string LastStation { get; set; }
         public TimeSpan ArriveAt { get; set; }
-
+        public TimeSpan Timing { get; set; }
         public int CompareTo(object obj)
         {
             return ArriveAt.CompareTo((obj as LineTiming).ArriveAt);

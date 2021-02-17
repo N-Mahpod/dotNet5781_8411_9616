@@ -26,7 +26,7 @@ namespace BLL.BLL_Object
         public const double KM_ALLOW_FROM_SERVICE = 20000;
         public const int MINUTES_OF_SERVICE = 24 * 60;
         public const int MINUTES_OF_REFUEL = 2 * 60;
-        public const int MAX_KMpH = 50;
+        public const int MAX_KMpH = 60;
         public const int MIN_KMpH = 20;
         #endregion
 

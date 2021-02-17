@@ -315,6 +315,25 @@ namespace BLL
         public void AddStationToLine(int lineNum, int stationKey, double minutesToNext)
         {
             BLL_Object.BusLine l = this.GetBusLine(lineNum);
+            double mtp = 0;
+            if(l.NumStations>0 && l.TimeSpanStations[l.Stations.Count - 1] == TimeSpan.Zero)
+            {
+                BLL_Object.Station s0 = GetStation(l.Stations[l.Stations.Count - 1]);
+                BLL_Object.Station s1 = GetStation(stationKey);
+
+                double d = s0.getDistance(s1);
+                Random r = new Random();
+                double v = r.Next(BLL_Object.Bus.MIN_KMpH, BLL_Object.Bus.MAX_KMpH);
+
+                //S(km) = V(kmph)*T(h)
+                //T(h) = S(km)/V(kmph)
+                //T(m*60) = S(km)/V(kmph)
+                //T(m) = (S(km)/V(kmph))*60
+
+                mtp = (d / v) * 60;
+                l.TimeSpanStations[l.Stations.Count - 1] = TimeSpan.FromMinutes(mtp);
+            }
+
             l.AddStat(stationKey, minutesToNext);
 
             BusLinesHasSaved = false;

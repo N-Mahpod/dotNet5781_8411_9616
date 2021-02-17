@@ -160,7 +160,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,0,10" TextWrapping="Wrap" Text="User Name:" VerticalAlignment="Bottom" Height="23" Width="110" FontSize="18" FontFamily="Algerian"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" Height="32" Width="110" Grid.Row="1" FontFamily="Algerian" FontSize="18"/>
-        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1" FontFamily="Comic Sans MS" Text="user name" FontSize="24"/>
+        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="32" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="142" Grid.Column="1" FontFamily="Comic Sans MS" Text="" FontSize="24"/>
         <PasswordBox x:Name="tbPassword" HorizontalAlignment="Left" Height="32" Margin="10,10,0,0" VerticalAlignment="Top" Width="142" Grid.Row="1" Grid.Column="1" FontSize="20"/>
         <Button x:Name="btnLogin" Content="Log in" HorizontalAlignment="Left" Margin="106,76,0,0" Grid.Row="1" VerticalAlignment="Top" Width="80" Click="btnLogin_Click" FontFamily="Comic Sans MS" FontWeight="Bold" FontSize="13" Height="58"/>
         <Button x:Name="btnSignup" Content="Sign up" HorizontalAlignment="Right" Margin="0,76,102,0" Grid.Row="1" VerticalAlignment="Top" Width="84" Click ="btnSignup_Click" Height="58" FontFamily="Comic Sans MS" FontWeight="Bold"/>
@@ -179,5 +179,6 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
+        <Label Content="PumBuses" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="68" Width="261" FontFamily="Forte" FontSize="48"/>
     </Grid>
 </Window>

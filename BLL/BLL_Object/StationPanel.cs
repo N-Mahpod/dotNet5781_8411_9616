@@ -26,7 +26,12 @@ namespace BLL.BLL_Object
             {
                 if (l.IncludeStat(id) == false)
                     continue;
-                LineTimings.Add(new LineTiming { LineKey = l.Key, StartAt = l.StartAt, ArriveAt = l.ArriveAt(id), LastStation = l.LastStation });
+                LineTimings.Add(new LineTiming { 
+                    LineKey = l.Key, 
+                    StartAt = l.StartAt, 
+                    ArriveAt = l.ArriveAt(id), 
+                    LastStation = l.LastStation, 
+                    Timing = l.ArriveAt(id) - now});
             }
             Sort();
             updateIdx(now);
@@ -58,7 +63,7 @@ namespace BLL.BLL_Object
             for (int i = timingIdx; i < Math.Min(timingIdx + 5, LineTimings.Count()); ++i)
             {
                 LineTiming curr = LineTimings[i];
-                curr.ArriveAt -= SimulationClock.Instance.NowSimulation;
+                curr.Timing  = curr.ArriveAt - SimulationClock.Instance.NowSimulation;
                 res.Add(curr);
             }
 

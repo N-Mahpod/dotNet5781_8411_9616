@@ -94,6 +94,13 @@ namespace PL_Gui
             int currStationId = ObserListOfStations[cbStations.SelectedIndex].BusStationKey;
             StationPannel_Window spw = new StationPannel_Window(bl, currStationId);
             spw.Show();
+            spw.Closing += Spw_Closing;
+            (sender as Button).IsEnabled = false;
+        }
+
+        private void Spw_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Sim_button.IsEnabled = true;
         }
 
         //unnesesery

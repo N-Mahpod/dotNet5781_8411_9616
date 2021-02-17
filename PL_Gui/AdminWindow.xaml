@@ -26,6 +26,17 @@
                 <TextBlock x:Name="tbSimClock" HorizontalAlignment="Left" Margin="202,10,0,0" TextWrapping="Wrap" TextAlignment="Center" FontSize="30" Text="00:00:00" VerticalAlignment="Top" Height="43" Width="135"/>
 
             </Grid>
+
+            <Image Source="/Resources/PumbaIcon.png" Margin="768,0,347,0" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1" ScaleX="1"/>
+                        <SkewTransform AngleY="0" AngleX="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
         </Grid>
 
         <Grid Grid.Column="0"       HorizontalAlignment="Stretch" Height="auto" Grid.Row="1" VerticalAlignment="Stretch" Width="auto">

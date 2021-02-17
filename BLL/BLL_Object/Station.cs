@@ -107,7 +107,7 @@ namespace BLL.BLL_Object
         //Utility function to calculate distance between this station and another.
         public double getDistance(in Station other)
         {
-            return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2));
+            return Math.Sqrt(Math.Pow(longitude - other.Longitude, 2) + Math.Pow(latitude - other.Latitude, 2))*17;
         }
         public string Name
         {

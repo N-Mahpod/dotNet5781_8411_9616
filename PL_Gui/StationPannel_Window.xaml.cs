@@ -15,6 +15,7 @@ using BLL.BLL_Api;
 using BLL.BLL_Object;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace PL_Gui
 {
@@ -66,6 +67,8 @@ namespace PL_Gui
                         prevT = clk.NowSimulation;
                         bk.ReportProgress(42);
                     }
+
+                    Thread.Sleep(500);
                 }
                 ev.Cancel = true;
             };
@@ -86,6 +89,7 @@ namespace PL_Gui
                 lvPannelElectronic.ItemsSource = obsElectronic;
             };
 
+            bk.RunWorkerAsync();
         }
     }
 }
